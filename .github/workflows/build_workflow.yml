@@ -61,7 +61,7 @@ jobs:
           activate-environment: "ESMBenchmarkViz_ci"
           miniforge-variant: Mambaforge
           miniforge-version: latest
-          environment-file: conda-env/ci.yml
+          environment-file: conda-env/environment.yml
           use-mamba: true
           mamba-version: "*"
           channel-priority: strict
@@ -81,9 +81,9 @@ jobs:
           key:
             conda-${{ runner.os }}--${{ runner.arch }}--${{
             steps.get-date.outputs.today }}-${{
-            hashFiles('conda-env/dev.yml') }}-${{ env.CACHE_NUMBER}}
+            hashFiles('conda-env/environment.yml') }}-${{ env.CACHE_NUMBER}}
         env:
-          # Increase this value to reset cache if conda/dev.yml has not changed in the workflow
+          # Increase this value to reset cache if conda/environment.yml has not changed in the workflow
           CACHE_NUMBER: 0
 
       - name: Install ESMBenchmarkViz
@@ -115,12 +115,12 @@ jobs:
       - name: Cache Conda
         uses: actions/cache@v3
         env:
-          # Increase this value to reset cache if conda-env/ci.yml has not changed in the workflow
+          # Increase this value to reset cache if conda-env/environment.yml has not changed in the workflow
           CACHE_NUMBER: 0
         with:
           path: ~/conda_pkgs_dir
           key: ${{ runner.os }}-conda-${{ env.CACHE_NUMBER }}-${{
-            hashFiles('conda-env/ci.yml') }}
+            hashFiles('conda-env/environment.yml') }}
 
       - name: Set up Conda Environment
         uses: conda-incubator/setup-miniconda@v2
@@ -128,7 +128,7 @@ jobs:
           activate-environment: "ESMBenchmarkViz_dev"
           miniforge-variant: Miniforge3
           miniforge-version: latest
-          environment-file: conda-env/dev.yml
+          environment-file: conda-env/environment.yml
           channel-priority: strict
           auto-update-conda: true
 
