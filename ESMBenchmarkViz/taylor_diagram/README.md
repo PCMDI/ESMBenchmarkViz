@@ -1,4 +1,5 @@
-Plot interactive Taylor Diagram
+Interactive Taylor Diagram
+--------------------------
 
 ![sample plot](example_taylor_diagram.png)
 
