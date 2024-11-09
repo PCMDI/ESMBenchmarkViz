@@ -1,1 +1,1 @@
-from .taylor_diagram.taylor_diagram import interactive_taylor_diagram
+from .taylor_diagram.taylor_diagram import taylor_diagram

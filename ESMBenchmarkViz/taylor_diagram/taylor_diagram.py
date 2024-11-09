@@ -13,7 +13,7 @@
  
 import math
 import numpy as np
-from bokeh.plotting import figure, show, output_file, save
+from bokeh.plotting import figure, show
 from bokeh.models import ColumnDataSource, HoverTool, Label, LabelSet
 from bokeh.transform import factor_cmap
 
@@ -23,7 +23,7 @@ from bokeh.transform import factor_cmap
  
 from bokeh.palettes import Spectral10  # Make sure to import Spectral10 if not already done
 
-def interactive_taylor_diagram(std_devs, correlations, names, refstd, normalize=False, step=0.2, palette=Spectral10):
+def taylor_diagram(std_devs, correlations, names, refstd, normalize=False, step=0.2, palette=Spectral10):
     """
     Creates an interactive Taylor diagram using Bokeh.
 
@@ -52,8 +52,8 @@ def interactive_taylor_diagram(std_devs, correlations, names, refstd, normalize=
 
     Returns
     -------
-    Bokeh figure
-        A Bokeh figure object representing the interactive Taylor diagram.
+    bokeh.plotting.Figure
+        Bokeh figure object containing the interactive Taylor diagram.
 
     Example
     -------
