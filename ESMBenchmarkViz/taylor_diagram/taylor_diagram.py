@@ -1,8 +1,10 @@
 import math
 
+import matplotlib.colors as mcolors
+import matplotlib.pyplot as plt
 import numpy as np
+from bokeh.colors import RGB
 from bokeh.models import ColumnDataSource, HoverTool, Label, LabelSet
-from bokeh.palettes import all_palettes
 from bokeh.plotting import figure, show
 from bokeh.transform import factor_cmap
 
@@ -52,7 +54,7 @@ def taylor_diagram(
     step : float, optional
         The step size for the arcs and grid lines in the Taylor diagram (default is 0.2).
     colormap : str or list, optional
-        A name or colormap or list of colors to use for the model points. Available names of colormap can be found at https://docs.bokeh.org/en/latest/docs/reference/palettes.html. Default is Spectral.
+        A name of the Matplotlib or list of colors to use for the model points. Available names of Matplotlib colormap can be found at https://matplotlib.org/stable/users/explain/colors/colormaps.html. Default is Spectral.
     width : int, optional
         The width of the plot in pixels (default is 600).
     height : int, optional
@@ -89,6 +91,13 @@ def taylor_diagram(
     2024-10-04: Jiwoo Lee, initial version
 
     """
+
+    # Sanity check for input data
+    if len(std_devs) != len(correlations) or len(std_devs) != len(names):
+        raise ValueError(
+            "The lengths of 'std_devs', 'correlations', and 'names' must be equal."
+        )
+
     # Convert input lists to numpy arrays for consistency
     std_devs = convert_to_numpy_array(std_devs)
     correlations = convert_to_numpy_array(correlations)
@@ -146,10 +155,13 @@ def taylor_diagram(
     )
 
     # Get the selected colormap
-    selected_palette = select_palette(colormap)
+    if isinstance(colormap, list):
+        selected_colors = colormap
+    else:
+        selected_colors = get_bokeh_colors_from_cmap(colormap, len(names))
 
-    # Dynamic color mapping based on model names
-    colors = factor_cmap("names", palette=selected_palette, factors=names)
+    # Color mapping based on model names
+    colors = factor_cmap("names", palette=selected_colors, factors=names)
 
     # Plot data points
     points = p.scatter(
@@ -233,35 +245,101 @@ def convert_to_numpy_array(data):
     return data
 
 
-def select_palette(colormap):
+def get_bokeh_colors_from_cmap(cmap_name: str, num_colors: int) -> list:
     """
-    Selects the color palette based on the input colormap.
+    Generate a list of hex colors from a Matplotlib colormap for use in Bokeh.
 
     Parameters
     ----------
-    colormap : str or list
-        The name of the colormap or a list of colors.
+    cmap_name : str
+        Name of the Matplotlib colormap.
+    num_colors : int
+        Number of colors to generate from the colormap.
 
     Returns
     -------
-    list
-        The selected color palette.
+    list of str
+        List of hex color codes that can be used in Bokeh.
+
+    Raises
+    ------
+    ValueError
+        If `num_colors` is less than 1.
     """
+    if num_colors < 1:
+        raise ValueError("num_colors must be at least 1")
 
-    if isinstance(colormap, list):
-        selected_palette = colormap
+    # Generate colormap from Matplotlib
+    cmap = plt.get_cmap(cmap_name)
+    # Generate colors and convert them to hex format
+    colors = [mcolors.to_hex(cmap(i / (num_colors - 1))) for i in range(num_colors)]
+    return colors
+
+
+def generate_bokeh_colormap(matplotlib_cmap, num_colors, vmin=None, vmax=None):
+    """
+    Generate a Bokeh colormap from a Matplotlib colormap.
+
+    This function takes a Matplotlib colormap and converts it to a list of Bokeh
+    RGB colors. It allows specifying the number of colors and optional
+    normalization range.
+
+    Parameters
+    ----------
+    matplotlib_cmap : matplotlib.colors.Colormap
+        The Matplotlib colormap to convert.
+    num_colors : int
+        The number of colors to generate in the Bokeh colormap.
+    vmin : float, optional
+        The minimum value for normalizing the colormap. If None, it defaults to
+        the minimum of the data range.
+    vmax : float, optional
+        The maximum value for normalizing the colormap. If None, it defaults to
+        the maximum of the data range.
+
+    Returns
+    -------
+    list of bokeh.colors.RGB
+        A list of Bokeh RGB color objects representing the converted colormap.
+
+    Examples
+    --------
+    >>> import matplotlib.pyplot as plt
+    >>> from bokeh.colors import RGB
+    >>> bokeh_colors = generate_bokeh_colormap(plt.get_cmap('viridis'), 10)
+    >>> print(bokeh_colors)
+    [RGB(68, 1, 84), RGB(72, 31, 112), ...]
+
+    >>> # Using a different colormap with custom normalization
+    >>> bokeh_colors = generate_bokeh_colormap(plt.get_cmap('plasma'), 15, vmin=0, vmax=100)
+    >>> print(bokeh_colors)
+    [RGB(13, 8, 135), RGB(75, 3, 161), ...]
+
+    >>> # Using a logarithmic normalization
+    >>> from matplotlib.colors import LogNorm
+    >>> norm = LogNorm(vmin=1, vmax=1000)
+    >>> bokeh_colors = generate_bokeh_colormap(plt.get_cmap('inferno'), 20, vmin=1, vmax=1000)
+    >>> print(bokeh_colors)
+    [RGB(0, 0, 4), RGB(40, 11, 84), ...]
+
+    Notes
+    -----
+    This function discards the alpha channel when converting from Matplotlib
+    RGBA colors to Bokeh RGB colors.
+    """
+    # Normalize the inputs if vmin and vmax are provided
+    if vmin is not None and vmax is not None:
+        normalize = plt.Normalize(vmin=vmin, vmax=vmax)
     else:
-        # Check if the colormap is available in the Bokeh palettes
-        if colormap in all_palettes:
-            selected_palette = all_palettes[colormap]
-            if isinstance(selected_palette, dict):
-                # If the palette is a dict, choose the longest available
-                selected_palette = selected_palette[max(selected_palette.keys())]
-        else:
-            print(f"Warning: Colormap '{colormap}' not found. Defaulting to 'Viridis'.")
-            selected_palette = all_palettes["Viridis"][256]
+        normalize = plt.Normalize()  # defaults to min/max of data
 
-    return selected_palette
+    # Generate the colors from the Matplotlib colormap
+    colors = matplotlib_cmap(normalize(np.linspace(0, 1, num_colors)))
+
+    # Convert to RGB format for Bokeh
+    bokeh_colors = [RGB(*color[:3]) for color in colors]  # Discard the alpha channel
+
+    return bokeh_colors
 
 
 def find_circle_intersection(x1, y1, r1, x2, y2, r2):
