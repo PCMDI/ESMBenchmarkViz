@@ -420,20 +420,20 @@ def find_circle_y_axis_intersection(x1, y1, r):
     """
     Find the intersection points of a circle and the y-axis.
 
-    Parameters:
+    Parameters
     ----------
     x1, y1 : float
         Center coordinates of the circle.
     r : float
         Radius of the circle.
 
-    Returns:
+    Returns
     -------
     list of tuple
         A list of intersection points on the y-axis, where each point is represented as a tuple (0, y).
         If there are no intersections, an empty list is returned.
 
-    Example:
+    Example
     -------
     >>> x1, y1, r = 3, 0, 5  # Circle center (3, 0), radius 5
     >>> find_circle_y_axis_intersection(x1, y1, r)
@@ -455,20 +455,20 @@ def angle_with_x_axis(x1, y1, x2, y2):
     """
     Calculate the angle between the line connecting two points and the x-axis.
 
-    Parameters:
+    Parameters
     ----------
     x1, y1 : float
         Coordinates of the first point.
     x2, y2 : float
         Coordinates of the second point.
 
-    Returns:
+    Returns
     -------
     float
         The angle in degrees between the line connecting the two points and the x-axis.
         The angle is in the range [0, 360).
 
-    Example:
+    Example
     -------
     >>> x1, y1 = 1, 1
     >>> x2, y2 = 4, 5
