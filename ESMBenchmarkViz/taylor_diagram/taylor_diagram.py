@@ -10,7 +10,18 @@ from bokeh.transform import factor_cmap
 
 
 def taylor_diagram(
-    std_devs, correlations, names, refstd, normalize=False, step=0.2, palette=Spectral10
+    std_devs,
+    correlations,
+    names,
+    refstd,
+    normalize=False,
+    step=0.2,
+    palette=Spectral10,
+    width=600,
+    height=600,
+    aspect_ratio=1,
+    show_plot=True,
+    title="Interactive Taylor Diagram",
 ):
     """
     Creates an interactive Taylor diagram using Bokeh.
@@ -37,6 +48,16 @@ def taylor_diagram(
         The step size for the arcs and grid lines in the Taylor diagram (default is 0.2).
     palette : list, optional
         A list of colors to use for the model points. More options can be found at https://docs.bokeh.org/en/latest/docs/reference/palettes.html. Default is Spectral10.
+    width : int, optional
+        The width of the plot in pixels (default is 600).
+    height : int, optional
+        The height of the plot in pixels (default is 600).
+    aspect_ratio : float, optional
+        The aspect ratio of the plot (default is 1).
+    show_plot : bool, optional
+        If True, the plot will be displayed in the workflow (default is True).
+    title : str, optional
+        The title of the plot (default is "Interactive Taylor Diagram").
 
     Returns
     -------
@@ -45,11 +66,12 @@ def taylor_diagram(
 
     Example
     -------
+    >>> from ESMBenchmarkViz import taylor_diagram
     >>> std_devs = [0.8, 1.0, 1.2]  # Standard deviations of models
     >>> correlations = [0.9, 0.85, 0.7]  # Correlation coefficients
     >>> names = ["Model A", "Model B", "Model C"]  # Names of models
     >>> refstd = 1.0  # Standard deviation of reference model
-    >>> interactive_taylor_diagram(std_devs, correlations, names, refstd)
+    >>> taylor_diagram(std_devs, correlations, names, refstd)
 
     Notes
     -----
@@ -83,12 +105,12 @@ def taylor_diagram(
     max_stddev = max(std_devs)  # Get the largest standard deviation
     max_range = max_stddev * 1.1 + step  # 10% larger than the largest value
     p = figure(
-        width=600,
-        height=600,
+        width=width,
+        height=height,
         x_range=(step * -1, max_range),
         y_range=(step * -1, max_range),
-        aspect_ratio=1,
-        title="Interactive Taylor Diagram",
+        aspect_ratio=aspect_ratio,
+        title=title,
     )
 
     p.grid.visible = False
@@ -170,7 +192,8 @@ def taylor_diagram(
     p.legend.click_policy = "hide"
 
     # Show the plot
-    show(p)
+    if show_plot:
+        show(p)
 
     return p
 
