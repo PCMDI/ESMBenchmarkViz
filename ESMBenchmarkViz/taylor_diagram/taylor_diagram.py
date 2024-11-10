@@ -18,6 +18,8 @@ def taylor_diagram(
     refstd,
     normalize=False,
     step=0.2,
+    show_reference=True,
+    reference_name="Reference",
     colormap="Spectral",
     width=600,
     height=600,
@@ -53,6 +55,10 @@ def taylor_diagram(
         If True, the standard deviations are normalized by the reference standard deviation (default is False).
     step : float, optional
         The step size for the arcs and grid lines in the Taylor diagram (default is 0.2).
+    show_reference : bool, optional
+        If True, the reference point is shown in the Taylor diagram (default is True).
+    reference_name : str, optional
+        The name of the reference dataset (default is "Reference").
     colormap : str or list, optional
         A name of the `Matplotlib` or list of colors to use for the model points. Available names of `Matplotlib` colormap can be found `here <https://matplotlib.org/stable/users/explain/colors/colormaps.html>`_. Default is Spectral.
     width : int, optional
@@ -110,6 +116,14 @@ def taylor_diagram(
     else:
         std_name = "Standard Deviation"
 
+    # Add the reference to the list of models
+    if show_reference:
+        names.append(reference_name)
+        std_devs = np.append(std_devs, refstd)
+        correlations = np.append(correlations, 1.0)
+        if isinstance(colormap, list):
+            colormap.append("black")
+
     # Calculate RMSE values
     rmse = [
         np.sqrt(refstd**2 + rs**2 - 2 * refstd * rs * ts)
@@ -142,7 +156,16 @@ def taylor_diagram(
     # Adjust reference lines to end at the outermost arc
     add_reference_lines(p, max_stddev + step)
 
-    # Plot data points with color mapping
+    # Get the selected colormap
+    if isinstance(colormap, list):
+        selected_colors = colormap
+    else:
+        selected_colors = get_bokeh_colors_from_cmap(colormap, len(names))
+
+    # Color mapping based on model names
+    colors = factor_cmap("names", palette=selected_colors, factors=names)
+
+    # Create a ColumnDataSource
     source = ColumnDataSource(
         data=dict(
             x=r * np.cos(theta),
@@ -154,16 +177,7 @@ def taylor_diagram(
         )
     )
 
-    # Get the selected colormap
-    if isinstance(colormap, list):
-        selected_colors = colormap
-    else:
-        selected_colors = get_bokeh_colors_from_cmap(colormap, len(names))
-
-    # Color mapping based on model names
-    colors = factor_cmap("names", palette=selected_colors, factors=names)
-
-    # Plot data points
+    # Plot data points with color mapping
     points = p.scatter(
         "x", "y", size=10, source=source, color=colors, legend_field="names"
     )
