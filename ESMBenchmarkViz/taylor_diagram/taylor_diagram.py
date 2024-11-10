@@ -2,9 +2,7 @@ import math
 
 import numpy as np
 from bokeh.models import ColumnDataSource, HoverTool, Label, LabelSet
-#from bokeh.palettes import Spectral10
 from bokeh.palettes import all_palettes
-
 from bokeh.plotting import figure, show
 from bokeh.transform import factor_cmap
 
@@ -27,7 +25,7 @@ def taylor_diagram(
 ):
     """
     Creates an interactive Taylor diagram using Bokeh.
-    
+
     .. image:: /_static/interactive_taylor_diagram_screen_capture.gif
         :alt: Example interactive Taylor diagram
         :align: center
@@ -94,10 +92,10 @@ def taylor_diagram(
     # Convert input lists to numpy arrays for consistency
     if isinstance(std_devs, list):
         std_devs = np.array(std_devs)
-        
+
     if isinstance(correlations, list):
         correlations = np.array(correlations)
-    
+
     # Standard deviation axis extent
     if normalize:
         std_devs = std_devs / refstd
@@ -132,8 +130,8 @@ def taylor_diagram(
 
     # Apply the adjustments in your main code
     # Standard deviation and RMSE arcs
-    add_reference_arcs(p, max_stddev, step=step, refstd=refstd) 
-    
+    add_reference_arcs(p, max_stddev, step=step, refstd=refstd)
+
     # Adjust reference lines to end at the outermost arc
     add_reference_lines(p, max_stddev + step)
 
@@ -148,12 +146,12 @@ def taylor_diagram(
             rmse=rmse,
         )
     )
-    
+
     # Get the selected colormap
     if isinstance(colormap, list):
         selected_palette = colormap
     else:
-        # Check if the colormap is available in the Bokeh palettes       
+        # Check if the colormap is available in the Bokeh palettes
         if colormap in all_palettes:
             selected_palette = all_palettes[colormap]
             if isinstance(selected_palette, dict):
@@ -161,7 +159,7 @@ def taylor_diagram(
                 selected_palette = selected_palette[max(selected_palette.keys())]
         else:
             print(f"Warning: Colormap '{colormap}' not found. Defaulting to 'Viridis'.")
-            selected_palette = all_palettes['Viridis'][256]
+            selected_palette = all_palettes["Viridis"][256]
 
     # Dynamic color mapping based on model names
     colors = factor_cmap("names", palette=selected_palette, factors=names)
