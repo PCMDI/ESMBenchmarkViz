@@ -52,6 +52,7 @@ BSD 3-Clause License.
    :hidden:
    :caption: For users:
 
+   overview
    gallery
 
 .. toctree::
