@@ -119,7 +119,8 @@ todo_include_todos = False
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 
-#html_theme = "sphinx_book_theme"
+# html_theme = "sphinx_book_theme"
+# html_theme = "sphinx_rtd_theme"
 html_theme = "furo"
 
 # Theme options are theme-specific and customize the look and feel of a
@@ -148,11 +149,22 @@ elif html_theme == "furo":
         "source_repository": "https://github.com/lee1043/ESMBenchmarkViz",
         "source_branch": "main",
         "source_directory": "docs/",
-}
+    }
+    
 elif html_theme == "sphinx_rtd_theme":
-    import sphinx_rtd_theme
-    html_theme = "sphinx_rtd_theme"
-    html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+    html_context = {
+        "sidebar_external_links_caption": "Links",
+        "sidebar_external_links": [
+            (
+                '<i class="fa fa-github fa-fw"></i> Source code',
+                "https://github.com/lee1043/ESMBenchmarkViz",
+            ),
+            (
+                '<i class="fa fa-bug fa-fw"></i> Issue tracker',
+                "https://github.com/lee1043/ESMBenchmarkViz/issues",
+            ),
+        ],
+    }
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

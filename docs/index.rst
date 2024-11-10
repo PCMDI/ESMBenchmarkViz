@@ -1,3 +1,6 @@
+.. ESMBenchmarkViz documentation master file
+
+
 ***************
 ESMBenchmarkViz
 ***************
@@ -49,5 +52,19 @@ BSD 3-Clause License.
    :hidden:
    :caption: For users:
 
+   gallery
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+   :caption: Reference:
+
    api
 
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+   :caption: Links:
+
+   Source code <https://github.com/lee1043/ESMBenchmarkViz>
+   Issue tracker <https://github.com/lee1043/ESMBenchmarkViz/issues>

@@ -1,3 +1,5 @@
+.. _api:
+
 API Reference
 =============
 The `ESMBenchmarkViz` package provides a set of tools to visualize data from the Earth System Model (ESM) Benchmarking project. 

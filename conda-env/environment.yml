@@ -10,4 +10,5 @@ dependencies:
   # documentation
   - sphinx
   - sphinx-autosummary-accessors
+  - nbsphinx
   - furo
