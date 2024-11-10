@@ -51,7 +51,7 @@ def taylor_diagram(
         If True, the standard deviations are normalized by the reference standard deviation (default is False).
     step : float, optional
         The step size for the arcs and grid lines in the Taylor diagram (default is 0.2).
-    colormap : Union[str, list], optional
+    colormap : str or list, optional
         A name or colormap or list of colors to use for the model points. Available names of colormap can be found at https://docs.bokeh.org/en/latest/docs/reference/palettes.html. Default is Spectral.
     width : int, optional
         The width of the plot in pixels (default is 600).
@@ -90,11 +90,8 @@ def taylor_diagram(
 
     """
     # Convert input lists to numpy arrays for consistency
-    if isinstance(std_devs, list):
-        std_devs = np.array(std_devs)
-
-    if isinstance(correlations, list):
-        correlations = np.array(correlations)
+    std_devs = convert_to_numpy_array(std_devs)
+    correlations = convert_to_numpy_array(correlations)
 
     # Standard deviation axis extent
     if normalize:
@@ -104,6 +101,7 @@ def taylor_diagram(
     else:
         std_name = "Standard Deviation"
 
+    # Calculate RMSE values
     rmse = [
         np.sqrt(refstd**2 + rs**2 - 2 * refstd * rs * ts)
         for rs, ts in zip(std_devs, correlations)
@@ -148,21 +146,12 @@ def taylor_diagram(
     )
 
     # Get the selected colormap
-    if isinstance(colormap, list):
-        selected_palette = colormap
-    else:
-        # Check if the colormap is available in the Bokeh palettes
-        if colormap in all_palettes:
-            selected_palette = all_palettes[colormap]
-            if isinstance(selected_palette, dict):
-                # If the palette is a dict, choose the longest available
-                selected_palette = selected_palette[max(selected_palette.keys())]
-        else:
-            print(f"Warning: Colormap '{colormap}' not found. Defaulting to 'Viridis'.")
-            selected_palette = all_palettes["Viridis"][256]
+    selected_palette = select_palette(colormap)
 
     # Dynamic color mapping based on model names
     colors = factor_cmap("names", palette=selected_palette, factors=names)
+
+    # Plot data points
     points = p.scatter(
         "x", "y", size=10, source=source, color=colors, legend_field="names"
     )
@@ -214,7 +203,6 @@ def taylor_diagram(
 
     # Customize legend
     p.legend.location = "top_right"
-    p.legend.click_policy = "hide"
 
     # Show the plot
     if show_plot:
@@ -226,11 +214,61 @@ def taylor_diagram(
 # ## Support functions
 
 
+def convert_to_numpy_array(data):
+    """
+    Converts the input data to a numpy array if it is a list.
+
+    Parameters
+    ----------
+    data : list or numpy array
+        The input data.
+
+    Returns
+    -------
+    numpy array
+        The data converted to a numpy array.
+    """
+    if isinstance(data, list):
+        return np.array(data)
+    return data
+
+
+def select_palette(colormap):
+    """
+    Selects the color palette based on the input colormap.
+
+    Parameters
+    ----------
+    colormap : str or list
+        The name of the colormap or a list of colors.
+
+    Returns
+    -------
+    list
+        The selected color palette.
+    """
+
+    if isinstance(colormap, list):
+        selected_palette = colormap
+    else:
+        # Check if the colormap is available in the Bokeh palettes
+        if colormap in all_palettes:
+            selected_palette = all_palettes[colormap]
+            if isinstance(selected_palette, dict):
+                # If the palette is a dict, choose the longest available
+                selected_palette = selected_palette[max(selected_palette.keys())]
+        else:
+            print(f"Warning: Colormap '{colormap}' not found. Defaulting to 'Viridis'.")
+            selected_palette = all_palettes["Viridis"][256]
+
+    return selected_palette
+
+
 def find_circle_intersection(x1, y1, r1, x2, y2, r2):
     """
     Find the intersection points of two circles.
 
-    Parameters:
+    Parameters
     ----------
     x1, y1 : float
         Center coordinates of the first circle.
@@ -241,17 +279,17 @@ def find_circle_intersection(x1, y1, r1, x2, y2, r2):
     r2 : float
         Radius of the second circle.
 
-    Returns:
+    Returns
     -------
     list of tuple
         A list of intersection points, where each point is represented as a tuple (x, y).
 
-    Notes:
+    Notes
     -----
     If the circles do not intersect, or they are identical (infinite intersections),
     the function returns an empty list.
 
-    Example:
+    Example
     -------
     >>> x1, y1, r1 = 0, 0, 5  # First circle: center (0, 0), radius 5
     >>> x2, y2, r2 = 4, 0, 3  # Second circle: center (4, 0), radius 3
