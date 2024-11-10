@@ -4,3 +4,10 @@ dependencies:
   - python>=3.7
   - numpy
   - bokeh
+  # test
+  - pre_commit
+  - pytest
+  # documentation
+  - sphinx
+  - sphinx-autosummary-accessors
+  - furo

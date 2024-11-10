@@ -2,7 +2,9 @@ import math
 
 import numpy as np
 from bokeh.models import ColumnDataSource, HoverTool, Label, LabelSet
-from bokeh.palettes import Spectral10
+#from bokeh.palettes import Spectral10
+from bokeh.palettes import all_palettes
+
 from bokeh.plotting import figure, show
 from bokeh.transform import factor_cmap
 
@@ -16,7 +18,7 @@ def taylor_diagram(
     refstd,
     normalize=False,
     step=0.2,
-    palette=Spectral10,
+    colormap="Spectral",
     width=600,
     height=600,
     aspect_ratio=1,
@@ -25,6 +27,11 @@ def taylor_diagram(
 ):
     """
     Creates an interactive Taylor diagram using Bokeh.
+    
+    .. image:: /_static/interactive_taylor_diagram_screen_capture.gif
+        :alt: Example interactive Taylor diagram
+        :align: center
+        :width: 600px
 
     The Taylor diagram visually represents the relationship between the
     standard deviation and correlation of different models against a
@@ -46,8 +53,8 @@ def taylor_diagram(
         If True, the standard deviations are normalized by the reference standard deviation (default is False).
     step : float, optional
         The step size for the arcs and grid lines in the Taylor diagram (default is 0.2).
-    palette : list, optional
-        A list of colors to use for the model points. More options can be found at https://docs.bokeh.org/en/latest/docs/reference/palettes.html. Default is Spectral10.
+    colormap : Union[str, list], optional
+        A name or colormap or list of colors to use for the model points. Available names of colormap can be found at https://docs.bokeh.org/en/latest/docs/reference/palettes.html. Default is Spectral.
     width : int, optional
         The width of the plot in pixels (default is 600).
     height : int, optional
@@ -84,6 +91,13 @@ def taylor_diagram(
     2024-10-04: Jiwoo Lee, initial version
 
     """
+    # Convert input lists to numpy arrays for consistency
+    if isinstance(std_devs, list):
+        std_devs = np.array(std_devs)
+        
+    if isinstance(correlations, list):
+        correlations = np.array(correlations)
+    
     # Standard deviation axis extent
     if normalize:
         std_devs = std_devs / refstd
@@ -117,12 +131,11 @@ def taylor_diagram(
     p.axis.visible = False
 
     # Apply the adjustments in your main code
-    add_reference_arcs(
-        p, max_stddev, step=step, refstd=refstd
-    )  # Standard deviation and RMSE arcs
-    add_reference_lines(
-        p, max_stddev + step
-    )  # Adjust reference lines to end at the outermost arc
+    # Standard deviation and RMSE arcs
+    add_reference_arcs(p, max_stddev, step=step, refstd=refstd) 
+    
+    # Adjust reference lines to end at the outermost arc
+    add_reference_lines(p, max_stddev + step)
 
     # Plot data points with color mapping
     source = ColumnDataSource(
@@ -135,9 +148,23 @@ def taylor_diagram(
             rmse=rmse,
         )
     )
+    
+    # Get the selected colormap
+    if isinstance(colormap, list):
+        selected_palette = colormap
+    else:
+        # Check if the colormap is available in the Bokeh palettes       
+        if colormap in all_palettes:
+            selected_palette = all_palettes[colormap]
+            if isinstance(selected_palette, dict):
+                # If the palette is a dict, choose the longest available
+                selected_palette = selected_palette[max(selected_palette.keys())]
+        else:
+            print(f"Warning: Colormap '{colormap}' not found. Defaulting to 'Viridis'.")
+            selected_palette = all_palettes['Viridis'][256]
 
     # Dynamic color mapping based on model names
-    colors = factor_cmap("names", palette=palette, factors=names)
+    colors = factor_cmap("names", palette=selected_palette, factors=names)
     points = p.scatter(
         "x", "y", size=10, source=source, color=colors, legend_field="names"
     )
@@ -247,7 +274,7 @@ def find_circle_intersection(x1, y1, r1, x2, y2, r2):
 
     # Finding the intersection points
     a = (r1**2 - r2**2 + d**2) / (2 * d)
-    h = math.sqrt(r1**2 - a**2)
+    h = math.sqrt(abs(r1**2 - a**2))
 
     # Finding point P2 which is the point where the line through the circle
     # intersection points crosses the line between the circle centers.
