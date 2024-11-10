@@ -54,7 +54,7 @@ def taylor_diagram(
     step : float, optional
         The step size for the arcs and grid lines in the Taylor diagram (default is 0.2).
     colormap : str or list, optional
-        A name of the Matplotlib or list of colors to use for the model points. Available names of Matplotlib colormap can be found at https://matplotlib.org/stable/users/explain/colors/colormaps.html. Default is Spectral.
+        A name of the `Matplotlib` or list of colors to use for the model points. Available names of `Matplotlib` colormap can be found `here <https://matplotlib.org/stable/users/explain/colors/colormaps.html>`_. Default is Spectral.
     width : int, optional
         The width of the plot in pixels (default is 600).
     height : int, optional
