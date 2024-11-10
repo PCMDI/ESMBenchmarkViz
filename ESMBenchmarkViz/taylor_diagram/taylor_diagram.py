@@ -1,4 +1,5 @@
 import math
+from typing import List, Union
 
 import matplotlib.colors as mcolors
 import matplotlib.pyplot as plt
@@ -8,25 +9,27 @@ from bokeh.models import ColumnDataSource, HoverTool, Label, LabelSet
 from bokeh.plotting import figure, show
 from bokeh.transform import factor_cmap
 
-# ## Main function
+# -------------
+# Main function
+# -------------
 
 
 def taylor_diagram(
-    std_devs,
-    correlations,
-    names,
-    refstd,
-    normalize=False,
-    step=0.2,
-    show_reference=True,
-    reference_name="Reference",
-    colormap="Spectral",
-    width=600,
-    height=600,
-    aspect_ratio=1,
-    show_plot=True,
-    title="Interactive Taylor Diagram",
-):
+    std_devs: Union[List[float], np.ndarray],
+    correlations: Union[List[float], np.ndarray],
+    names: List[str],
+    refstd: float,
+    normalize: bool = False,
+    step: float = 0.2,
+    show_reference: bool = True,
+    reference_name: str = "Reference",
+    colormap: Union[str, List[str]] = "Spectral",
+    width: int = 600,
+    height: int = 600,
+    aspect_ratio: float = 1,
+    show_plot: bool = True,
+    title: str = "Interactive Taylor Diagram",
+) -> figure:
     """
     Creates an interactive Taylor diagram using Bokeh.
 
@@ -237,7 +240,9 @@ def taylor_diagram(
     return p
 
 
-# ## Support functions
+# -----------------
+# Support functions
+# -----------------
 
 
 def convert_to_numpy_array(data):
