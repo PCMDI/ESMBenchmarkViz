@@ -1,4 +1,5 @@
 import math
+from copy import deepcopy
 from typing import List, Union
 
 import matplotlib.colors as mcolors
@@ -26,7 +27,6 @@ def taylor_diagram(
     colormap: Union[str, List[str]] = "Spectral",
     width: int = 600,
     height: int = 600,
-    aspect_ratio: float = 1,
     show_plot: bool = True,
     title: str = "Interactive Taylor Diagram",
 ) -> figure:
@@ -68,8 +68,6 @@ def taylor_diagram(
         The width of the plot in pixels (default is 600).
     height : int, optional
         The height of the plot in pixels (default is 600).
-    aspect_ratio : float, optional
-        The aspect ratio of the plot (default is 1).
     show_plot : bool, optional
         If True, the plot will be displayed in the workflow (default is True).
     title : str, optional
@@ -88,7 +86,7 @@ def taylor_diagram(
     >>> names = ["Model A", "Model B", "Model C"]  # Names of models
     >>> refstd = 1.0  # Standard deviation of reference model
     >>> taylor_diagram(std_devs, correlations, names, refstd)
-    
+
     Example use case can be found `here <../examples/example_taylor_diagram.html>`_.
 
     Notes
@@ -112,6 +110,7 @@ def taylor_diagram(
     # Convert input lists to numpy arrays for consistency
     std_devs = convert_to_numpy_array(std_devs)
     correlations = convert_to_numpy_array(correlations)
+    names = deepcopy(names)
 
     # Standard deviation axis extent
     if normalize:
@@ -147,7 +146,7 @@ def taylor_diagram(
         height=height,
         x_range=(step * -1, max_range),
         y_range=(step * -1, max_range),
-        aspect_ratio=aspect_ratio,
+        aspect_ratio=1,
         title=title,
     )
 
