@@ -33,7 +33,7 @@ def taylor_diagram(
     """
     Creates an interactive Taylor diagram using Bokeh.
 
-    .. image:: /_static/interactive_taylor_diagram_screen_capture.gif
+    .. image:: /_static/example_taylor_diagram.gif
         :alt: Example interactive Taylor diagram
         :align: center
         :width: 600px
