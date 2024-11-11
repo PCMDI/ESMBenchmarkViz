@@ -172,5 +172,5 @@ elif html_theme == "sphinx_rtd_theme":
 html_static_path = ['_static']
 
 nbsphinx_thumbnails = {
-    "examples/example_taylor_diagram": "_static/interactive_taylor_diagram_screen_capture.gif"
+    "examples/example_taylor_diagram": "_static/example_taylor_diagram.gif"
 }
