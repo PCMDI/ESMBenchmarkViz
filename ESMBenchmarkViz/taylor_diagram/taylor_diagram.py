@@ -88,6 +88,8 @@ def taylor_diagram(
     >>> names = ["Model A", "Model B", "Model C"]  # Names of models
     >>> refstd = 1.0  # Standard deviation of reference model
     >>> taylor_diagram(std_devs, correlations, names, refstd)
+    
+    Example use case can be found `here <../examples/example_taylor_diagram.html>`_.
 
     Notes
     -----
