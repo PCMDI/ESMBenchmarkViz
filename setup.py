@@ -1,10 +1,10 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 setup(
-    name="ESMBenchmarkViz",                     # Replace with your package name
-    version="0.1.0",                       # Initial version
-    packages=find_packages(),              # Automatically find sub-packages
-    install_requires=[                     # Optional: add dependencies here
+    name="ESMBenchmarkViz",  # Replace with your package name
+    version="0.1.0",  # Initial version
+    packages=find_packages(),  # Automatically find sub-packages
+    install_requires=[  # Optional: add dependencies here
         # 'numpy>=1.18.0',
         # 'pandas>=1.0.0'
     ],
