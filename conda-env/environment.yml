@@ -1,15 +1,29 @@
 name: ESMBenchmarkViz_dev
 
 dependencies:
+  # ==================
+  # Base
+  # ==================
   - python>=3.7
   - numpy
   - bokeh
   - matplotlib
-  # test
+  # ==================
+  # Testing
+  # ==================
   - pre_commit
   - pytest
-  # documentation
+  - pytest-cov
+  # ==================
+  # Documentation
+  # ==================
   - sphinx
   - sphinx-autosummary-accessors
-  - nbsphinx
+  - sphinx-book-theme
+  - sphinx-copybutton
+  - sphinx_rtd_theme
   - furo
+  - nbsphinx
+  - pandoc
+  - sphinx-design
+  - ipython # Required for nbsphinx syntax highlighting
