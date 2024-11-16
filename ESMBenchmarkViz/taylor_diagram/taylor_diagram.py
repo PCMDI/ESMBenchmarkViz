@@ -39,6 +39,7 @@ def taylor_diagram(
     show_plot: bool = True,
     title: str = "Interactive Taylor Diagram",
     images: List[str] = None,
+    debug: bool = False,
 ) -> figure:
     """
     Creates an interactive Taylor diagram using Bokeh.
@@ -84,6 +85,8 @@ def taylor_diagram(
         The title of the plot (default is "Interactive Taylor Diagram").
     images: str, optional
         A list of image paths to be displayed on the plot. The images will be placed at the data points of the models.
+    debug: bool, optional
+        If True, prints additional debugging information (default is False).
 
     Returns
     -------
@@ -195,6 +198,18 @@ def taylor_diagram(
     if images:
         data["images"] = images
 
+    if debug:
+        print("data:", data)
+        print("len(data[x]):", len(data["x"]))
+        print("len(data[y]):", len(data["y"]))
+        print("len(data[names]):", len(data["names"]))
+        print("len(data[std_devs]):", len(data["std_devs"]))
+        print("len(data[correlations]):", len(data["correlations"]))
+        print("len(data[rmse]):", len(data["rmse"]))
+
+        if images:
+            print("len(data[images]:", len(data["images"]))
+
     # Create a ColumnDataSource
     source = ColumnDataSource(data=data)
 
@@ -202,6 +217,9 @@ def taylor_diagram(
     points = p.scatter(
         "x", "y", size=10, source=source, color=colors, legend_field="names"
     )
+
+    if debug:
+        print("points added")
 
     # Add labels for data points
     labels = LabelSet(
@@ -215,19 +233,23 @@ def taylor_diagram(
     )
     p.add_layout(labels)
 
+    if debug:
+        print("label for data points added")
+
     # Add hover tool
     if images:
         # Add hover tool with image tooltip
         hover = HoverTool(
-            tooltips=f"""
-        <div>
-            <img src="@images" alt="" style="width:100px;height:auto;"/>
-            <div><strong>Model:</strong> @names</div>
-            <div><strong>{std_name}:</strong> {std_devs:.3f}</div>
-            <div><strong>Correlation:</strong> {correlations:.3f}</div>
-            <div><strong>RMSE:</strong> @rmse{0.000}</div>
-        </div>
-        """
+            renderers=[points],
+            tooltips="""
+                <div>
+                    <img src="@images" alt="" style="width:100px;height:auto;"/>
+                    <div><strong>Model:</strong> @names</div>
+                    <div><strong>STD:</strong> @std_devs{0.000}</div>
+                    <div><strong>COR:</strong> @correlations{0.000}</div>
+                    <div><strong>RMSE:</strong> @rmse{0.000}</div>
+                </div>
+            """,
         )
     else:
         hover = HoverTool(
@@ -240,6 +262,9 @@ def taylor_diagram(
             ],
         )
     p.add_tools(hover)
+
+    if debug:
+        print("hover tool added")
 
     # Add axes labels with improved alignment
     p.add_layout(
@@ -261,6 +286,9 @@ def taylor_diagram(
             text_align="center",
         )
     )
+
+    if debug:
+        print("layout improved")
 
     # Customize legend
     p.legend.location = "top_right"
@@ -285,6 +313,9 @@ def taylor_diagram(
             options=["Select Data"] + data["names"],
         )
 
+        if debug:
+            print("name_select made")
+
         # JavaScript callback for dropdown selection changes
         dropdown_callback = CustomJS(
             args=dict(source=source, div=image_display, name_select=name_select),
@@ -295,15 +326,23 @@ def taylor_diagram(
             if (indices.length > 0) {
                 const selected = indices[0];
                 const img_url = source.data.images[selected];
-                const x_value = source.data.x[selected];
-                const y_value = source.data.y[selected];
-                div.text = `<img src="${img_url}" style="width:100%;height:auto;"> <div><strong>X:</strong> ${x_value}</div><div><strong>Y:</strong> ${y_value}</div>`;
+                const std_value = source.data.std_devs[selected];
+                const cor_value = source.data.correlations[selected];
+                const rmse_value = source.data.rmse[selected];
+                div.text = `<a href="${img_url}" target="_blank">
+                            <img src="${img_url}" style="width:100%;height:auto;"></a>
+                            <div><strong>STD:</strong> ${std_value}</div>
+                            <div><strong>COR:</strong> ${cor_value}</div>
+                            <div><strong>RMSE:</strong> ${rmse_value}</div>`;
             } else {
                 div.text = "No matching point found.";
             }
         """,
         )
         name_select.js_on_change("value", dropdown_callback)
+
+        if debug:
+            print("dropdown_callback added to name_select")
 
         # JavaScript callback for click events
         click_callback = CustomJS(
@@ -313,22 +352,32 @@ def taylor_diagram(
             if (selected != null) {
                 const name_value = source.data.names[selected];
                 const img_url = source.data.images[selected];
-                const x_value = source.data.x[selected];
-                const y_value = source.data.y[selected];
+                const std_value = source.data.std_devs[selected];
+                const cor_value = source.data.correlations[selected];
+                const rmse_value = source.data.rmse[selected];
 
                 // Update dropdown
                 name_select.value = name_value;
 
-                // Update image display with x and y values
-                div.text = `<img src="${img_url}" style="width:100%;height:auto;"> <div><strong>X:</strong> ${x_value}</div><div><strong>Y:</strong> ${y_value}</div>`;
+                // Update image display
+                div.text = `<a href="${img_url}" target="_blank">
+                            <img src="${img_url}" style="width:100%;height:auto;"></a>
+                            <div><strong>STD:</strong> ${std_value}</div>
+                            <div><strong>COR:</strong> ${cor_value}</div>
+                            <div><strong>RMSE:</strong> ${rmse_value}</div>`;
             }
         """,
         )
         source.selected.js_on_change("indices", click_callback)
 
+        if debug:
+            print("click_callback added to name_select")
+
         # Arrange layout
         controls = column(name_select, image_display)
         layout = row(p, controls)
+
+        show(layout)
 
         return layout
 
