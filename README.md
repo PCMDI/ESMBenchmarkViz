@@ -3,12 +3,23 @@
 ESMBenchmarkViz is a Python-based interactive visualization tool built with Bokeh, designed to facilitate the collective evaluation, intercomparison, and benchmarking of Earth System Models (ESMs). The tool provides a user-friendly interface for analyzing model performance, enabling researchers to make informed comparisons and insights into ESM behavior.
 
 
-### Interactive Taylor Diagram
+## Interactive Taylor Diagram
 ![Taylor Diagram](docs/_static/example_taylor_diagram.gif)
 
 
-Acknowledgement
----------------
+## History
+
+
+| <div style="width:300%">[Versions]</div> | Update summary   |
+| ------------- | ------------------------------------------- |
+| [v0.0.1]      | Initial commit for interactive Taylor Diagram
+
+[Versions]: https://github.com/PCMDI/ESMBenchmarkViz/releases
+[v0.0.1]: https://github.com/PCMDI/ESMBenchmarkViz/releases/tag/v0.0.1
+
+
+## Acknowledgement
+
 Content in this repository is developed by climate and computer scientists from the Program for Climate Model Diagnosis and Intercomparison ([PCMDI][PCMDI]) at Lawrence Livermore National Laboratory ([LLNL][LLNL]). This work is sponsored by the Regional and Global Model Analysis ([RGMA][RGMA]) program, of the Earth and Environmental Systems Sciences Division ([EESSD][EESSD]) in the Office of Biological and Environmental Research ([BER][BER]) within the [Department of Energy][DOE]'s [Office of Science][OS]. The work is performed under the auspices of the U.S. Department of Energy by Lawrence Livermore National Laboratory under Contract DE-AC52-07NA27344.
 
 <p>
