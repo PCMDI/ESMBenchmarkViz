@@ -1,8 +1,16 @@
 from setuptools import find_packages, setup
 
+# Read version from _version.py
+version = {}
+with open("ESMBenchmarkViz/_version.py") as f:
+    exec(f.read(), version)
+
+with open("README.md") as fr:
+    long_description = fr.read()
+
 setup(
     name="ESMBenchmarkViz",  # Replace with your package name
-    version="0.0.1",  # Initial version
+    version=version["__version__"],  # Initial version
     packages=find_packages(),  # Automatically find sub-packages
     install_requires=[  # Optional: add dependencies here
         # 'numpy>=1.18.0',
@@ -11,7 +19,7 @@ setup(
     author="Jiwoo Lee",
     author_email="lee1043@llnl.gov",
     description="A Python package for interactive visualizations for Earth System Model evaluation and benchmarking",
-    long_description=open("README.md").read(),
+    long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/lee1043/ESMBenchmarkViz",
     classifiers=[
