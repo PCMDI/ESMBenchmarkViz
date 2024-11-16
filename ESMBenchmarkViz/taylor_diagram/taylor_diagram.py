@@ -38,7 +38,6 @@ def taylor_diagram(
     reference_image: str = None,
     colormap: Union[str, List[str]] = "Spectral",
     width: int = 600,
-    height: int = 600,
     show_plot: bool = True,
     images: List[str] = None,
     debug: bool = False,
@@ -82,9 +81,7 @@ def taylor_diagram(
     colormap : str or list, optional
         A name of the `Matplotlib` or list of colors to use for the model points. Available names of `Matplotlib` colormap can be found `here <https://matplotlib.org/stable/users/explain/colors/colormaps.html>`_. Default is Spectral.
     width : int, optional
-        The width of the plot in pixels (default is 600).
-    height : int, optional
-        The height of the plot in pixels (default is 600).
+        The width of the plot in pixels (default is 600). Note that height will be set to equal as width for a Taylor Diagram. If images is provided, 2 times of the given width is going to be total width to show diagnostic image display panel on the right of the Taylor Diagram.
     show_plot : bool, optional
         If True, the plot will be displayed in the workflow (default is True).
     images: str, optional
@@ -134,6 +131,10 @@ def taylor_diagram(
             raise ValueError(
                 "The lengths of 'std_devs', 'correlations', 'names', and 'images' must be equal."
             )
+
+    # Taylor diagram width and height are equal.
+    # If images are provided, the total width will be 2 times of the given width.
+    height = width
 
     # Convert input lists to numpy arrays for consistency
     std_devs = convert_to_numpy_array(std_devs)

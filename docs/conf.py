@@ -4,13 +4,16 @@
 # list see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
+import sys
+import os
+import shutil
+
 # -- Path setup --------------------------------------------------------------
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-import sys
-import os
+
 sys.path.insert(0, os.path.abspath('../ESMBenchmarkViz'))
 
 import sphinx_autosummary_accessors
@@ -174,3 +177,17 @@ html_static_path = ['_static']
 nbsphinx_thumbnails = {
     "examples/example_taylor_diagram": "_static/example_taylor_diagram.gif"
 }
+
+# Below code is to copy the examples/images directory to the _build/html/examples/images directory.
+
+def setup(app):
+    app.connect("build-finished", copy_images)
+
+def copy_images(app, exception):
+    """Copy the images directory to the _build/html/examples directory."""
+    if exception is None:  # Only execute if the build succeeds
+        source_dir = os.path.join(app.srcdir, "examples", "images")
+        target_dir = os.path.join(app.outdir, "examples", "images")
+        if os.path.exists(source_dir):
+            os.makedirs(target_dir, exist_ok=True)
+            shutil.copytree(source_dir, target_dir, dirs_exist_ok=True)
