@@ -6,7 +6,17 @@ import matplotlib.colors as mcolors
 import matplotlib.pyplot as plt
 import numpy as np
 from bokeh.colors import RGB
-from bokeh.models import ColumnDataSource, HoverTool, Label, LabelSet
+from bokeh.layouts import column, row
+from bokeh.models import (
+    Button,
+    ColumnDataSource,
+    CustomJS,
+    Div,
+    HoverTool,
+    Label,
+    LabelSet,
+    Select,
+)
 from bokeh.plotting import figure, show
 from bokeh.transform import factor_cmap
 
@@ -20,15 +30,18 @@ def taylor_diagram(
     correlations: Union[List[float], np.ndarray],
     names: List[str],
     refstd: float,
+    title: str = "Interactive Taylor Diagram",
     normalize: bool = False,
     step: float = 0.2,
     show_reference: bool = True,
     reference_name: str = "Reference",
+    reference_image: str = None,
     colormap: Union[str, List[str]] = "Spectral",
     width: int = 600,
     height: int = 600,
     show_plot: bool = True,
-    title: str = "Interactive Taylor Diagram",
+    images: List[str] = None,
+    debug: bool = False,
 ) -> figure:
     """
     Creates an interactive Taylor diagram using Bokeh.
@@ -54,6 +67,8 @@ def taylor_diagram(
         A list of names for the models being compared, used for labeling in the plot.
     refstd : float
         The standard deviation of the reference model, used for calculating RMSE and for normalization if applicable.
+    title : str, optional
+        The title of the plot (default is "Interactive Taylor Diagram").
     normalize : bool, optional
         If True, the standard deviations are normalized by the reference standard deviation (default is False).
     step : float, optional
@@ -62,6 +77,8 @@ def taylor_diagram(
         If True, the reference point is shown in the Taylor diagram (default is True).
     reference_name : str, optional
         The name of the reference dataset (default is "Reference").
+    reference_image : str, optional
+        The path to an image file to be used as the reference image (default is None).
     colormap : str or list, optional
         A name of the `Matplotlib` or list of colors to use for the model points. Available names of `Matplotlib` colormap can be found `here <https://matplotlib.org/stable/users/explain/colors/colormaps.html>`_. Default is Spectral.
     width : int, optional
@@ -70,8 +87,10 @@ def taylor_diagram(
         The height of the plot in pixels (default is 600).
     show_plot : bool, optional
         If True, the plot will be displayed in the workflow (default is True).
-    title : str, optional
-        The title of the plot (default is "Interactive Taylor Diagram").
+    images: str, optional
+        A list of image paths to be displayed on the plot. The images will be placed at the data points of the models.
+    debug: bool, optional
+        If True, prints additional debugging information (default is False).
 
     Returns
     -------
@@ -98,14 +117,23 @@ def taylor_diagram(
     is calculated as the distance between the model point and the reference point.
 
     2024-10-04: Jiwoo Lee, initial version
-
     """
 
     # Sanity check for input data
-    if len(std_devs) != len(correlations) or len(std_devs) != len(names):
+    if (
+        len(std_devs) != len(correlations)
+        or len(std_devs) != len(names)
+        or len(correlations) != len(names)
+    ):
         raise ValueError(
             "The lengths of 'std_devs', 'correlations', and 'names' must be equal."
         )
+
+    if images is not None:
+        if len(std_devs) != len(images):
+            raise ValueError(
+                "The lengths of 'std_devs', 'correlations', 'names', and 'images' must be equal."
+            )
 
     # Convert input lists to numpy arrays for consistency
     std_devs = convert_to_numpy_array(std_devs)
@@ -125,6 +153,8 @@ def taylor_diagram(
         names.append(reference_name)
         std_devs = np.append(std_devs, refstd)
         correlations = np.append(correlations, 1.0)
+        if images:
+            images.append(reference_image)
         if isinstance(colormap, list):
             colormap.append("black")
 
@@ -148,6 +178,7 @@ def taylor_diagram(
         y_range=(step * -1, max_range),
         aspect_ratio=1,
         title=title,
+        tools="tap, pan, wheel_zoom, box_zoom, reset",
     )
 
     p.grid.visible = False
@@ -166,25 +197,49 @@ def taylor_diagram(
     else:
         selected_colors = get_bokeh_colors_from_cmap(colormap, len(names))
 
+    if debug:
+        print("selected_colors:", selected_colors)
+
     # Color mapping based on model names
     colors = factor_cmap("names", palette=selected_colors, factors=names)
 
+    if debug:
+        print(debug, "colors:", colors)
+
+    # Wrap up input as a dictionary
+    data = {
+        "x": r * np.cos(theta),
+        "y": r * np.sin(theta),
+        "names": names,
+        "std_devs": std_devs,
+        "correlations": correlations,
+        "rmse": rmse,
+    }
+
+    if images:
+        data["images"] = images
+
+    if debug:
+        print("data:", data)
+        print("len(data[x]):", len(data["x"]))
+        print("len(data[y]):", len(data["y"]))
+        print("len(data[names]):", len(data["names"]))
+        print("len(data[std_devs]):", len(data["std_devs"]))
+        print("len(data[correlations]):", len(data["correlations"]))
+        print("len(data[rmse]):", len(data["rmse"]))
+
+        if images:
+            print("len(data[images]:", len(data["images"]))
+
     # Create a ColumnDataSource
-    source = ColumnDataSource(
-        data=dict(
-            x=r * np.cos(theta),
-            y=r * np.sin(theta),
-            names=names,
-            std_devs=std_devs,
-            correlations=correlations,
-            rmse=rmse,
-        )
-    )
+    source = ColumnDataSource(data=data)
 
     # Plot data points with color mapping
     points = p.scatter(
         "x", "y", size=10, source=source, color=colors, legend_field="names"
     )
+
+    debug_print(debug, "points added")
 
     # Add labels for data points
     labels = LabelSet(
@@ -198,17 +253,37 @@ def taylor_diagram(
     )
     p.add_layout(labels)
 
+    if debug:
+        print("label for data points added")
+
     # Add hover tool
-    hover = HoverTool(
-        renderers=[points],
-        tooltips=[
-            ("Model", "@names"),
-            (std_name, "@std_devs{0.000}"),
-            ("Correlation", "@correlations{0.000}"),
-            ("RMSE", "@rmse{0.000}"),
-        ],
-    )
+    if images:
+        # Add hover tool with image tooltip
+        hover = HoverTool(
+            renderers=[points],
+            tooltips="""
+                <div>
+                    <img src="@images" alt="" style="width:100px;height:auto;"/>
+                    <div><strong>Model:</strong> @names</div>
+                    <div><strong>STD:</strong> @std_devs{0.000}</div>
+                    <div><strong>COR:</strong> @correlations{0.000}</div>
+                    <div><strong>RMSE:</strong> @rmse{0.000}</div>
+                </div>
+            """,
+        )
+    else:
+        hover = HoverTool(
+            renderers=[points],
+            tooltips=[
+                ("Model", "@names"),
+                (std_name, "@std_devs{0.000}"),
+                ("Correlation", "@correlations{0.000}"),
+                ("RMSE", "@rmse{0.000}"),
+            ],
+        )
     p.add_tools(hover)
+
+    debug_print(debug, "hover tool added")
 
     # Add axes labels with improved alignment
     p.add_layout(
@@ -231,19 +306,247 @@ def taylor_diagram(
         )
     )
 
+    debug_print(debug, "axes labels added")
+
     # Customize legend
     p.legend.location = "top_right"
 
-    # Show the plot
-    if show_plot:
-        show(p)
+    if not images:
+        # Show the plot
+        if show_plot:
+            show(p)
 
-    return p
+        return p
+
+    else:
+        # Div to display image and x, y values on click
+        image_display = Div(
+            text="Click on a point to display the image here.",
+            width=width,
+            height=int(height * 0.8),
+        )
+
+        # Set the maximum height for the actual image display inside the image_display Div
+        max_height = int(height * 0.7)
+
+        # Dropdown menu for names with default "Select Data"
+        name_select = Select(
+            title="Select Data Point",
+            value="Select Data",
+            options=["Select Data"] + data["names"],
+        )
+
+        debug_print(debug, "name_select made")
+
+        # JavaScript callback for dropdown selection changes
+        dropdown_callback = CustomJS(
+            args=dict(
+                source=source,
+                div=image_display,
+                name_select=name_select,
+                maxHeight=max_height,
+            ),
+            code="""
+            const name_value = name_select.value;
+            const indices = source.data.names.map((name, i) => (name === name_value) ? i : -1).filter(i => i >= 0);
+
+            if (indices.length > 0) {
+                const selected = indices[0];
+                const img_url = source.data.images[selected];
+                const std_value = source.data.std_devs[selected];
+                const cor_value = source.data.correlations[selected];
+                const rmse_value = source.data.rmse[selected];
+
+                if (img_url) {
+                    div.text = `<a href="${img_url}" target="_blank">
+                                <img src="${img_url}" style="width:100%;max-height:${maxHeight}px;height:auto;"></a>
+                                <div><strong>STD:</strong> ${std_value}</div>
+                                <div><strong>COR:</strong> ${cor_value}</div>
+                                <div><strong>RMSE:</strong> ${rmse_value}</div>`;
+                } else {
+                    div.text = `<div>No image available</div>
+                                <div><strong>STD:</strong> ${std_value}</div>
+                                <div><strong>COR:</strong> ${cor_value}</div>
+                                <div><strong>RMSE:</strong> ${rmse_value}</div>`;
+                }
+
+                // Highlight the selected point on the plot
+                source.selected.indices = [selected];
+            } else {
+                div.text = "No matching point found.";
+                source.selected.indices = [];  // Clear selection if no match
+            }
+        """,
+        )
+        name_select.js_on_change("value", dropdown_callback)
+
+        debug_print(debug, "dropdown_callback made")
+
+        # JavaScript callback for click events
+        click_callback = CustomJS(
+            args=dict(
+                source=source,
+                div=image_display,
+                name_select=name_select,
+                maxHeight=max_height,
+            ),
+            code="""
+            const selected = source.selected.indices[0];
+            if (selected != null) {
+                const name_value = source.data.names[selected];
+                const img_url = source.data.images[selected];
+                const std_value = source.data.std_devs[selected];
+                const cor_value = source.data.correlations[selected];
+                const rmse_value = source.data.rmse[selected];
+
+                // Update dropdown
+                name_select.value = name_value;
+
+                // Update image display
+                if (img_url) {
+                    div.text = `<a href="${img_url}" target="_blank">
+                                <img src="${img_url}" style="width:100%;max-height:${maxHeight}px;height:auto;"></a>
+                                <div><strong>STD:</strong> ${std_value}</div>
+                                <div><strong>COR:</strong> ${cor_value}</div>
+                                <div><strong>RMSE:</strong> ${rmse_value}</div>`;
+                } else {
+                    div.text = `<div>No image available</div>
+                                <div><strong>STD:</strong> ${std_value}</div>
+                                <div><strong>COR:</strong> ${cor_value}</div>
+                                <div><strong>RMSE:</strong> ${rmse_value}</div>`;
+                }
+
+            }
+        """,
+        )
+        source.selected.js_on_change("indices", click_callback)
+
+        debug_print(debug, "click_callback added to source")
+
+        # Button for Previous and Next Image Navigation
+        previous_button = Button(label="Previous Image", width=150)
+        next_button = Button(label="Next Image", width=150)
+
+        # JavaScript callback for "Previous Image" button
+        previous_callback = CustomJS(
+            args=dict(
+                source=source,
+                div=image_display,
+                name_select=name_select,
+                maxHeight=max_height,
+            ),
+            code="""
+            let selected_index = source.selected.indices[0];
+            if (selected_index !== undefined) {
+                // Get the current name's index
+                const current_name = source.data.names[selected_index];
+                const current_index = source.data.names.indexOf(current_name);
+
+                // Get the previous index
+                const prev_index = (current_index - 1 + source.data.names.length) % source.data.names.length;
+                const prev_name = source.data.names[prev_index];
+                const prev_img_url = source.data.images[prev_index];
+                const prev_std_value = source.data.std_devs[prev_index];
+                const prev_cor_value = source.data.correlations[prev_index];
+                const prev_rmse_value = source.data.rmse[prev_index];
+
+                // Update image display
+                if (prev_img_url) {
+                    div.text = `<a href="${prev_img_url}" target="_blank">
+                                <img src="${prev_img_url}" style="width:100%;max-height:${maxHeight}px;height:auto;"></a>
+                                <div><strong>STD:</strong> ${prev_std_value}</div>
+                                <div><strong>COR:</strong> ${prev_cor_value}</div>
+                                <div><strong>RMSE:</strong> ${prev_rmse_value}</div>`;
+                } else {
+                    div.text = `<div>No image available</div>
+                                <div><strong>STD:</strong> ${prev_std_value}</div>
+                                <div><strong>COR:</strong> ${prev_cor_value}</div>
+                                <div><strong>RMSE:</strong> ${prev_rmse_value}</div>`;
+                }
+
+                // Update dropdown
+                name_select.value = prev_name;
+
+                // Sync selection with plot
+                source.selected.indices = [prev_index];
+            }
+        """,
+        )
+        previous_button.js_on_event("button_click", previous_callback)
+
+        debug_print(debug, "previous_callback added to previous_button")
+
+        # JavaScript callback for "Next Image" button
+        next_callback = CustomJS(
+            args=dict(
+                source=source,
+                div=image_display,
+                name_select=name_select,
+                maxHeight=max_height,
+            ),
+            code="""
+            let selected_index = source.selected.indices[0];
+            if (selected_index !== undefined) {
+                // Get the current name's index
+                const current_name = source.data.names[selected_index];
+                const current_index = source.data.names.indexOf(current_name);
+
+                // Get the next index
+                const next_index = (current_index + 1) % source.data.names.length;
+                const next_name = source.data.names[next_index];
+                const next_img_url = source.data.images[next_index];
+                const next_std_value = source.data.std_devs[next_index];
+                const next_cor_value = source.data.correlations[next_index];
+                const next_rmse_value = source.data.rmse[next_index];
+
+                // Update image display
+                if (next_img_url) {
+                    div.text = `<a href="${next_img_url}" target="_blank">
+                                <img src="${next_img_url}" style="width:100%;max-height:${maxHeight}px;height:auto;"></a>
+                                <div><strong>STD:</strong> ${next_std_value}</div>
+                                <div><strong>COR:</strong> ${next_cor_value}</div>
+                                <div><strong>RMSE:</strong> ${next_rmse_value}</div>`;
+                } else {
+                    div.text = `<div>No image available</div>
+                                <div><strong>STD:</strong> ${next_std_value}</div>
+                                <div><strong>COR:</strong> ${next_cor_value}</div>
+                                <div><strong>RMSE:</strong> ${next_rmse_value}</div>`;
+                }
+
+                // Update dropdown
+                name_select.value = next_name;
+
+                // Sync selection with plot
+                source.selected.indices = [next_index];
+            }
+        """,
+        )
+        next_button.js_on_event("button_click", next_callback)
+
+        debug_print(debug, "next_callback added to next_button")
+
+        # Arrange the Previous and Next buttons side by side
+        navigation_buttons = row(previous_button, next_button)
+
+        # Arrange layout
+        controls = column(name_select, image_display, navigation_buttons)
+        layout = row(p, controls)
+
+        debug_print(debug, "layout added")
+
+        show(layout)
+
+        return layout
 
 
 # -----------------
 # Support functions
 # -----------------
+
+
+def debug_print(debug, str):
+    if debug:
+        print(str)
 
 
 def convert_to_numpy_array(data):
@@ -345,7 +648,7 @@ def generate_bokeh_colormap(matplotlib_cmap, num_colors, vmin=None, vmax=None):
     Notes
     -----
     This function discards the alpha channel when converting from Matplotlib
-    RGBA colors to Bokeh RGB colors.
+    RGB colors to Bokeh RGB colors.
     """
     # Normalize the inputs if vmin and vmax are provided
     if vmin is not None and vmax is not None:
