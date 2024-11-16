@@ -6,7 +6,16 @@ import matplotlib.colors as mcolors
 import matplotlib.pyplot as plt
 import numpy as np
 from bokeh.colors import RGB
-from bokeh.models import ColumnDataSource, HoverTool, Label, LabelSet
+from bokeh.layouts import column, row
+from bokeh.models import (
+    ColumnDataSource,
+    CustomJS,
+    Div,
+    HoverTool,
+    Label,
+    LabelSet,
+    Select,
+)
 from bokeh.plotting import figure, show
 from bokeh.transform import factor_cmap
 
@@ -29,6 +38,7 @@ def taylor_diagram(
     height: int = 600,
     show_plot: bool = True,
     title: str = "Interactive Taylor Diagram",
+    images: List[str] = None,
 ) -> figure:
     """
     Creates an interactive Taylor diagram using Bokeh.
@@ -72,6 +82,8 @@ def taylor_diagram(
         If True, the plot will be displayed in the workflow (default is True).
     title : str, optional
         The title of the plot (default is "Interactive Taylor Diagram").
+    images: str, optional
+        A list of image paths to be displayed on the plot. The images will be placed at the data points of the models.
 
     Returns
     -------
@@ -148,6 +160,7 @@ def taylor_diagram(
         y_range=(step * -1, max_range),
         aspect_ratio=1,
         title=title,
+        tools="tap, pan, wheel_zoom, box_zoom, reset",
     )
 
     p.grid.visible = False
@@ -169,17 +182,21 @@ def taylor_diagram(
     # Color mapping based on model names
     colors = factor_cmap("names", palette=selected_colors, factors=names)
 
+    # Wrap up input as a dictionary
+    data = {
+        "x": r * np.cos(theta),
+        "y": r * np.sin(theta),
+        "names": names,
+        "std_devs": std_devs,
+        "correlations": correlations,
+        "rmse": rmse,
+    }
+
+    if images:
+        data["images"] = images
+
     # Create a ColumnDataSource
-    source = ColumnDataSource(
-        data=dict(
-            x=r * np.cos(theta),
-            y=r * np.sin(theta),
-            names=names,
-            std_devs=std_devs,
-            correlations=correlations,
-            rmse=rmse,
-        )
-    )
+    source = ColumnDataSource(data=data)
 
     # Plot data points with color mapping
     points = p.scatter(
@@ -199,15 +216,29 @@ def taylor_diagram(
     p.add_layout(labels)
 
     # Add hover tool
-    hover = HoverTool(
-        renderers=[points],
-        tooltips=[
-            ("Model", "@names"),
-            (std_name, "@std_devs{0.000}"),
-            ("Correlation", "@correlations{0.000}"),
-            ("RMSE", "@rmse{0.000}"),
-        ],
-    )
+    if images:
+        # Add hover tool with image tooltip
+        hover = HoverTool(
+            tooltips=f"""
+        <div>
+            <img src="@images" alt="" style="width:100px;height:auto;"/>
+            <div><strong>Model:</strong> @names</div>
+            <div><strong>{std_name}:</strong> {std_devs:.3f}</div>
+            <div><strong>Correlation:</strong> {correlations:.3f}</div>
+            <div><strong>RMSE:</strong> @rmse{0.000}</div>
+        </div>
+        """
+        )
+    else:
+        hover = HoverTool(
+            renderers=[points],
+            tooltips=[
+                ("Model", "@names"),
+                (std_name, "@std_devs{0.000}"),
+                ("Correlation", "@correlations{0.000}"),
+                ("RMSE", "@rmse{0.000}"),
+            ],
+        )
     p.add_tools(hover)
 
     # Add axes labels with improved alignment
@@ -234,11 +265,72 @@ def taylor_diagram(
     # Customize legend
     p.legend.location = "top_right"
 
-    # Show the plot
-    if show_plot:
-        show(p)
+    if not images:
+        # Show the plot
+        if show_plot:
+            show(p)
 
-    return p
+        return p
+
+    else:
+        # Div to display image and x, y values on click
+        image_display = Div(
+            text="Click on a point to display the image here.", width=300, height=300
+        )
+
+        # Dropdown menu for names with default "Select Data"
+        name_select = Select(
+            title="Select Data Point",
+            value="Select Data",
+            options=["Select Data"] + data["names"],
+        )
+
+        # JavaScript callback for dropdown selection changes
+        dropdown_callback = CustomJS(
+            args=dict(source=source, div=image_display, name_select=name_select),
+            code="""
+            const name_value = name_select.value;
+            const indices = source.data.names.map((name, i) => (name === name_value) ? i : -1).filter(i => i >= 0);
+
+            if (indices.length > 0) {
+                const selected = indices[0];
+                const img_url = source.data.images[selected];
+                const x_value = source.data.x[selected];
+                const y_value = source.data.y[selected];
+                div.text = `<img src="${img_url}" style="width:100%;height:auto;"> <div><strong>X:</strong> ${x_value}</div><div><strong>Y:</strong> ${y_value}</div>`;
+            } else {
+                div.text = "No matching point found.";
+            }
+        """,
+        )
+        name_select.js_on_change("value", dropdown_callback)
+
+        # JavaScript callback for click events
+        click_callback = CustomJS(
+            args=dict(source=source, div=image_display, name_select=name_select),
+            code="""
+            const selected = source.selected.indices[0];
+            if (selected != null) {
+                const name_value = source.data.names[selected];
+                const img_url = source.data.images[selected];
+                const x_value = source.data.x[selected];
+                const y_value = source.data.y[selected];
+
+                // Update dropdown
+                name_select.value = name_value;
+
+                // Update image display with x and y values
+                div.text = `<img src="${img_url}" style="width:100%;height:auto;"> <div><strong>X:</strong> ${x_value}</div><div><strong>Y:</strong> ${y_value}</div>`;
+            }
+        """,
+        )
+        source.selected.js_on_change("indices", click_callback)
+
+        # Arrange layout
+        controls = column(name_select, image_display)
+        layout = row(p, controls)
+
+        return layout
 
 
 # -----------------
