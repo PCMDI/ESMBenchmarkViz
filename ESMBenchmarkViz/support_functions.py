@@ -41,6 +41,40 @@ def convert_to_numpy_array(data) -> np.ndarray:
     return data
 
 
+def load_colormap(colormap: str | list, num_colors: int) -> list:
+    """
+    Select a list of colors from a colormap.
+
+    Parameters
+    ----------
+    colormap : str or list
+        A list of colors or the name of a Matplotlib colormap.
+    num_colors : int
+        Number of colors to select from the colormap.
+
+    Returns
+    -------
+    list
+        A list of hex color codes representing the selected colors.
+    """
+    if isinstance(colormap, list):
+        # Ensure the provided list has enough colors
+        if len(colormap) < num_colors:
+            raise ValueError(
+                f"The provided list has {len(colormap)} colors, but {num_colors} were requested."
+            )
+        selected_colors = colormap[:num_colors]
+    elif isinstance(colormap, str):
+        # Assume it's a Matplotlib colormap and convert to Bokeh-compatible colors
+        selected_colors = get_bokeh_colors_from_cmap(colormap, num_colors)
+    else:
+        raise TypeError(
+            "The `colormap` parameter must be either a list of colors or the name of a Matplotlib colormap."
+        )
+
+    return selected_colors
+
+
 def get_bokeh_colors_from_cmap(cmap_name: str, num_colors: int) -> list:
     """
     Generate a list of hex colors from a Matplotlib colormap for use in Bokeh.

@@ -17,7 +17,7 @@ from .support_functions import (
     create_navigation_buttons,
     create_navigation_callbacks,
     debug_print,
-    get_bokeh_colors_from_cmap,
+    load_colormap,
 )
 
 # -------------
@@ -193,10 +193,7 @@ def taylor_diagram(
     add_reference_lines(p, max_stddev + step)
 
     # Get the selected colormap
-    if isinstance(colormap, list):
-        selected_colors = colormap
-    else:
-        selected_colors = get_bokeh_colors_from_cmap(colormap, len(names))
+    selected_colors = load_colormap(colormap, len(names))
 
     if debug:
         print("selected_colors:", selected_colors)
