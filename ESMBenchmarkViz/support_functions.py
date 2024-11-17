@@ -7,12 +7,22 @@ from bokeh.colors import RGB
 from bokeh.models import Button, CustomJS, Div, Select
 
 
-def debug_print(debug, str):
+def debug_print(debug: bool, str_to_print: str):
+    """
+    Print a string if debug is True
+
+    Parameters
+    ----------
+    debug : bool
+        If True, the string will be printed.
+    str : str_to_print
+        The string to print.
+    """
     if debug:
-        print(str)
+        print(str_to_print)
 
 
-def convert_to_numpy_array(data):
+def convert_to_numpy_array(data) -> np.ndarray:
     """
     Converts the input data to a numpy array if it is a list.
 
@@ -128,7 +138,25 @@ def generate_bokeh_colormap(matplotlib_cmap, num_colors, vmin=None, vmax=None):
     return bokeh_colors
 
 
-def create_image_display(width, height):
+def create_image_display(width, height) -> Div:
+    """
+    Create a Bokeh Div element to display images.
+
+    Parameters
+    ----------
+    width : int
+        The width of the image display.
+    height : int
+        The height of the image display.
+
+    Returns
+    -------
+    Div
+        A Bokeh Div element to display images.
+    """
+    width = int(width)
+    height = int(height)
+
     max_height = int(height * 0.7)
     return (
         Div(
@@ -141,6 +169,19 @@ def create_image_display(width, height):
 
 
 def create_name_select(data):
+    """
+    Create a Bokeh Select widget to choose a data point
+
+    Parameters
+    ----------
+    data : dict
+        A dictionary containing the data points and their names.
+
+    Returns
+    -------
+    Select
+        A Bokeh Select widget to choose a data point.
+    """
     return Select(
         title="Select Data Point",
         value="Select Data",
@@ -149,12 +190,41 @@ def create_name_select(data):
 
 
 def create_navigation_buttons():
+    """
+    Create a Bokeh ButtonGroup to navigate between data points.
+
+    Returns
+    -------
+    tuple of Button
+        A tuple containing the "Previous Image" and "Next Image" buttons.
+    """
     previous_button = Button(label="Previous Image", width=150)
     next_button = Button(label="Next Image", width=150)
     return previous_button, next_button
 
 
 def create_dropdown_callback(source, image_display, name_select, max_height):
+    """
+    Create a JavaScript callback for the dropdown widget
+    to update the image display and name select widgets.
+
+    Parameters
+    ----------
+    source : ColumnDataSource
+        The ColumnDataSource containing the data points.
+    image_display : ImageDisplay
+        The Div element to display images.
+    name_select : Select
+        The Select widget to choose a data point.
+    max_height : int
+        The maximum height of the image display.
+
+    Returns
+    -------
+    CustomJS
+        A JavaScript callback function.
+
+    """
     return CustomJS(
         args=dict(
             source=source,
@@ -197,6 +267,26 @@ def create_dropdown_callback(source, image_display, name_select, max_height):
 
 
 def create_click_callback(source, image_display, name_select, max_height):
+    """
+    Create a JavaScript callback function to handle click events on the plot.
+
+    Parameters
+    ----------
+    source : Bokeh model
+        The plot source data.
+    image_display : Bokeh model
+        The Div element to display images.
+    name_select : Bokeh model
+        The Select widget to choose a data point.
+    max_height : int
+        The maximum height of the image display.
+
+    Returns
+    -------
+    CustomJS
+        A JavaScript callback function.
+
+    """
     return CustomJS(
         args=dict(
             source=source,
@@ -236,6 +326,26 @@ def create_click_callback(source, image_display, name_select, max_height):
 
 
 def create_navigation_callbacks(source, image_display, name_select, max_height):
+    """
+    Create a JavaScript callback function to update the image display and dropdown
+    when the user navigates through the data.
+
+    Parameters
+    ----------
+    source : ColumnDataSource
+        The ColumnDataSource containing the data.
+    image_display : Div
+        The Div element to display the image.
+    name_select : Select
+        The Select element to display the name of the selected data point.
+    max_height : int
+        The maximum height of the image display.
+
+    Returns
+    -------
+    tuple of CustomJS
+        A tuple containing the JavaScript callbacks for the "Previous Image" and "Next Image" buttons.
+    """
     # JavaScript callback for "Previous Image" button
     previous_callback = CustomJS(
         args=dict(
