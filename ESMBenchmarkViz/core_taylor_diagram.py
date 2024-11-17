@@ -312,219 +312,42 @@ def taylor_diagram(
     # Customize legend
     p.legend.location = "top_right"
 
+    # Return the plot object if images are not provided, otherwise return the layout
     if not images:
-        # Show the plot
-        if show_plot:
-            show(p)
-
-        return p
-
+        return_object = p
     else:
         # Div to display image and x, y values on click
-        image_display = Div(
-            text="Click on a point to display the image here.",
-            width=width,
-            height=int(height * 0.8),
-        )
-
-        # Set the maximum height for the actual image display inside the image_display Div
-        max_height = int(height * 0.7)
+        # maximum height is for the actual image display inside the image_display Div
+        image_display, max_height = create_image_display(width, height)
 
         # Dropdown menu for names with default "Select Data"
-        name_select = Select(
-            title="Select Data Point",
-            value="Select Data",
-            options=["Select Data"] + data["names"],
-        )
-
+        name_select = create_name_select(data)
         debug_print(debug, "name_select made")
 
+        # Create buttons for Previous and Next Image Navigation
+        previous_button, next_button = create_navigation_buttons()
+
         # JavaScript callback for dropdown selection changes
-        dropdown_callback = CustomJS(
-            args=dict(
-                source=source,
-                div=image_display,
-                name_select=name_select,
-                maxHeight=max_height,
-            ),
-            code="""
-            const name_value = name_select.value;
-            const indices = source.data.names.map((name, i) => (name === name_value) ? i : -1).filter(i => i >= 0);
-
-            if (indices.length > 0) {
-                const selected = indices[0];
-                const img_url = source.data.images[selected];
-                const std_value = source.data.std_devs[selected];
-                const cor_value = source.data.correlations[selected];
-                const rmse_value = source.data.rmse[selected];
-
-                if (img_url) {
-                    div.text = `<a href="${img_url}" target="_blank">
-                                <img src="${img_url}" style="width:100%;max-height:${maxHeight}px;height:auto;"></a>
-                                <div><strong>STD:</strong> ${std_value}</div>
-                                <div><strong>COR:</strong> ${cor_value}</div>
-                                <div><strong>RMSE:</strong> ${rmse_value}</div>`;
-                } else {
-                    div.text = `<div>No image available</div>
-                                <div><strong>STD:</strong> ${std_value}</div>
-                                <div><strong>COR:</strong> ${cor_value}</div>
-                                <div><strong>RMSE:</strong> ${rmse_value}</div>`;
-                }
-
-                // Highlight the selected point on the plot
-                source.selected.indices = [selected];
-            } else {
-                div.text = "No matching point found.";
-                source.selected.indices = [];  // Clear selection if no match
-            }
-        """,
+        dropdown_callback = create_dropdown_callback(
+            source, image_display, name_select, max_height
         )
         name_select.js_on_change("value", dropdown_callback)
-
         debug_print(debug, "dropdown_callback made")
 
         # JavaScript callback for click events
-        click_callback = CustomJS(
-            args=dict(
-                source=source,
-                div=image_display,
-                name_select=name_select,
-                maxHeight=max_height,
-            ),
-            code="""
-            const selected = source.selected.indices[0];
-            if (selected != null) {
-                const name_value = source.data.names[selected];
-                const img_url = source.data.images[selected];
-                const std_value = source.data.std_devs[selected];
-                const cor_value = source.data.correlations[selected];
-                const rmse_value = source.data.rmse[selected];
-
-                // Update dropdown
-                name_select.value = name_value;
-
-                // Update image display
-                if (img_url) {
-                    div.text = `<a href="${img_url}" target="_blank">
-                                <img src="${img_url}" style="width:100%;max-height:${maxHeight}px;height:auto;"></a>
-                                <div><strong>STD:</strong> ${std_value}</div>
-                                <div><strong>COR:</strong> ${cor_value}</div>
-                                <div><strong>RMSE:</strong> ${rmse_value}</div>`;
-                } else {
-                    div.text = `<div>No image available</div>
-                                <div><strong>STD:</strong> ${std_value}</div>
-                                <div><strong>COR:</strong> ${cor_value}</div>
-                                <div><strong>RMSE:</strong> ${rmse_value}</div>`;
-                }
-
-            }
-        """,
+        click_callback = create_click_callback(
+            source, image_display, name_select, max_height
         )
         source.selected.js_on_change("indices", click_callback)
-
         debug_print(debug, "click_callback added to source")
 
-        # Button for Previous and Next Image Navigation
-        previous_button = Button(label="Previous Image", width=150)
-        next_button = Button(label="Next Image", width=150)
-
-        # JavaScript callback for "Previous Image" button
-        previous_callback = CustomJS(
-            args=dict(
-                source=source,
-                div=image_display,
-                name_select=name_select,
-                maxHeight=max_height,
-            ),
-            code="""
-            let selected_index = source.selected.indices[0];
-            if (selected_index !== undefined) {
-                // Get the current name's index
-                const current_name = source.data.names[selected_index];
-                const current_index = source.data.names.indexOf(current_name);
-
-                // Get the previous index
-                const prev_index = (current_index - 1 + source.data.names.length) % source.data.names.length;
-                const prev_name = source.data.names[prev_index];
-                const prev_img_url = source.data.images[prev_index];
-                const prev_std_value = source.data.std_devs[prev_index];
-                const prev_cor_value = source.data.correlations[prev_index];
-                const prev_rmse_value = source.data.rmse[prev_index];
-
-                // Update image display
-                if (prev_img_url) {
-                    div.text = `<a href="${prev_img_url}" target="_blank">
-                                <img src="${prev_img_url}" style="width:100%;max-height:${maxHeight}px;height:auto;"></a>
-                                <div><strong>STD:</strong> ${prev_std_value}</div>
-                                <div><strong>COR:</strong> ${prev_cor_value}</div>
-                                <div><strong>RMSE:</strong> ${prev_rmse_value}</div>`;
-                } else {
-                    div.text = `<div>No image available</div>
-                                <div><strong>STD:</strong> ${prev_std_value}</div>
-                                <div><strong>COR:</strong> ${prev_cor_value}</div>
-                                <div><strong>RMSE:</strong> ${prev_rmse_value}</div>`;
-                }
-
-                // Update dropdown
-                name_select.value = prev_name;
-
-                // Sync selection with plot
-                source.selected.indices = [prev_index];
-            }
-        """,
+        # JavaScript callbacks for Previous and Next Image buttons
+        previous_callback, next_callback = create_navigation_callbacks(
+            source, image_display, name_select, max_height
         )
         previous_button.js_on_event("button_click", previous_callback)
-
-        debug_print(debug, "previous_callback added to previous_button")
-
-        # JavaScript callback for "Next Image" button
-        next_callback = CustomJS(
-            args=dict(
-                source=source,
-                div=image_display,
-                name_select=name_select,
-                maxHeight=max_height,
-            ),
-            code="""
-            let selected_index = source.selected.indices[0];
-            if (selected_index !== undefined) {
-                // Get the current name's index
-                const current_name = source.data.names[selected_index];
-                const current_index = source.data.names.indexOf(current_name);
-
-                // Get the next index
-                const next_index = (current_index + 1) % source.data.names.length;
-                const next_name = source.data.names[next_index];
-                const next_img_url = source.data.images[next_index];
-                const next_std_value = source.data.std_devs[next_index];
-                const next_cor_value = source.data.correlations[next_index];
-                const next_rmse_value = source.data.rmse[next_index];
-
-                // Update image display
-                if (next_img_url) {
-                    div.text = `<a href="${next_img_url}" target="_blank">
-                                <img src="${next_img_url}" style="width:100%;max-height:${maxHeight}px;height:auto;"></a>
-                                <div><strong>STD:</strong> ${next_std_value}</div>
-                                <div><strong>COR:</strong> ${next_cor_value}</div>
-                                <div><strong>RMSE:</strong> ${next_rmse_value}</div>`;
-                } else {
-                    div.text = `<div>No image available</div>
-                                <div><strong>STD:</strong> ${next_std_value}</div>
-                                <div><strong>COR:</strong> ${next_cor_value}</div>
-                                <div><strong>RMSE:</strong> ${next_rmse_value}</div>`;
-                }
-
-                // Update dropdown
-                name_select.value = next_name;
-
-                // Sync selection with plot
-                source.selected.indices = [next_index];
-            }
-        """,
-        )
         next_button.js_on_event("button_click", next_callback)
-
-        debug_print(debug, "next_callback added to next_button")
+        debug_print(debug, "navigation callbacks added")
 
         # Arrange the Previous and Next buttons side by side
         navigation_buttons = row(previous_button, next_button)
@@ -535,9 +358,13 @@ def taylor_diagram(
 
         debug_print(debug, "layout added")
 
-        show(layout)
+        return_object = layout
 
-        return layout
+    # Show the plot if requested
+    if show_plot:
+        show(return_object)
+
+    return return_object
 
 
 # -----------------
@@ -1051,3 +878,204 @@ def add_reference_lines(plot, max_radius):
             y_offset=5,
         )
         plot.add_layout(label)
+
+
+def create_image_display(width, height):
+    max_height = int(height * 0.7)
+    return (
+        Div(
+            text="Click on a point to display the image here.",
+            width=width,
+            height=int(height * 0.8),
+        ),
+        max_height,
+    )
+
+
+def create_name_select(data):
+    return Select(
+        title="Select Data Point",
+        value="Select Data",
+        options=["Select Data"] + data["names"],
+    )
+
+
+def create_navigation_buttons():
+    previous_button = Button(label="Previous Image", width=150)
+    next_button = Button(label="Next Image", width=150)
+    return previous_button, next_button
+
+
+def create_dropdown_callback(source, image_display, name_select, max_height):
+    return CustomJS(
+        args=dict(
+            source=source,
+            div=image_display,
+            name_select=name_select,
+            maxHeight=max_height,
+        ),
+        code="""
+            const name_value = name_select.value;
+            const indices = source.data.names.map((name, i) => (name === name_value) ? i : -1).filter(i => i >= 0);
+
+            if (indices.length > 0) {
+                const selected = indices[0];
+                const img_url = source.data.images[selected];
+                const std_value = source.data.std_devs[selected];
+                const cor_value = source.data.correlations[selected];
+                const rmse_value = source.data.rmse[selected];
+
+                if (img_url) {
+                    div.text = `<a href="${img_url}" target="_blank">
+                                <img src="${img_url}" style="width:100%;max-height:${maxHeight}px;height:auto;"></a>
+                                <div><strong>STD:</strong> ${std_value}</div>
+                                <div><strong>COR:</strong> ${cor_value}</div>
+                                <div><strong>RMSE:</strong> ${rmse_value}</div>`;
+                } else {
+                    div.text = `<div>No image available</div>
+                                <div><strong>STD:</strong> ${std_value}</div>
+                                <div><strong>COR:</strong> ${cor_value}</div>
+                                <div><strong>RMSE:</strong> ${rmse_value}</div>`;
+                }
+
+                // Highlight the selected point on the plot
+                source.selected.indices = [selected];
+            } else {
+                div.text = "No matching point found.";
+                source.selected.indices = [];  // Clear selection if no match
+            }
+            """,
+    )
+
+
+def create_click_callback(source, image_display, name_select, max_height):
+    return CustomJS(
+        args=dict(
+            source=source,
+            div=image_display,
+            name_select=name_select,
+            maxHeight=max_height,
+        ),
+        code="""
+            const selected = source.selected.indices[0];
+            if (selected != null) {
+                const name_value = source.data.names[selected];
+                const img_url = source.data.images[selected];
+                const std_value = source.data.std_devs[selected];
+                const cor_value = source.data.correlations[selected];
+                const rmse_value = source.data.rmse[selected];
+
+                // Update dropdown
+                name_select.value = name_value;
+
+                // Update image display
+                if (img_url) {
+                    div.text = `<a href="${img_url}" target="_blank">
+                                <img src="${img_url}" style="width:100%;max-height:${maxHeight}px;height:auto;"></a>
+                                <div><strong>STD:</strong> ${std_value}</div>
+                                <div><strong>COR:</strong> ${cor_value}</div>
+                                <div><strong>RMSE:</strong> ${rmse_value}</div>`;
+                } else {
+                    div.text = `<div>No image available</div>
+                                <div><strong>STD:</strong> ${std_value}</div>
+                                <div><strong>COR:</strong> ${cor_value}</div>
+                                <div><strong>RMSE:</strong> ${rmse_value}</div>`;
+                }
+
+            }
+            """,
+    )
+
+
+def create_navigation_callbacks(source, image_display, name_select, max_height):
+    # JavaScript callback for "Previous Image" button
+    previous_callback = CustomJS(
+        args=dict(
+            source=source,
+            div=image_display,
+            name_select=name_select,
+            maxHeight=max_height,
+        ),
+        code="""
+            let selected_index = source.selected.indices[0];
+            if (selected_index !== undefined) {
+                // Get the current name's index
+                const current_name = source.data.names[selected_index];
+                const current_index = source.data.names.indexOf(current_name);
+
+                // Get the previous index
+                const prev_index = (current_index - 1 + source.data.names.length) % source.data.names.length;
+                const prev_name = source.data.names[prev_index];
+                const prev_img_url = source.data.images[prev_index];
+                const prev_std_value = source.data.std_devs[prev_index];
+                const prev_cor_value = source.data.correlations[prev_index];
+                const prev_rmse_value = source.data.rmse[prev_index];
+
+                // Update image display
+                if (prev_img_url) {
+                    div.text = `<a href="${prev_img_url}" target="_blank">
+                                <img src="${prev_img_url}" style="width:100%;max-height:${maxHeight}px;height:auto;"></a>
+                                <div><strong>STD:</strong> ${prev_std_value}</div>
+                                <div><strong>COR:</strong> ${prev_cor_value}</div>
+                                <div><strong>RMSE:</strong> ${prev_rmse_value}</div>`;
+                } else {
+                    div.text = `<div>No image available</div>
+                                <div><strong>STD:</strong> ${prev_std_value}</div>
+                                <div><strong>COR:</strong> ${prev_cor_value}</div>
+                                <div><strong>RMSE:</strong> ${prev_rmse_value}</div>`;
+                }
+
+                // Update dropdown
+                name_select.value = prev_name;
+
+                // Sync selection with plot
+                source.selected.indices = [prev_index];
+            }
+            """,
+    )
+    # JavaScript callback for "Next Image" button
+    next_callback = CustomJS(
+        args=dict(
+            source=source,
+            div=image_display,
+            name_select=name_select,
+            maxHeight=max_height,
+        ),
+        code="""
+            let selected_index = source.selected.indices[0];
+            if (selected_index !== undefined) {
+                // Get the current name's index
+                const current_name = source.data.names[selected_index];
+                const current_index = source.data.names.indexOf(current_name);
+
+                // Get the next index
+                const next_index = (current_index + 1) % source.data.names.length;
+                const next_name = source.data.names[next_index];
+                const next_img_url = source.data.images[next_index];
+                const next_std_value = source.data.std_devs[next_index];
+                const next_cor_value = source.data.correlations[next_index];
+                const next_rmse_value = source.data.rmse[next_index];
+
+                // Update image display
+                if (next_img_url) {
+                    div.text = `<a href="${next_img_url}" target="_blank">
+                                <img src="${next_img_url}" style="width:100%;max-height:${maxHeight}px;height:auto;"></a>
+                                <div><strong>STD:</strong> ${next_std_value}</div>
+                                <div><strong>COR:</strong> ${next_cor_value}</div>
+                                <div><strong>RMSE:</strong> ${next_rmse_value}</div>`;
+                } else {
+                    div.text = `<div>No image available</div>
+                                <div><strong>STD:</strong> ${next_std_value}</div>
+                                <div><strong>COR:</strong> ${next_cor_value}</div>
+                                <div><strong>RMSE:</strong> ${next_rmse_value}</div>`;
+                }
+
+                // Update dropdown
+                name_select.value = next_name;
+
+                // Sync selection with plot
+                source.selected.indices = [next_index];
+            }
+            """,
+    )
+    return previous_callback, next_callback
