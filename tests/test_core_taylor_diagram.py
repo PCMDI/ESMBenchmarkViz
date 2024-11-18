@@ -1,7 +1,8 @@
 import pytest
-import numpy as np
 from bokeh.plotting import figure
+
 from ESMBenchmarkViz import taylor_diagram
+
 
 def test_taylor_diagram_input_validation():
     # Test for ValueError when input lists have different lengths
@@ -11,7 +12,10 @@ def test_taylor_diagram_input_validation():
     refstd = 1.0
     images = ["image_a.png"]
 
-    with pytest.raises(ValueError, match="The lengths of 'std_devs', 'correlations', and 'names' must be equal."):
+    with pytest.raises(
+        ValueError,
+        match="The lengths of 'std_devs', 'correlations', and 'names' must be equal.",
+    ):
         taylor_diagram(std_devs, correlations, names, refstd)
 
     # Test for ValueError when images are provided with mismatched lengths
@@ -21,8 +25,12 @@ def test_taylor_diagram_input_validation():
     refstd = 1.0
     images = ["image_a.png"]
 
-    with pytest.raises(ValueError, match="The lengths of 'std_devs', 'correlations', 'names', and 'images' must be equal."):
+    with pytest.raises(
+        ValueError,
+        match="The lengths of 'std_devs', 'correlations', 'names', and 'images' must be equal.",
+    ):
         taylor_diagram(std_devs, correlations, names, refstd, images=images)
+
 
 def test_taylor_diagram_output_type():
     std_devs = [1.0, 1.5, 2.0]
