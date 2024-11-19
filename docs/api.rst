@@ -16,3 +16,4 @@ Plotting
     :toctree: generated/
 
     taylor_diagram
+    scatter_plot
