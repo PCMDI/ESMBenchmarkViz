@@ -42,6 +42,12 @@ def scatter_plot(
     >>> names = ["A", "B", "C"]
     >>> images = ["images/image1.jpg", "images/image2.jpg", "images/image3.jpg"]
     >>> scatter_plot(x, y, names, images)
+    
+    Example use case can be found `here <../examples/example_scatter_plot.html>`_.
+
+    Notes
+    -----
+    2024-11-18: Jiwoo Lee, initial version
     """
 
     # Sanity check for input data
