@@ -2,8 +2,14 @@ from typing import List, Union
 
 import numpy as np
 from bokeh.layouts import column, row
-from bokeh.models import Button, ColumnDataSource, CustomJS, Div, HoverTool, Select
+from bokeh.models import ColumnDataSource, CustomJS, HoverTool
 from bokeh.plotting import figure, show
+
+from .support_functions import (
+    create_image_display,
+    create_name_select,
+    create_navigation_buttons,
+)
 
 
 def scatter_plot(
@@ -11,6 +17,9 @@ def scatter_plot(
     y: Union[List[float], np.ndarray],
     names: List[str] = None,
     images: List[str] = None,
+    title: str = "Interactive Scatter Plot",
+    width: int = 600,
+    height: int = 400,
     show_plot: bool = True,
 ) -> figure:
     """
@@ -26,6 +35,12 @@ def scatter_plot(
         List of names corresponding to the data points.
     images : list, optional
         List of image file paths corresponding to the data points, by default None
+    title : str, optional
+        Title of the plot, by default "Interactive Scatter Plot"
+    width : int, optional
+        Width of the plot, by default 600
+    height : int, optional
+        Height of the plot, by default 400
     show_plot : bool, optional
         If True, the plot will be displayed in the workflow (default is True).
 
@@ -72,10 +87,10 @@ def scatter_plot(
 
     # Create a scatter plot
     p = figure(
-        title="Interactive Scatter Plot",
+        width=width,
+        height=height,
+        title=title,
         tools="tap, pan, wheel_zoom, box_zoom, reset",
-        height=400,
-        width=600,
     )
     points = p.scatter("x", "y", size=10, source=source)
 
@@ -107,18 +122,14 @@ def scatter_plot(
         p.add_tools(hover)
 
         # Div to display image and x, y values on click
-        image_display = Div(
-            text="Click on a point to display the image here.", width=300, height=300
-        )
-
-        max_height = 200
+        # maximum height is for the actual image display inside the image_display Div
+        image_display, max_height = create_image_display(width, height)
 
         # Dropdown menu for names with default "Select Data"
-        name_select = Select(
-            title="Select Data Point",
-            value="Select Data",
-            options=["Select Data"] + data["names"],
-        )
+        name_select = create_name_select(data)
+
+        # Create buttons for Previous and Next Image Navigation
+        previous_button, next_button = create_navigation_buttons()
 
         # JavaScript callback for dropdown selection changes
         dropdown_callback = CustomJS(
@@ -184,10 +195,6 @@ def scatter_plot(
         """,
         )
         source.selected.js_on_change("indices", click_callback)
-
-        # Button for Previous and Next Image Navigation
-        previous_button = Button(label="Previous Image", width=150)
-        next_button = Button(label="Next Image", width=150)
 
         # JavaScript callback for "Previous Image" button
         previous_callback = CustomJS(
