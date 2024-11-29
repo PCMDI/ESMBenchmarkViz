@@ -47,13 +47,16 @@ def portrait_plot(
     cbar_tick_fontsize: Optional[int] = None,
     invert_yaxis: bool = True,
     clickable: bool = False,
+    legend_name: Optional[str] = "Group",
     legend_labels: Optional[List[str]] = None,
     img_url: Optional[List[str]] = None,
-    TOOLTIPS: Optional[Union[str, List[Tuple[str, str]]]] = None,
+    tooltips: Optional[Union[str, List[Tuple[str, str]]]] = None,
     url_open: Optional[List[str]] = None,
     missing_color: str = "grey",
     aspect_scale: float = 1,
     show_plot: bool = True,
+    bokeh_toolbar: bool = True,
+    bokeh_logo: bool = True,
     debug: bool = False,
 ):
     """
@@ -103,11 +106,13 @@ def portrait_plot(
         If True, places y=0 at the top of the plot. Default is True.
     clickable : bool, optional
         If True, enables clickable functionality. Default is False.
+    legend_name: str, optional
+        Name of the legend (used for triangular plots). Default is 'Group'.
     legend_labels : list of str, optional
         Labels for the legend (used for triangular plots). Default is None.
     img_url : list of str, optional
         Links to images displayed in tooltips. Default is None.
-    TOOLTIPS : str or list of tuple, optional
+    tooltips : str or list of tuple, optional
         Tooltips for the plot. Default is None.
     url_open : list of str, optional
         Links to open when a tooltip is clicked. Default is None.
@@ -117,6 +122,10 @@ def portrait_plot(
         Scale factor for the plot aspect ratio. Default is 1.
     show_plot : bool, optional
         If True, the plot will be displayed in the workflow (default is True).
+    bokeh_toolbar : bool, optional
+        If True, displays the Bokeh toolbar in the plot. Default is True.
+    bokeh_logo : bool, optional
+        If True, displays the Bokeh logo in the plot. Default is True.
     debug : bool, optional
         If True, prints debug messages. Default is False.
 
@@ -124,6 +133,10 @@ def portrait_plot(
     -------
     plot : Bokeh component
         A Bokeh plot object representing the interactive portrait plot.
+
+    Example
+    -------
+    >>> from ESMBenchmarkViz import portrait_plot
 
     Notes
     -----
@@ -150,20 +163,6 @@ def portrait_plot(
     if url_open is None:
         url_open = img_url
 
-    # ----------------
-    # Ready to plot!!
-    # ----------------
-    # Figure size
-    if width == "auto":
-        plot_width = data.shape[-1] * 30 + 150
-    else:
-        plot_width = width
-
-    if height == "auto":
-        plot_height = data.shape[-2] * 30
-    else:
-        plot_height = height
-
     # Figure type
     if num_divide == 4:
         positions = ["top", "right", "bottom", "left"]
@@ -184,68 +183,8 @@ def portrait_plot(
     else:
         sys.exit("Error: Number of (stacked) array is not 1, 2, or 4.")
 
-    # yaxis starts from top
-    if invert_yaxis:
-        yaxis_labels = deepcopy(yaxis_labels)[::-1]
-
-    if clickable:
-        TOOLS = "hover, tap, save"  # hover needed for tooltip, tap needed for url open
-    else:
-        TOOLS = "hover, save"
-
-    if img_url is not None:
-        if TOOLTIPS is None:
-            # Customized tooltip
-            TOOLTIPS = """
-                <div>
-                    <div>
-                        <img
-                            src="@img" alt="@img" width="300" height="200"
-                            style="float: left; margin: 0px 5px 5px 0px;"
-                            border="1"
-                            onerror
-                            style="margin: -75px 0 0 -100px"
-                        ></img><br>
-                        <span style="font-size: 14px">
-                        <font color=darkgreen>Model:</font> <b>@yname</b><br>
-                        <font color=darkgreen>Variable:</font> <b>@xname</b><br>
-                        <font color=darkgreen>Season:</font> <b>@position_description</b><br>
-                        <font color=darkgreen>Value (Nor.):</font> @field<br>
-                        <font color=darkgreen>Value (Act.):</font> @field2</span>
-                    </div>
-                </div>
-            """
-    else:
-        if TOOLTIPS is None:
-            TOOLTIPS = [
-                ("Model", "@yname"),
-                ("Variable", "@xname"),
-                ("Season", "@position_description"),
-                ("Value (Nor.)", "@field"),
-            ]
-            if annotate:
-                TOOLTIPS.append(("Value (Act.)", "@field2"))
-
-    if xaxis_location in ["above", "below"]:
-        x_axis_location = xaxis_location
-    elif xaxis_location == "both":
-        x_axis_location = "above"
-    else:
-        sys.exit("Error: xaxis_location should be either above, below, or both")
-
-    plot = figure(
-        title=title,
-        x_range=xaxis_labels,
-        y_range=yaxis_labels,
-        width=plot_width,
-        height=plot_height,
-        min_border=50,
-        tools=TOOLS,
-        tooltips=TOOLTIPS,
-        x_axis_location=x_axis_location,
-        aspect_scale=aspect_scale,
-    )
-
+    # Prepare data for plotting
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~
     xs, ys = list(), list()
     field, field2 = list(), list()
     position_list, position_description_list = list(), list()
@@ -296,7 +235,6 @@ def portrait_plot(
         ys=ys,
         field=field,
         position=position_list,
-        position_description=position_description_list,
         xname=xname_list,
         yname=yname_list,
     )
@@ -309,6 +247,7 @@ def portrait_plot(
     if url_open is not None:
         col_dict.update(dict(url=url_open))
 
+    # if field2 is not empty, update col_dict with field2
     if len(field2) > 0:
         col_dict.update(dict(field2=field2))
         col_dict_df = pd.DataFrame.from_dict(col_dict)
@@ -316,13 +255,103 @@ def portrait_plot(
             col_dict_df.field2.isna(), ("img")
         ] = "https://pcmdi.llnl.gov/pmp-preliminary-results/interactive_plot/mean_climate/no-data-whitebg.png"
         col_dict.update(dict(img=col_dict_df["img"].tolist()))
+
+    # if position_description_list is not empty, update col_dict with position_description_list
     if len(position_description_list) > 0:
         col_dict.update(dict(position_description=position_description_list))
 
     if debug:
         print("col_dict: ", col_dict)
+        print("col_dict.keys(): ", col_dict.keys())
+        print("col_dict['xs']: ", col_dict["xs"])
+        print("col_dict['ys']: ", col_dict["ys"])
+        print("col_dict['position']: ", col_dict["position"])
 
     source = ColumnDataSource(col_dict)
+
+    # ----------------
+    # Ready to plot!!
+    # ----------------
+    # Figure size
+    if width == "auto":
+        plot_width = data.shape[-1] * 30 + 150
+    else:
+        plot_width = width
+
+    if height == "auto":
+        plot_height = data.shape[-2] * 30
+    else:
+        plot_height = height
+
+    # yaxis starts from top
+    if invert_yaxis:
+        yaxis_labels = deepcopy(yaxis_labels)[::-1]
+
+    if clickable:
+        tools = "hover, tap, save"  # hover needed for tooltip, tap needed for url open
+    else:
+        tools = "hover, save"
+
+    if img_url is not None:
+        if tooltips is None:
+            # Customized tooltip
+            tooltips = """
+                <div>
+                    <div>
+                        <img
+                            src="@img" alt="@img" width="300" height="200"
+                            style="float: left; margin: 0px 5px 5px 0px;"
+                            border="1"
+                            onerror
+                            style="margin: -75px 0 0 -100px"
+                        ></img><br>
+                        <span style="font-size: 14px">
+                        <font color=darkgreen>Model:</font> <b>@yname</b><br>
+                        <font color=darkgreen>Variable:</font> <b>@xname</b><br>"""
+
+            if len(position_description_list) > 0:
+                tooltips += f"<font color=darkgreen>{legend_name.capitalize()}:</font> <b>@position_description</b><br>"
+
+            tooltips += """
+                        <font color=darkgreen>Value (Nor.):</font> @field<br>
+                        <font color=darkgreen>Value (Act.):</font> @field2</span>
+                    </div>
+                </div>"""
+    else:
+        if tooltips is None:
+            tooltips = [("Model", "@yname"), ("Variable", "@xname")]
+
+            if len(position_description_list) > 0:
+                tooltips.append((legend_name.capitalize(), "@position_description"))
+
+            tooltips += [
+                ("Value (Nor.)", "@field"),
+            ]
+            if annotate:
+                tooltips.append(("Value (Act.)", "@field2"))
+
+            if debug and num_divide > 1:
+                tooltips.append(("Position", "@position"))
+
+    if xaxis_location in ["above", "below"]:
+        x_axis_location = xaxis_location
+    elif xaxis_location == "both":
+        x_axis_location = "above"
+    else:
+        sys.exit("Error: xaxis_location should be either above, below, or both")
+
+    plot = figure(
+        title=title,
+        x_range=xaxis_labels,
+        y_range=yaxis_labels,
+        width=plot_width,
+        height=plot_height,
+        min_border=50,
+        tools=tools,
+        tooltips=tooltips,
+        x_axis_location=x_axis_location,
+        aspect_scale=aspect_scale,
+    )
 
     # Color Map control
     if cmap_bounds is None:
@@ -413,9 +442,13 @@ def portrait_plot(
         taptool = plot.select(type=TapTool)
         taptool.callback = OpenURL(url="@url")
 
-    # Trun off bokeh log and toolbar
-    plot.toolbar.logo = None
-    plot.toolbar_location = None
+    # Trun off bokeh log
+    if bokeh_logo is False:
+        plot.toolbar.logo = None
+
+    # Turn off bokeh toolbar
+    if bokeh_toolbar is False:
+        plot.toolbar_location = None
 
     # Title
     if title is not None:
