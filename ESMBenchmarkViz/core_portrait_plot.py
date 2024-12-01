@@ -150,9 +150,6 @@ def portrait_plot(
     # ----------------
     data, num_divide = prepare_data(data, xaxis_labels, yaxis_labels, debug)
 
-    if num_divide not in [1, 2, 3, 4]:
-        sys.exit("Error: Number of (stacked) array is not 1, 2, 3, or 4.")
-
     if annotate:
         annotate_data, num_divide_annotate = prepare_data(
             annotate_data, xaxis_labels, yaxis_labels, debug
@@ -164,24 +161,15 @@ def portrait_plot(
         url_open = img_url
 
     # Figure type
-    if num_divide == 4:
-        positions = ["top", "right", "bottom", "left"]
-        xpts_list = [[0, 0.5, 1], [0.5, 1, 1], [0, 0.5, 1], [0, 0, 0.5]]
-        ypts_list = [[1, 0.5, 1], [0.5, 0, 1], [0, 0.5, 0], [0, 1, 0.5]]
-    elif num_divide == 3:
-        positions = ["top", "lower-left", "lower-right"]
-        xpts_list = [[0, 0.5, 1], [0, 0, 0.5, 0.5], [1, 0.5, 0.5, 1]]
-        ypts_list = [[1, 0.5, 1], [1, 0, 0, 0.5], [1, 0.5, 0, 0]]
-    elif num_divide == 2:
-        positions = ["upper", "lower"]
-        xpts_list = [[0, 0, 1], [0, 1, 1]]
-        ypts_list = [[1, 0, 1], [0, 0, 1]]
-    elif num_divide == 1:
-        positions = ["box"]
-        xpts = [0, 0, 1, 1]
-        ypts = [1, 0, 0, 1]
-    else:
-        sys.exit("Error: Number of (stacked) array is not 1, 2, or 4.")
+    if num_divide > 1 and len(data.shape) == 3:
+        if num_divide != len(data):
+            sys.exit("Error: data.shape[0] is not equal to num_divide")
+        if annotate:
+            if num_divide != len(annotate_data):
+                sys.exit("Error: annotate_data.shape[0] is not equal to num_divide")
+
+    xpts_list, ypts_list = get_x_y_points(num_divide)
+    positions = get_positions(num_divide)
 
     # Prepare data for plotting
     # ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -190,11 +178,12 @@ def portrait_plot(
     position_list, position_description_list = list(), list()
     xname_list, yname_list = list(), list()
 
-    for i, position in enumerate(positions):
+    # for i, position in enumerate(positions):
+    for i in range(num_divide):
+        xpts = xpts_list[i]
+        ypts = ypts_list[i]
         if num_divide > 1 and len(data.shape) == 3:
             a = data[i].copy()
-            xpts = xpts_list[i]
-            ypts = ypts_list[i]
             if annotate:
                 annotate_a = annotate_data[i].copy()
         elif num_divide == 1 and len(data.shape) == 2:
@@ -223,7 +212,8 @@ def portrait_plot(
                 field.append(a[iy, ix])
                 if annotate:
                     field2.append(annotate_a[iy, ix])
-                position_list.append(position)
+                if positions is not None:
+                    position_list.append(positions[i])
                 if legend_labels is not None:
                     position_description_list.append(legend_labels[i])
                 xname_list.append(xname)
@@ -234,7 +224,6 @@ def portrait_plot(
         xs=xs,
         ys=ys,
         field=field,
-        position=position_list,
         xname=xname_list,
         yname=yname_list,
     )
@@ -255,6 +244,10 @@ def portrait_plot(
             col_dict_df.field2.isna(), ("img")
         ] = "https://pcmdi.llnl.gov/pmp-preliminary-results/interactive_plot/mean_climate/no-data-whitebg.png"
         col_dict.update(dict(img=col_dict_df["img"].tolist()))
+
+    # if position_list is not None, update col_dict with position_list
+    if position_list is not None:
+        col_dict.update(dict(position=position_list))
 
     # if position_description_list is not empty, update col_dict with position_description_list
     if len(position_description_list) > 0:
@@ -461,3 +454,261 @@ def portrait_plot(
         show(return_object)
 
     return return_object
+
+
+def find_intersection_points_centered(num_sectors: int) -> list:
+    """
+    Finds intersection points of evenly spaced radius lines from the center of a circle
+    with a square on the x-y plane. The first partition is centered at angle 90° (π/2 radians),
+    regardless of whether the number of sectors is odd or even.
+
+    Parameters
+    ----------
+    num_sectors : int
+        Number of sectors to divide the circle into.
+
+    Returns
+    -------
+    list of tuples
+        Intersection points of the radius lines with the square boundary.
+    """
+    if num_sectors < 2:
+        raise ValueError("Number of sectors must be greater than 1.")
+
+    if num_sectors == 2:
+        return [(0, 0), (1, 1)]
+
+    # Define square edges
+    edges = [
+        ((0, 0), (1, 0)),  # Bottom edge
+        ((1, 0), (1, 1)),  # Right edge
+        ((1, 1), (0, 1)),  # Top edge
+        ((0, 1), (0, 0)),  # Left edge
+    ]
+
+    # Circle center and radius
+    center = (0.5, 0.5)
+    radius = 0.5
+
+    # Calculate evenly spaced angles in the clockwise direction
+    angles = np.linspace(
+        0, -2 * np.pi, num_sectors, endpoint=False
+    )  # Negative to reverse direction
+    if num_sectors % 2 == 0:
+        # Shift angles to center the first sector at 90° (π/2)
+        angles = angles - (angles[1] / 2) + np.pi / 2
+    else:
+        # Shift angles for odd sectors to ensure first centered at 90° (π/2)
+        angles = angles + np.pi / num_sectors + np.pi / 2
+
+    intersection_points = []
+
+    for angle in angles:
+        # Define the line direction from the center
+        dx, dy = np.cos(angle), np.sin(angle)
+        ray_end = (center[0] + dx * radius, center[1] + dy * radius)
+
+        for edge in edges:
+            (x1, y1), (x2, y2) = edge
+
+            # Solve line-line intersection
+            det = (x1 - x2) * (center[1] - ray_end[1]) - (y1 - y2) * (
+                center[0] - ray_end[0]
+            )
+            if det == 0:
+                continue
+
+            t = (
+                (x1 - center[0]) * (center[1] - ray_end[1])
+                - (y1 - center[1]) * (center[0] - ray_end[0])
+            ) / det
+            u = -((x1 - x2) * (y1 - center[1]) - (y1 - y2) * (x1 - center[0])) / det
+
+            if 0 <= t <= 1 and u >= 0:
+                ix = x1 + t * (x2 - x1)
+                iy = y1 + t * (y2 - y1)
+                intersection_points.append((ix, iy))
+                break
+
+    return intersection_points
+
+
+def create_polygons(num_sectors: int):
+    """
+    Creates polygons for each sector formed by the radius lines and the square's boundary.
+
+    Parameters
+    ----------
+    num_sectors : int
+        Number of sectors to divide the circle into.
+
+    Returns
+    -------
+    list of list of tuples
+        Each polygon is represented as a list of (x, y) tuples.
+    """
+    center = (0.5, 0.5)
+    points = find_intersection_points_centered(num_sectors)
+
+    polygons = []
+    square_apexes = [(0, 0), (1, 0), (1, 1), (0, 1)]
+
+    for i in range(num_sectors):
+        # Define the current and next intersection points
+        p1 = points[i]
+        p2 = points[(i + 1) % len(points)]
+
+        # Initialize the polygon with the center and intersection points
+        if num_sectors != 2:
+            polygon = [center, p1]
+        else:
+            polygon = [p1]
+
+        # Special case for 2 sectors: Add the square apex again to form a triangle
+        if num_sectors == 2:
+            if i == 0:
+                polygon.append(square_apexes[3])
+            elif i == 1:
+                polygon.append(square_apexes[1])
+
+        # Special case for 3 sectors: Add the square apex again to form a pentagon
+        elif num_sectors == 3 and i == 0:
+            polygon.append(square_apexes[3])
+            polygon.append(square_apexes[2])
+
+        # Special case for 4 sectors: No need to add the square apexes as they are already included
+        elif num_sectors == 4:
+            pass
+
+        else:
+            # Add intermediate square apexes if necessary
+            for apex in square_apexes:
+                if min(p1[0], p2[0]) <= apex[0] <= max(p1[0], p2[0]) and min(
+                    p1[1], p2[1]
+                ) <= apex[1] <= max(p1[1], p2[1]):
+                    polygon.append(apex)
+
+        # Add the second intersection point and close the polygon
+        polygon.append(p2)
+
+        # Append the polygon to the list
+        polygons.append(polygon)
+
+    return polygons
+
+
+def extract_polygon_coordinates(polygons):
+    """
+    Extracts x and y coordinates from a list of polygons, rounded to 2 decimal places.
+
+    Parameters
+    ----------
+    polygons : list of list of tuples
+        Each polygon is represented as a list of (x, y) tuples.
+
+    Returns
+    -------
+    tuple of lists
+        xpts_list : list of lists of floats
+            x-coordinates of the polygons, rounded to 2 decimal places.
+        ypts_list : list of lists of floats
+            y-coordinates of the polygons, rounded to 2 decimal places.
+    """
+    xpts_list = []
+    ypts_list = []
+
+    for polygon in polygons:
+        xpts = [round(float(point[0]), 2) for point in polygon]
+        ypts = [round(float(point[1]), 2) for point in polygon]
+        xpts_list.append(xpts)
+        ypts_list.append(ypts)
+
+    return xpts_list, ypts_list
+
+
+def get_x_y_points(num_sectors):
+    """
+    Returns the x and y coordinates of the polygons formed by radius partitions.
+
+    Parameters
+    ----------
+    num_sectors : int
+        The number of sectors to divide the circle into.
+
+    Returns
+    -------
+    tuple of lists
+        xpts_list : list of lists of floats
+            x-coordinates of the polygons, rounded to 2 decimal places.
+        ypts_list : list of lists of floats
+            y-coordinates of the polygons, rounded to 2 decimal places.
+    """
+    if num_sectors == 1:
+        xpts = [0, 0, 1, 1]
+        ypts = [1, 0, 0, 1]
+        return ([xpts], [ypts])
+
+    # Create polygons
+    polygons = create_polygons(num_sectors)
+    xpts_list, ypts_list = extract_polygon_coordinates(polygons)
+    return (xpts_list, ypts_list)
+
+
+def get_positions(num_sectors):
+    """
+    Returns the positions of the polygons formed by radius partitions.
+
+    Parameters
+    ----------
+    num_sectors : int
+    The number of sectors to divide the circle into.
+
+    Returns
+    -------
+    list
+        Positions of the polygons.
+    """
+    positions = None
+
+    if num_sectors == 8:
+        positions = [
+            "top-left",
+            "top-right",
+            "upper-mid-left",
+            "upper-mid-right",
+            "lower-mid-left",
+            "lower-mid-right",
+            "bottom-left",
+            "bottom-right",
+        ]
+    elif num_sectors == 7:
+        positions = [
+            "top-left",
+            "top-right",
+            "upper-mid-left",
+            "upper-mid-right",
+            "lower-mid-left",
+            "lower-mid-right",
+            "bottom",
+        ]
+    elif num_sectors == 6:
+        positions = [
+            "top-left",
+            "top-right",
+            "mid-left",
+            "mid-right",
+            "bottom-left",
+            "bottom-right",
+        ]
+    elif num_sectors == 5:
+        positions = ["top-left", "top-right", "mid-left", "mid-right", "bottom"]
+    elif num_sectors == 4:
+        positions = ["top", "right", "bottom", "left"]
+    elif num_sectors == 3:
+        positions = ["top", "lower-left", "lower-right"]
+    elif num_sectors == 2:
+        positions = ["upper", "lower"]
+    elif num_sectors == 1:
+        positions = ["box"]
+
+    return positions
