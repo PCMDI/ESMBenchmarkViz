@@ -9,3 +9,4 @@ In addition, the user might come across tutorials related on how to use and cust
 .. nbgallery::
    examples/example_taylor_diagram
    examples/example_scatter_plot
+   examples/example_portrait_plot
