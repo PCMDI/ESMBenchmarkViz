@@ -670,39 +670,7 @@ def get_positions(num_sectors):
     """
     positions = None
 
-    if num_sectors == 8:
-        positions = [
-            "top-left",
-            "top-right",
-            "upper-mid-left",
-            "upper-mid-right",
-            "lower-mid-left",
-            "lower-mid-right",
-            "bottom-left",
-            "bottom-right",
-        ]
-    elif num_sectors == 7:
-        positions = [
-            "top-left",
-            "top-right",
-            "upper-mid-left",
-            "upper-mid-right",
-            "lower-mid-left",
-            "lower-mid-right",
-            "bottom",
-        ]
-    elif num_sectors == 6:
-        positions = [
-            "top-left",
-            "top-right",
-            "mid-left",
-            "mid-right",
-            "bottom-left",
-            "bottom-right",
-        ]
-    elif num_sectors == 5:
-        positions = ["top-left", "top-right", "mid-left", "mid-right", "bottom"]
-    elif num_sectors == 4:
+    if num_sectors == 4:
         positions = ["top", "right", "bottom", "left"]
     elif num_sectors == 3:
         positions = ["top", "lower-left", "lower-right"]
