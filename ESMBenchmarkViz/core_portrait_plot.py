@@ -47,6 +47,7 @@ def portrait_plot(
     cbar_tick_fontsize: Optional[int] = None,
     invert_yaxis: bool = True,
     clickable: bool = False,
+    line_color: str = "grey",
     legend_name: Optional[str] = "Group",
     legend_labels: Optional[List[str]] = None,
     img_url: Optional[List[str]] = None,
@@ -106,6 +107,8 @@ def portrait_plot(
         If True, places y=0 at the top of the plot. Default is True.
     clickable : bool, optional
         If True, enables clickable functionality. Default is False.
+    line_color: str, optional
+        Color of the lines in the plot. Default is 'grey'.
     legend_name: str, optional
         Name of the legend (used for triangular plots). Default is 'Group'.
     legend_labels : list of str, optional
@@ -175,10 +178,9 @@ def portrait_plot(
     # ~~~~~~~~~~~~~~~~~~~~~~~~~
     xs, ys = list(), list()
     field, field2 = list(), list()
-    position_list, position_description_list = list(), list()
+    positions_list, position_description_list = list(), list()
     xname_list, yname_list = list(), list()
 
-    # for i, position in enumerate(positions):
     for i in range(num_divide):
         xpts = xpts_list[i]
         ypts = ypts_list[i]
@@ -212,10 +214,10 @@ def portrait_plot(
                 field.append(a[iy, ix])
                 if annotate:
                     field2.append(annotate_a[iy, ix])
-                if positions is not None:
-                    position_list.append(positions[i])
                 if legend_labels is not None:
                     position_description_list.append(legend_labels[i])
+                if positions is not None:
+                    positions_list.append(positions[i])
                 xname_list.append(xname)
                 yname_list.append(yname)
 
@@ -246,8 +248,8 @@ def portrait_plot(
         col_dict.update(dict(img=col_dict_df["img"].tolist()))
 
     # if position_list is not None, update col_dict with position_list
-    if position_list is not None:
-        col_dict.update(dict(position=position_list))
+    if len(positions_list) == len(xname_list):
+        col_dict.update(dict(position=positions_list))
 
     # if position_description_list is not empty, update col_dict with position_description_list
     if len(position_description_list) > 0:
@@ -375,7 +377,7 @@ def portrait_plot(
         xs="xs",
         ys="ys",
         fill_color={"field": "field", "transform": mapper},
-        line_color="black",
+        line_color=line_color,
         line_width=0.5,
     )
 
