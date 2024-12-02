@@ -467,6 +467,25 @@ def portrait_plot(
 
 
 def prepare_data(data, xaxis_labels, yaxis_labels, debug=False):
+    """
+    Prepare data for plotting.
+
+    Parameters
+    ----------
+    data : list or np.ndarray
+        Data to plot.
+    xaxis_labels : list of str
+        Labels for the x-axis.
+    yaxis_labels : list of str
+        Labels for the y-axis.
+    debug : bool, optional
+        If True, print debug information. The default is False.
+
+    Returns
+    -------
+    np.ndarray, int
+        The data and the number of divisions.
+    """
     # In case data was given as list of arrays, convert it to numpy (stacked) array
     if isinstance(data, list):
         if debug:
@@ -680,7 +699,7 @@ def extract_polygon_coordinates(polygons):
     return xpts_list, ypts_list
 
 
-def get_x_y_points(num_sectors):
+def get_x_y_points(num_sectors: int):
     """
     Returns the x and y coordinates of the polygons formed by radius partitions.
 
@@ -708,7 +727,7 @@ def get_x_y_points(num_sectors):
     return (xpts_list, ypts_list)
 
 
-def get_positions(num_sectors):
+def get_positions(num_sectors: int):
     """
     Returns the positions of the polygons formed by radius partitions.
 
