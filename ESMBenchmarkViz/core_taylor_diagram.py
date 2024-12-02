@@ -40,6 +40,7 @@ def taylor_diagram(
     width: int = 600,
     show_plot: bool = True,
     images: List[str] = None,
+    bokeh_logo: bool = True,
     debug: bool = False,
 ) -> figure:
     """
@@ -86,6 +87,8 @@ def taylor_diagram(
         If True, the plot will be displayed in the workflow (default is True).
     images: str, optional
         A list of image paths to be displayed on the plot. The images will be placed at the data points of the models.
+    bokeh_logo : bool, optional
+        If True, displays the Bokeh logo in the plot. Default is True.
     debug: bool, optional
         If True, prints additional debugging information (default is False).
 
@@ -308,6 +311,10 @@ def taylor_diagram(
 
     # Customize legend
     p.legend.location = "top_right"
+
+    # Trun off bokeh log
+    if bokeh_logo is False:
+        p.toolbar.logo = None
 
     # Return the plot object if images are not provided, otherwise return the layout
     if not images:

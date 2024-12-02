@@ -17,3 +17,4 @@ Plotting
 
     taylor_diagram
     scatter_plot
+    portrait_plot
