@@ -3,7 +3,7 @@ import unittest
 from bokeh.models import ColumnDataSource
 from bokeh.plotting import figure
 
-from ESMBenchmarkViz.core_scatter_plot import scatter_plot
+from ESMBenchmarkViz import scatter_plot
 
 
 class TestScatterPlot(unittest.TestCase):
