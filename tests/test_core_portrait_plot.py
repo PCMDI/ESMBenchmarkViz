@@ -40,7 +40,12 @@ class TestPortraitPlot(unittest.TestCase):
         data = np.array([[1, 2], [3, 4]])
         xaxis_labels = ["A", "B"]
         yaxis_labels = ["C", "D"]
-        img_url = ["http://example.com/img1", "http://example.com/img2", "http://example.com/img3", "http://example.com/img4"]
+        img_url = [
+            "http://example.com/img1",
+            "http://example.com/img2",
+            "http://example.com/img3",
+            "http://example.com/img4",
+        ]
         plot = portrait_plot(
             data,
             xaxis_labels,
