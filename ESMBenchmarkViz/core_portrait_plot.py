@@ -22,7 +22,10 @@ from bokeh.models import (
     TapTool,
 )
 from bokeh.plotting import figure, show
-from pcmdi_metrics.graphics import prepare_data
+
+# -------------
+# Main function
+# -------------
 
 
 def portrait_plot(
@@ -456,6 +459,55 @@ def portrait_plot(
         show(return_object)
 
     return return_object
+
+
+# -----------------
+# Support functions
+# -----------------
+
+
+def prepare_data(data, xaxis_labels, yaxis_labels, debug=False):
+    # In case data was given as list of arrays, convert it to numpy (stacked) array
+    if isinstance(data, list):
+        if debug:
+            print("data type is list")
+            print("len(data):", len(data))
+        if len(data) == 1:  # list has only 1 array as element
+            if isinstance(data[0], np.ndarray) and (len(data[0].shape) == 2):
+                data = data[0]
+                num_divide = 1
+            else:
+                sys.exit("Error: Element of given list is not in np.ndarray type")
+        else:  # list has more than 1 arrays as elements
+            data = np.stack(data)
+            num_divide = len(data)
+
+    # Now, data is expected to be be a numpy array (whether given or converted from list)
+    if debug:
+        print("data.shape:", data.shape)
+
+    if data.shape[-1] != len(xaxis_labels) and len(xaxis_labels) > 0:
+        sys.exit("Error: Number of elements in xaxis_label mismatchs to the data")
+
+    if data.shape[-2] != len(yaxis_labels) and len(yaxis_labels) > 0:
+        sys.exit("Error: Number of elements in yaxis_label mismatchs to the data")
+
+    if isinstance(data, np.ndarray):
+        # data = np.squeeze(data)
+        if len(data.shape) == 2:
+            num_divide = 1
+        elif len(data.shape) == 3:
+            num_divide = data.shape[0]
+        else:
+            print("data.shape:", data.shape)
+            sys.exit("Error: data.shape is not right")
+    else:
+        sys.exit("Error: Converted or given data is not in np.ndarray type")
+
+    if debug:
+        print("num_divide:", num_divide)
+
+    return data, num_divide
 
 
 def find_intersection_points_centered(num_sectors: int) -> list:
