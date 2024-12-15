@@ -1,4 +1,15 @@
+<div>
+<img src="share/pcmdi/PCMDILogo_400x131px_72dpi.png" height="60" align="right" />
+</div>
+
+<br><br><br><br>
+
 # ESMBenchmarkViz
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14498167.svg)](https://doi.org/10.5281/zenodo.14498167)
+[![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+[![Formatted with black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
+
 
 ESMBenchmarkViz is a Python-based interactive visualization tool built with Bokeh, designed to facilitate the collective evaluation, intercomparison, and benchmarking of Earth System Models (ESMs). The tool provides a user-friendly interface for analyzing model performance, enabling researchers to make informed comparisons and insights into ESM behavior.
 
