@@ -1,0 +1,18 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: ESMBenchmarkViz
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Jiwoo
+    family-names: Lee
+    email: lee1043@llnl.gov
+    affiliation: Lawrence Livermore National Laboratory
+    orcid: 'https://orcid.org/0000-0002-0016-7199'
+repository-code: 'https://github.com/PCMDI/ESMBenchmarkViz'
+abstract: ' A Python package for interactive visualizations for Earth System Model evaluation and benchmarking.'
+license: BSD-3-Clause
