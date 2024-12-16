@@ -1,5 +1,5 @@
 <div>
-<img src="share/pcmdi/PCMDILogo_400x131px_72dpi.png" height="60" align="right" />
+<img src="https://github.com/PCMDI/assets/blob/main/PCMDI/PCMDILogoText_640x254px_300dpi.png?raw=true" height="60" align="right" />
 </div>
 
 <br><br><br><br>
@@ -8,6 +8,7 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14498167.svg)](https://doi.org/10.5281/zenodo.14498167)
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+![platforms](https://img.shields.io/badge/platforms-linux%20|%20osx-lightgrey.svg)
 [![Formatted with black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
 
 
