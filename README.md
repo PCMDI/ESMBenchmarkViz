@@ -1,5 +1,5 @@
 <div>
-<img src="https://github.com/PCMDI/assets/blob/main/PCMDI/PCMDILogoText_640x254px_300dpi.png?raw=true" height="60" align="right" />
+<img src="https://github.com/PCMDI/assets/blob/main/PCMDI/PCMDILogoText_640x254px_300dpi.png?raw=true" height="100" align="right" />
 </div>
 
 <br><br><br><br>
