@@ -16,7 +16,7 @@ ESMBenchmarkViz is a Python-based interactive visualization tool built with Boke
 
 ## Developer
 
-Jiwoo Lee [@lee1043](https://github.com/PCMDI/ESMBenchmarkViz/commits?author=lee1043) at [LLNL][LLNL]
+Jiwoo Lee ([@lee1043](https://github.com/PCMDI/ESMBenchmarkViz/commits?author=lee1043), [LLNL][LLNL])
 
 ## Interactive Taylor Diagram
 ![Taylor Diagram](docs/_static/example_taylor_diagram.gif)
