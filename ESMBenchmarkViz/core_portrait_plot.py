@@ -15,13 +15,21 @@ from bokeh.models import (
     BasicTicker,
     ColorBar,
     ColumnDataSource,
+    CustomJS,
     LinearAxis,
     LinearColorMapper,
     OpenURL,
     Patches,
     TapTool,
 )
+from bokeh.layouts import column, row
 from bokeh.plotting import figure, show
+
+from .support_functions import (
+    create_image_display,
+    create_name_select,
+    create_navigation_buttons,
+)
 
 # -------------
 # Main function
@@ -53,15 +61,15 @@ def portrait_plot(
     line_color: str = "grey",
     legend_name: Optional[str] = "Group",
     legend_labels: Optional[List[str]] = None,
-    img_url: Optional[List[str]] = None,
+    images: Optional[List[str]] = None,
     tooltips: Optional[Union[str, List[Tuple[str, str]]]] = None,
-    url_open: Optional[List[str]] = None,
     missing_color: str = "grey",
     aspect_scale: float = 1,
     show_plot: bool = True,
     bokeh_toolbar: bool = True,
     bokeh_logo: bool = True,
     debug: bool = False,
+    names: Optional[List[str]] = None
 ):
     """
     Generates an interactive portrait plot using Bokeh.
@@ -118,6 +126,8 @@ def portrait_plot(
         Labels for the legend (used for triangular plots). Default is None.
     img_url : list of str, optional
         Links to images displayed in tooltips. Default is None.
+    images : list, optional
+        List of image file paths corresponding to the data points. Default is None.
     tooltips : str or list of tuple, optional
         Tooltips for the plot. Default is None.
     url_open : list of str, optional
@@ -162,9 +172,6 @@ def portrait_plot(
         )
         if num_divide_annotate != num_divide:
             sys.exit("Error: annotate_data does not have same size as data")
-
-    if url_open is None:
-        url_open = img_url
 
     # Figure type
     if num_divide > 1 and len(data.shape) == 3:
@@ -224,48 +231,59 @@ def portrait_plot(
                 xname_list.append(xname)
                 yname_list.append(yname)
 
+    data = {
+        "xs": xs,
+        "ys": ys,
+        "field": field,
+        "xname": xname_list,
+        "yname": yname_list
+    }
     # Gathered data for plotting
-    col_dict = dict(
-        xs=xs,
-        ys=ys,
-        field=field,
-        xname=xname_list,
-        yname=yname_list,
-    )
+    #col_dict = dict(
+    #    xs=xs,
+    #    ys=ys,
+    #    field=field,
+    #    xname=xname_list,
+    #    yname=yname_list,
 
-    # if img_url is not None, update col_dict with img_url
-    if img_url is not None:
-        col_dict.update(dict(img=img_url))
+    if images:
+        data["images"] = images
+    if names:
+        data["names"] = names
+    if legend_labels:
+        data["position_description"] = position_description_list
 
-    # if url_open is not None, update col_dict with url_open
-    if url_open is not None:
-        col_dict.update(dict(url=url_open))
+    #if images is not None and images.any():
+    #    col_dict.update(dict(images=images))
+
+    #if names:
+    #    col_dict.update(dict(names=names))
 
     # if field2 is not empty, update col_dict with field2
-    if len(field2) > 0:
-        col_dict.update(dict(field2=field2))
-        col_dict_df = pd.DataFrame.from_dict(col_dict)
-        col_dict_df.loc[
-            col_dict_df.field2.isna(), ("img")
-        ] = "https://pcmdi.llnl.gov/pmp-preliminary-results/interactive_plot/mean_climate/no-data-whitebg.png"
-        col_dict.update(dict(img=col_dict_df["img"].tolist()))
+    #if len(field2) > 0:
+    #    col_dict.update(dict(field2=field2))
+    #    col_dict_df = pd.DataFrame.from_dict(col_dict)
+    #    col_dict_df.loc[
+    #        col_dict_df.field2.isna(), ("img")
+    #    ] = "https://pcmdi.llnl.gov/pmp-preliminary-results/interactive_plot/mean_climate/no-data-whitebg.png"
+    #    col_dict.update(dict(img=col_dict_df["img"].tolist()))
 
     # if position_list is not None, update col_dict with position_list
-    if len(positions_list) == len(xname_list):
-        col_dict.update(dict(position=positions_list))
+    #if len(positions_list) == len(xname_list):
+    #    col_dict.update(dict(position=positions_list))
 
     # if position_description_list is not empty, update col_dict with position_description_list
-    if len(position_description_list) > 0:
-        col_dict.update(dict(position_description=position_description_list))
+    #if len(position_description_list) > 0:
+    #    col_dict.update(dict(position_description=position_description_list))
 
-    if debug:
-        print("col_dict: ", col_dict)
-        print("col_dict.keys(): ", col_dict.keys())
-        print("col_dict['xs']: ", col_dict["xs"])
-        print("col_dict['ys']: ", col_dict["ys"])
-        print("col_dict['position']: ", col_dict["position"])
+    #if debug:
+    #    print("col_dict: ", col_dict)
+    #    print("col_dict.keys(): ", col_dict.keys())
+    #    print("col_dict['xs']: ", col_dict["xs"])
+    #    print("col_dict['ys']: ", col_dict["ys"])
+    #    print("col_dict['position']: ", col_dict["position"])
 
-    source = ColumnDataSource(col_dict)
+    source = ColumnDataSource(data=data)
 
     # ----------------
     # Ready to plot!!
@@ -286,33 +304,26 @@ def portrait_plot(
         yaxis_labels = deepcopy(yaxis_labels)[::-1]
 
     if clickable:
-        tools = "hover, tap, save"  # hover needed for tooltip, tap needed for url open
+        tools = "hover, tap, pan, save"  # hover needed for tooltip, tap needed for url open
     else:
-        tools = "hover, save"
+        tools = "hover, tap, pan, save"
 
-    if img_url is not None:
+    if images:
         if tooltips is None:
             # Customized tooltip
             tooltips = """
                 <div>
                     <div>
-                        <img
-                            src="@img" alt="@img" width="300" height="200"
-                            style="float: left; margin: 0px 5px 5px 0px;"
-                            border="1"
-                            onerror
-                            style="margin: -75px 0 0 -100px"
-                        ></img><br>
+                        <img src="@images" alt="@img" style="width:100px;height:auto;"/><br>
                         <span style="font-size: 14px">
-                        <font color=darkgreen>Model:</font> <b>@yname</b><br>
-                        <font color=darkgreen>Variable:</font> <b>@xname</b><br>"""
+                        <font>Model:</font> <b>@yname</b><br>
+                        <font>Variable:</font> <b>@xname</b><br>"""
 
             if len(position_description_list) > 0:
-                tooltips += f"<font color=darkgreen>{legend_name.capitalize()}:</font> <b>@position_description</b><br>"
+                tooltips += f"<font>{legend_name.capitalize()}:</font> <b>@position_description</b><br>"
 
             tooltips += """
-                        <font color=darkgreen>Value (Nor.):</font> @field<br>
-                        <font color=darkgreen>Value (Act.):</font> @field2</span>
+                        <font>Value:</font> @field<br>
                     </div>
                 </div>"""
     else:
@@ -452,7 +463,182 @@ def portrait_plot(
     if title is not None:
         plot.title.align = "center"
 
-    return_object = plot
+    #return_object = plot
+
+    # Div to display image and x, y values on click
+    # maximum height is for the actual image display inside the image_display Div
+    if images:
+        image_display, max_height = create_image_display(width, height)
+
+        # Dropdown menu for names with default "Select Data"
+        name_select = create_name_select(data)
+
+        # Create buttons for Previous and Next Image Navigation
+        previous_button, next_button = create_navigation_buttons()
+
+        # JavaScript callback for dropdown selection changes
+        dropdown_callback = CustomJS(
+            args=dict(
+                source=source,
+                div=image_display,
+                name_select=name_select,
+                maxHeight=max_height,
+            ),
+            code="""
+            const name_value = name_select.value;
+            console.log(name_value);
+            const indices = source.data.names.map((name, i) => (name === name_value) ? i : -1).filter(i => i >= 0);
+            console.log(indices);
+
+            if (indices.length > 0) {
+                const selected = indices[0];
+                console.log("selected");
+                console.log(selected);
+                const img_url = source.data.images[selected];
+                console.log("img_url");
+                console.log(img_url);
+                console.log(source.data.images[selected]);
+                console.log(source.data.xs);
+                const x_value = source.data.xs[selected];
+                console.log(x_value);
+                const y_value = source.data.ys[selected];
+                console.log(y_value);
+
+                if (img_url) {
+                    div.text = `<a href="${img_url}" target="_blank"><img src="${img_url}" style="width:100%;max-height:${maxHeight}px;height:auto;"></a><div><strong>X:</strong> ${x_value}</div><div><strong>Y:</strong> ${y_value}</div>`;
+                    console.log(div.text);
+                } else {
+                    div.text = `<div>No image available</div><div><strong>X:</strong> ${x_value}</div><div><strong>Y:</strong> ${y_value}</div>`;
+                }
+
+                // Highlight the selected point on the scatter plot ******** NEED TO FIX
+                source.selected.indices = [selected];
+                console.log(source.selected.indices);
+                console.log("source.selected.indices error");
+            } else {
+                div.text = "No matching point found.";
+                source.selected.indices = [];  // Clear selection if no match
+            }
+        """
+        )
+        name_select.js_on_change("value", dropdown_callback)
+
+        # JavaScript callback for click events
+        click_callback = CustomJS(
+            args=dict(
+                source=source,
+                div=image_display,
+                name_select=name_select,
+                maxHeight=max_height,
+            ),
+            code="""
+            const selected = source.selected.indices[0];
+            if (selected != null) {
+                const name_value = source.data.names[selected];
+
+                const img_url = source.data.images[selected];
+                const x_value = source.data.xs[selected];
+                const y_value = source.data.ys[selected];
+
+                // Update dropdown
+                name_select.value = name_value;
+
+                if (img_url) {
+                    // Display the image
+                    div.text = `<a href="${img_url}" target="_blank"><img src="${img_url}" style="width:100%;max-height:${maxHeight}px;height:auto;"></a><div><strong>X:</strong> ${x_value}</div><div><strong>Y:</strong> ${y_value}</div>`;
+                } else {
+                    // No image available
+                    div.text = `<div>No image available</div><div><strong>X:</strong> ${x_value}</div><div><strong>Y:</strong> ${y_value}</div>`;
+                }
+            }
+        """,
+        )
+        source.selected.js_on_change("indices", click_callback)
+
+        # JavaScript callback for "Previous Image" button
+        previous_callback = CustomJS(
+            args=dict(
+                source=source,
+                div=image_display,
+                name_select=name_select,
+                maxHeight=max_height,
+            ),
+            code="""
+            let selected_index = source.selected.indices[0];
+            if (selected_index !== undefined) {
+                // Get the current name's index
+                const current_name = source.data.names[selected_index];
+                const current_index = source.data.names.indexOf(current_name);
+
+                // Get the previous index
+                const prev_index = (current_index - 1 + source.data.names.length) % source.data.names.length;
+                const prev_name = source.data.names[prev_index];
+                const prev_img_url = source.data.images[prev_index];
+                const prev_x = source.data.xs[prev_index];
+                const prev_y = source.data.ys[prev_index];
+
+                if (prev_img_url) {
+                    // Update image and x, y values
+                    div.text = `<a href="${prev_img_url}" target="_blank"><img src="${prev_img_url}" style="width:100%;max-height:${maxHeight}px;height:auto;"></a><div><strong>X:</strong> ${prev_x}</div><div><strong>Y:</strong> ${prev_y}</div>`;
+                } else {
+                    div.text = `<div>No image available</div><div><strong>X:</strong> ${prev_x}</div><div><strong>Y:</strong> ${prev_y}</div>`;
+                }
+                name_select.value = prev_name;
+
+                // Sync selection with plot
+                source.selected.indices = [prev_index];
+            }
+        """,
+        )
+        previous_button.js_on_event("button_click", previous_callback)
+
+        # JavaScript callback for "Next Image" button
+        next_callback = CustomJS(
+            args=dict(
+                source=source,
+                div=image_display,
+                name_select=name_select,
+                maxHeight=max_height,
+            ),
+            code="""
+            let selected_index = source.selected.indices[0];
+            if (selected_index !== undefined) {
+                // Get the current name's index
+                const current_name = source.data.names[selected_index];
+                const current_index = source.data.names.indexOf(current_name);
+
+                // Get the next index
+                const next_index = (current_index + 1) % source.data.names.length;
+                const next_name = source.data.names[next_index];
+                const next_img_url = source.data.images[next_index];
+                const next_x = source.data.xs[next_index];
+                const next_y = source.data.ys[next_index];
+
+                if (next_img_url) {
+                    // Update image and x, y values
+                    div.text = `<a href="${next_img_url}" target="_blank"><img src="${next_img_url}" style="width:100%;max-height:${maxHeight}px;height:auto;"></a><div><strong>X:</strong> ${next_x}</div><div><strong>Y:</strong> ${next_y}</div>`;
+                } else {
+                    div.text = `<div>No image available</div><div><strong>X:</strong> ${next_x}</div><div><strong>Y:</strong> ${next_y}</div>`;
+                }
+                name_select.value = next_name;
+
+                // Sync selection with plot
+                source.selected.indices = [next_index];
+            }
+        """,
+        )
+        next_button.js_on_event("button_click", next_callback)
+
+        # Arrange the Previous and Next buttons side by side
+        navigation_buttons = row(previous_button, next_button)
+
+        # Arrange layout
+        controls = column(name_select, image_display, navigation_buttons)
+        layout = row(plot, controls)
+    else:
+        layout =row (plot)
+
+    return_object = layout
 
     # Show the plot if requested
     if show_plot:
