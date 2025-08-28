@@ -22,6 +22,7 @@ from bokeh.models import (
     TapTool,
 )
 from bokeh.plotting import figure, show
+from bokeh.io import export_png
 
 # -------------
 # Main function
@@ -35,6 +36,7 @@ def portrait_plot(
     width: Union[int, str] = 600,
     height: Union[int, str] = 600,
     static: bool = False,
+    static_filename: str = './static_portrait_plot.png',
     annotate: bool = False,
     annotate_data: Optional[np.ndarray] = None,
     vrange: Optional[Tuple[float, float]] = None,
@@ -458,6 +460,8 @@ def portrait_plot(
         plot.toolbar.logo = None
 
     # Turn off bokeh toolbar
+    if static:
+        bokeh_toolbar = False
     if bokeh_toolbar is False:
         plot.toolbar_location = None
 
@@ -470,6 +474,10 @@ def portrait_plot(
     # Show the plot if requested
     if show_plot:
         show(return_object)
+
+    # if static, export plot as png
+    if static:
+        export_png(plot, filename=static_filename)
 
     return return_object
 
