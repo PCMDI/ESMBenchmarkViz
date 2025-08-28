@@ -1,6 +1,6 @@
 # - Generate an interactive Portrait Plot using Bokeh.
 # - Author: Jiwoo Lee (2021.08)
-# - Last update: 2024.11
+# - Last update: 2025.08 (Kristin Chang)
 
 import math
 import sys
@@ -34,6 +34,7 @@ def portrait_plot(
     yaxis_labels: List[str],
     width: Union[int, str] = 600,
     height: Union[int, str] = 600,
+    static: bool = False,
     annotate: bool = False,
     annotate_data: Optional[np.ndarray] = None,
     vrange: Optional[Tuple[float, float]] = None,
@@ -338,7 +339,19 @@ def portrait_plot(
     else:
         sys.exit("Error: xaxis_location should be either above, below, or both")
 
-    plot = figure(
+    if static:
+        plot = figure(
+            title=title,
+            x_range=xaxis_labels,
+            y_range=yaxis_labels,
+            width=plot_width,
+            height=plot_height,
+            min_border=50,
+            x_axis_location=x_axis_location,
+            aspect_scale=aspect_scale,
+        )
+    else:
+        plot = figure(
         title=title,
         x_range=xaxis_labels,
         y_range=yaxis_labels,
@@ -349,7 +362,7 @@ def portrait_plot(
         tooltips=tooltips,
         x_axis_location=x_axis_location,
         aspect_scale=aspect_scale,
-    )
+        )
 
     # Color Map control
     if cmap_bounds is None:
