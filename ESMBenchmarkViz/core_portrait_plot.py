@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from bokeh.colors import RGB
+from bokeh.io import export_png
 from bokeh.models import (
     BasicTicker,
     ColorBar,
@@ -22,7 +23,6 @@ from bokeh.models import (
     TapTool,
 )
 from bokeh.plotting import figure, show
-from bokeh.io import export_png
 
 # -------------
 # Main function
@@ -36,7 +36,7 @@ def portrait_plot(
     width: Union[int, str] = 600,
     height: Union[int, str] = 600,
     static: bool = False,
-    static_filename: str = './static_portrait_plot.png',
+    static_filename: str = "./static_portrait_plot.png",
     annotate: bool = False,
     annotate_data: Optional[np.ndarray] = None,
     vrange: Optional[Tuple[float, float]] = None,
@@ -354,16 +354,16 @@ def portrait_plot(
         )
     else:
         plot = figure(
-        title=title,
-        x_range=xaxis_labels,
-        y_range=yaxis_labels,
-        width=plot_width,
-        height=plot_height,
-        min_border=50,
-        tools=tools,
-        tooltips=tooltips,
-        x_axis_location=x_axis_location,
-        aspect_scale=aspect_scale,
+            title=title,
+            x_range=xaxis_labels,
+            y_range=yaxis_labels,
+            width=plot_width,
+            height=plot_height,
+            min_border=50,
+            tools=tools,
+            tooltips=tooltips,
+            x_axis_location=x_axis_location,
+            aspect_scale=aspect_scale,
         )
 
     # Color Map control
