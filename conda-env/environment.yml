@@ -1,5 +1,7 @@
 name: ESMBenchmarkViz_dev
-
+channels:
+    - conda-forge
+    - defaults
 dependencies:
   # ==================
   # Base
@@ -27,3 +29,5 @@ dependencies:
   - pandoc
   - sphinx-design
   - ipython # Required for nbsphinx syntax highlighting
+
+prefix: /opt/miniconda3/envs/ESMBenchmarkViz_dev

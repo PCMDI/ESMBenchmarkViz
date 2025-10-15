@@ -1,6 +1,6 @@
 # - Generate an interactive Portrait Plot using Bokeh.
 # - Author: Jiwoo Lee (2021.08)
-# - Last update: 2024.11
+# - Last update: 2025.08 (Kristin Chang)
 
 import math
 import sys
@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from bokeh.colors import RGB
+from bokeh.io import export_png
 from bokeh.models import (
     BasicTicker,
     ColorBar,
@@ -34,6 +35,8 @@ def portrait_plot(
     yaxis_labels: List[str],
     width: Union[int, str] = 600,
     height: Union[int, str] = 600,
+    static: bool = False,
+    static_filename: str = "./static_portrait_plot.png",
     annotate: bool = False,
     annotate_data: Optional[np.ndarray] = None,
     vrange: Optional[Tuple[float, float]] = None,
@@ -338,18 +341,30 @@ def portrait_plot(
     else:
         sys.exit("Error: xaxis_location should be either above, below, or both")
 
-    plot = figure(
-        title=title,
-        x_range=xaxis_labels,
-        y_range=yaxis_labels,
-        width=plot_width,
-        height=plot_height,
-        min_border=50,
-        tools=tools,
-        tooltips=tooltips,
-        x_axis_location=x_axis_location,
-        aspect_scale=aspect_scale,
-    )
+    if static:
+        plot = figure(
+            title=title,
+            x_range=xaxis_labels,
+            y_range=yaxis_labels,
+            width=plot_width,
+            height=plot_height,
+            min_border=50,
+            x_axis_location=x_axis_location,
+            aspect_scale=aspect_scale,
+        )
+    else:
+        plot = figure(
+            title=title,
+            x_range=xaxis_labels,
+            y_range=yaxis_labels,
+            width=plot_width,
+            height=plot_height,
+            min_border=50,
+            tools=tools,
+            tooltips=tooltips,
+            x_axis_location=x_axis_location,
+            aspect_scale=aspect_scale,
+        )
 
     # Color Map control
     if cmap_bounds is None:
@@ -445,6 +460,8 @@ def portrait_plot(
         plot.toolbar.logo = None
 
     # Turn off bokeh toolbar
+    if static:
+        bokeh_toolbar = False
     if bokeh_toolbar is False:
         plot.toolbar_location = None
 
@@ -457,6 +474,10 @@ def portrait_plot(
     # Show the plot if requested
     if show_plot:
         show(return_object)
+
+    # if static, export plot as png
+    if static:
+        export_png(plot, filename=static_filename)
 
     return return_object
 
