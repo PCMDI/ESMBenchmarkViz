@@ -13,6 +13,20 @@ authors:
     email: lee1043@llnl.gov
     affiliation: Lawrence Livermore National Laboratory
     orcid: 'https://orcid.org/0000-0002-0016-7199'
+  - given-names: Kristin
+    family-names: Chang
+    affiliation: Lawrence Livermore National Laboratory
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.14498167
+    description: Software
 repository-code: 'https://github.com/PCMDI/ESMBenchmarkViz'
-abstract: ' A Python package for interactive visualizations for Earth System Model evaluation and benchmarking.'
+abstract: ' A Python toolkit for interactive visualizations for Earth System Model evaluation and benchmarking.'
+keywords:
+  - climate
+  - climate modeling
+  - climate model evaluation
+  - Earth System Model evaluation
 license: BSD-3-Clause
+version: '0.2.1'
+date-released: '2025-10-16'
