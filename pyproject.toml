@@ -14,8 +14,6 @@ description = "A Python toolkit for interactive visualizations for Earth System 
 readme = "README.md"
 requires-python = ">=3.10,<3.14"
 license = { file = "LICENSE" }
-author = "Jiwoo Lee"
-author_email = "lee1043@llnl.gov"
 classifiers = [
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.10",
