@@ -12,11 +12,11 @@
 [![Formatted with black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
 
 
-ESMBenchmarkViz is a Python-based interactive visualization tool built with Bokeh, designed to facilitate the collective evaluation, intercomparison, and benchmarking of Earth System Models (ESMs). The tool provides a user-friendly interface for analyzing model performance, enabling researchers to make informed comparisons and insights into ESM behavior.
+ESMBenchmarkViz is a Python-based interactive visualization toolkit built with Bokeh, designed to facilitate the collective evaluation, intercomparison, and benchmarking of Earth System Models (ESMs). The tool provides a user-friendly interface for analyzing model performance, enabling researchers to make informed comparisons and insights into ESM behavior.
 
 ## Developer
 
-Jiwoo Lee ([@lee1043](https://github.com/PCMDI/ESMBenchmarkViz/commits?author=lee1043), [LLNL][LLNL])
+Jiwoo Lee ([@lee1043](https://github.com/PCMDI/ESMBenchmarkViz/commits?author=lee1043), [LLNL][LLNL]), Kristin Chang ([@kristinchang3](https://github.com/PCMDI/ESMBenchmarkViz/commits?author=kristinchang3), [LLNL][LLNL])
 
 ## Interactive Taylor Diagram
 ![Taylor Diagram](docs/_static/example_taylor_diagram.gif)
