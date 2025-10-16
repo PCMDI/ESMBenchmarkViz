@@ -248,9 +248,9 @@ def portrait_plot(
     if len(field2) > 0:
         col_dict.update(dict(field2=field2))
         col_dict_df = pd.DataFrame.from_dict(col_dict)
-        col_dict_df.loc[
-            col_dict_df.field2.isna(), ("img")
-        ] = "https://pcmdi.llnl.gov/pmp-preliminary-results/interactive_plot/mean_climate/no-data-whitebg.png"
+        col_dict_df.loc[col_dict_df.field2.isna(), ("img")] = (
+            "https://pcmdi.llnl.gov/pmp-preliminary-results/interactive_plot/mean_climate/no-data-whitebg.png"
+        )
         col_dict.update(dict(img=col_dict_df["img"].tolist()))
 
     # if position_list is not None, update col_dict with position_list
