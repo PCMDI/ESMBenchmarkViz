@@ -28,6 +28,10 @@ dynamic = ["version"]
 [project.urls]
 Homepage = "https://github.com/PCMDI/ESMBenchmarkViz"
 
+[tool.setuptools.packages.find]
+include = ["ESMBenchmarkViz*"]
+exclude = ["tests", "misc_scripts", "docs", "_custom_build", "conda-env"]
+
 [tool.setuptools.dynamic]
 version = { attr = "ESMBenchmarkViz._version.__version__" }
 
