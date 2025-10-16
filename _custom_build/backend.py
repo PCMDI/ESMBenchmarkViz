@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import os
-import runpy
 from pathlib import Path
 
 from setuptools import build_meta as _orig
