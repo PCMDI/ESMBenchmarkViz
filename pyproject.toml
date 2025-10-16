@@ -1,0 +1,76 @@
+###############################################
+# Build system and project metadata (PEP 621) #
+###############################################
+
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+# Use an in-tree backend wrapper so we can run a pre-build step
+build-backend = "backend"
+backend-path = ["_custom_build"]
+
+[project]
+name = "ESMBenchmarkViz"
+description = "A Python toolkit for interactive visualizations for Earth System Model evaluation and benchmarking"
+readme = "README.md"
+requires-python = ">=3.10,<3.14"
+license = { file = "LICENSE" }
+author = "Jiwoo Lee"
+author_email = "lee1043@llnl.gov"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "License :: OSI Approved :: BSD License",
+  "Operating System :: OS Independent",
+]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://github.com/PCMDI/ESMBenchmarkViz"
+
+[tool.setuptools.dynamic]
+version = { attr = "ESMBenchmarkViz._version.__version__" }
+
+#########################
+# Lint/Test configuration
+#########################
+
+[tool.black]
+line-length = 88
+target-version = ['py310', 'py311', 'py312', 'py313']
+include = '\.pyi?$'
+exclude = '''
+(
+  /(
+      \.eggs
+    | \.git
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.idea
+    | venv
+    | _build
+    | buck-out
+    | build
+    | dist
+    | docs
+    | config
+  )/
+)
+'''
+
+[tool.isort]
+# Docs: https://pycqa.github.io/isort/docs/configuration/options.html#example-pyprojecttoml_4
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+line_length = 88
+
+[tool.pytest.ini_options]
+# Docs: https://docs.pytest.org/en/7.2.x/reference/customize.html#configuration
+junit_family = "xunit2"
+addopts = "--cov=ESMBenchmarkViz --cov-report term --cov-report html:tests_coverage_reports/htmlcov --cov-report xml:tests_coverage_reports/coverage.xml -s --ignore tests/deprecated"
+python_files = ["tests.py", "test_*.py"]
