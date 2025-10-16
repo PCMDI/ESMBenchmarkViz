@@ -12,11 +12,11 @@
 [![Formatted with black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
 
 
-ESMBenchmarkViz is a Python-based interactive visualization tool built with Bokeh, designed to facilitate the collective evaluation, intercomparison, and benchmarking of Earth System Models (ESMs). The tool provides a user-friendly interface for analyzing model performance, enabling researchers to make informed comparisons and insights into ESM behavior.
+ESMBenchmarkViz is a Python-based interactive visualization toolkit built with Bokeh, designed to facilitate the collective evaluation, intercomparison, and benchmarking of Earth System Models (ESMs). The tool provides a user-friendly interface for analyzing model performance, enabling researchers to make informed comparisons and insights into ESM behavior.
 
 ## Developer
 
-Jiwoo Lee ([@lee1043](https://github.com/PCMDI/ESMBenchmarkViz/commits?author=lee1043), [LLNL][LLNL])
+Jiwoo Lee ([@lee1043](https://github.com/PCMDI/ESMBenchmarkViz/commits?author=lee1043), [LLNL][LLNL]), Kristin Chang ([@kristinchang3](https://github.com/PCMDI/ESMBenchmarkViz/commits?author=kristinchang3), [LLNL][LLNL])
 
 ## Interactive Taylor Diagram
 ![Taylor Diagram](docs/_static/example_taylor_diagram.gif)
@@ -27,11 +27,13 @@ Jiwoo Lee ([@lee1043](https://github.com/PCMDI/ESMBenchmarkViz/commits?author=le
 
 | <div style="width:300%">[Versions]</div> | Update summary   |
 | ------------- | ------------------------------------------- |
+| [v0.2.1]      | Technical update
 | [v0.2.0]      | Scatter plot and Portrait plot added
 | [v0.1.0]      | Taylor Diagram with diagnostic figure pop up capability
 | [v0.0.1]      | Initial release for interactive Taylor Diagram
 
 [Versions]: https://github.com/PCMDI/ESMBenchmarkViz/releases
+[v0.2.1]: https://github.com/PCMDI/ESMBenchmarkViz/releases/tag/v0.2.1
 [v0.2.0]: https://github.com/PCMDI/ESMBenchmarkViz/releases/tag/v0.2.0
 [v0.1.0]: https://github.com/PCMDI/ESMBenchmarkViz/releases/tag/v0.1.0
 [v0.0.1]: https://github.com/PCMDI/ESMBenchmarkViz/releases/tag/v0.0.1

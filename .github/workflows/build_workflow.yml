@@ -32,57 +32,61 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout Code Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.13'
 
       - name: Install and Run Pre-commit
-        uses: pre-commit/action@v3.0.0
+        uses: pre-commit/action@v3.0.1
 
   build:
     needs: check-jobs-to-skip
     if: ${{ needs.check-jobs-to-skip.outputs.should_skip != 'true' }} || ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
     defaults:
       run:
         shell: bash -l {0}
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up Conda Environment
-        uses: conda-incubator/setup-miniconda@v2
-        with:
-          activate-environment: "ESMBenchmarkViz_ci"
-          miniforge-variant: Mambaforge
-          miniforge-version: latest
-          environment-file: conda-env/environment.yml
-          use-mamba: true
-          mamba-version: "*"
-          channel-priority: strict
-          auto-update-conda: true
-
-      # Used for refreshing the cache every 24 hours to avoid inconsistencies of package
-      # versions between the CI pipeline and local installations.
+      - uses: actions/checkout@v4
       - name: Get Date
         id: get-date
         run: echo "today=$(/bin/date -u '+%Y%m%d')" >> $GITHUB_OUTPUT
-        shell: bash
 
-      - name: Cache Conda
-        uses: actions/cache@v3
+      - name: Set up Conda Environment
+        uses: conda-incubator/setup-miniconda@v3
         with:
-          path: ${{ env.CONDA }}/envs
-          key:
-            conda-${{ runner.os }}--${{ runner.arch }}--${{
-            steps.get-date.outputs.today }}-${{
-            hashFiles('conda-env/environment.yml') }}-${{ env.CACHE_NUMBER}}
+          miniforge-variant: Miniforge3
+          miniforge-version: latest
+          activate-environment: "ESMBenchmarkViz_ci"
+          environment-file: conda-env/environment.yml
+          channel-priority: flexible
+          auto-update-conda: true
+          python-version: ${{ matrix.python-version }}
+          use-mamba: false
+          conda-solver: classic
+
+      - name: Cache Conda Packages
+        uses: actions/cache@v4
+        with:
+          path: ~/conda_pkgs_dir
+          key: conda-${{ runner.os }}--${{ runner.arch }}--py${{ matrix.python-version }}--${{ steps.get-date.outputs.today }}--${{ hashFiles('conda-env/environment.yml') }}--${{ env.CACHE_NUMBER }}
         env:
-          # Increase this value to reset cache if conda/environment.yml has not changed in the workflow
           CACHE_NUMBER: 0
+
+      - name: Verify Conda Environment
+        run: |
+          conda info
+          conda list
+          conda config --show-sources
+          conda config --show
 
       - name: Install ESMBenchmarkViz
         # Source: https://github.com/conda/conda-build/issues/4251#issuecomment-1053460542
@@ -121,14 +125,24 @@ jobs:
             hashFiles('conda-env/environment.yml') }}
 
       - name: Set up Conda Environment
-        uses: conda-incubator/setup-miniconda@v2
+        uses: conda-incubator/setup-miniconda@v3
         with:
-          activate-environment: "ESMBenchmarkViz_dev"
+          activate-environment: "ESMBenchmarkViz_ci"
+          environment-file: conda-env/environment.yml
           miniforge-variant: Miniforge3
           miniforge-version: latest
-          environment-file: conda-env/environment.yml
           channel-priority: strict
           auto-update-conda: true
+          use-mamba: false
+          conda-solver: classic
+          python-version: '3.13'
+
+      - name: Verify Conda Environment
+        run: |
+          conda info
+          conda list
+          conda config --show-sources
+          conda config --show
 
       - name: Install ESMBenchmarkViz
         # Source: https://github.com/conda/conda-build/issues/4251#issuecomment-1053460542
