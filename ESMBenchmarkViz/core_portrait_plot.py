@@ -20,8 +20,8 @@ from bokeh.models import (
     LinearColorMapper,
     OpenURL,
     Patches,
+    Span,
     TapTool,
-    Span
 )
 from bokeh.plotting import figure, show
 
@@ -457,9 +457,11 @@ def portrait_plot(
 
     # if using glyph rows, add borders
     if glyph_rows:
-        line_locations = np.arange(0, len(yaxis_labels)+1, 1)
+        line_locations = np.arange(0, len(yaxis_labels) + 1, 1)
         for loc in line_locations:
-            h_lines = Span(location=loc, dimension='width', line_color='black', line_width=2)
+            h_lines = Span(
+                location=loc, dimension="width", line_color="black", line_width=2
+            )
             plot.add_layout(h_lines)
 
     # Link to open when clicked
@@ -792,16 +794,16 @@ def get_glyph_row_points(glyph_rows: int):
 
     xpts = [0, 0, 1, 1]
     xpts_list = [xpts] * glyph_rows
-    row_height = 1/glyph_rows
+    row_height = 1 / glyph_rows
     ypts_list = []
     positions = []
     for g in range(0, glyph_rows):
-        gypts = np.arange(0, 1+row_height, row_height).astype('float')
+        gypts = np.arange(0, 1 + row_height, row_height).astype("float")
         gypts = np.round(gypts, 3)
         gypts_list = [float(x) for x in gypts]
-        g_array = [gypts_list[g], gypts_list[g+1], gypts_list[g+1], gypts_list[g]]
+        g_array = [gypts_list[g], gypts_list[g + 1], gypts_list[g + 1], gypts_list[g]]
         ypts_list.append(g_array)
-        position = f'region{g+1}'
+        position = f"region{g + 1}"
         positions.append(position)
 
     return xpts_list, ypts_list, positions
