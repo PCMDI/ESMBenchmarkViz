@@ -1,0 +1,922 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Interactive Portrait Plot" href="example_portrait_plot.html" /><link rel="prev" title="Interactive Taylor Diagram" href="example_taylor_diagram.html" />
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
+        <title>Interactive Scatter Plot - ESMBenchmarkViz Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">ESMBenchmarkViz Documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">ESMBenchmarkViz Documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">For users:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../gallery.html">Gallery</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Gallery</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="example_taylor_diagram.html">Interactive Taylor Diagram</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Interactive Scatter Plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_portrait_plot.html">Interactive Portrait Plot</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference:</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../generated/ESMBenchmarkViz.taylor_diagram.html">ESMBenchmarkViz.taylor_diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../generated/ESMBenchmarkViz.scatter_plot.html">ESMBenchmarkViz.scatter_plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../generated/ESMBenchmarkViz.portrait_plot.html">ESMBenchmarkViz.portrait_plot</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/lee1043/ESMBenchmarkViz">Source code</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/lee1043/ESMBenchmarkViz/issues">Issue tracker</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/lee1043/ESMBenchmarkViz/blob/main/docs/examples/example_scatter_plot.ipynb?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/lee1043/ESMBenchmarkViz/edit/main/docs/examples/example_scatter_plot.ipynb" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="Interactive-Scatter-Plot">
+<h1>Interactive Scatter Plot<a class="headerlink" href="#Interactive-Scatter-Plot" title="Link to this heading"></a></h1>
+<p>This notebook shows usage examples of interactive Scatter Plot. Detailed API description can be found <a class="reference external" href="../generated/ESMBenchmarkViz.scatter_plot.html">here</a>.</p>
+<section id="Import-functions">
+<h2>Import functions<a class="headerlink" href="#Import-functions" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">bokeh.plotting</span><span class="w"> </span><span class="kn">import</span> <span class="n">output_file</span><span class="p">,</span> <span class="n">save</span><span class="p">,</span> <span class="n">output_notebook</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ESMBenchmarkViz</span><span class="w"> </span><span class="kn">import</span> <span class="n">scatter_plot</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Enable Bokeh output in the notebook</span>
+<span class="n">output_notebook</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<style>
+    .bk-notebook-logo {
+        display: block;
+        width: 20px;
+        height: 20px;
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAAOkSURBVDiNjZRtaJVlGMd/1/08zzln5zjP1LWcU9N0NkN8m2CYjpgQYQXqSs0I84OLIC0hkEKoPtiH3gmKoiJDU7QpLgoLjLIQCpEsNJ1vqUOdO7ppbuec5+V+rj4ctwzd8IIbbi6u+8f1539dt3A78eXC7QizUF7gyV1fD1Yqg4JWz84yffhm0qkFqBogB9rM8tZdtwVsPUhWhGcFJngGeWrPzHm5oaMmkfEg1usvLFyc8jLRqDOMru7AyC8saQr7GG7f5fvDeH7Ej8CM66nIF+8yngt6HWaKh7k49Soy9nXurCi1o3qUbS3zWfrYeQDTB/Qj6kX6Ybhw4B+bOYoLKCC9H3Nu/leUTZ1JdRWkkn2ldcCamzrcf47KKXdAJllSlxAOkRgyHsGC/zRday5Qld9DyoM4/q/rUoy/CXh3jzOu3bHUVZeU+DEn8FInkPBFlu3+nW3Nw0mk6vCDiWg8CeJaxEwuHS3+z5RgY+YBR6V1Z1nxSOfoaPa4LASWxxdNp+VWTk7+4vzaou8v8PN+xo+KY2xsw6une2frhw05CTYOmQvsEhjhWjn0bmXPjpE1+kplmmkP3suftwTubK9Vq22qKmrBhpY4jvd5afdRA3wGjFAgcnTK2s4hY0/GPNIb0nErGMCRxWOOX64Z8RAC4oCXdklmEvcL8o0BfkNK4lUg9HTl+oPlQxdNo3Mg4Nv175e/1LDGzZen30MEjRUtmXSfiTVu1kK8W4txyV6BMKlbgk3lMwYCiusNy9fVfvvwMxv8Ynl6vxoByANLTWplvuj/nF9m2+PDtt1eiHPBr1oIfhCChQMBw6Aw0UulqTKZdfVvfG7VcfIqLG9bcldL/+pdWTLxLUy8Qq38heUIjh4XlzZxzQm19lLFlr8vdQ97rjZVOLf8nclzckbcD4wxXMidpX30sFd37Fv/GtwwhzhxGVAprjbg0gCAEeIgwCZyTV2Z1REEW8O4py0wsjeloKoMr6iCY6dP92H6Vw/oTyICIthibxjm/DfN9lVz8IqtqKYLUXfoKVMVQVVJOElGjrnnUt9T9wbgp8AyYKaGlqingHZU/uG2NTZSVqwHQTWkx9hxjkpWDaCg6Ckj5qebgBVbT3V3NNXMSiWSDdGV3hrtzla7J+duwPOToIg42ChPQOQjspnSlp1V+Gjdged7+8UN5CRAV7a5EdFNwCjEaBR27b3W890TE7g24NAP/mMDXRWrGoFPQI9ls/MWO2dWFAar/xcOIImbbpA3zgAAAABJRU5ErkJggg==);
+    }
+</style>
+<div>
+    <a href="https://bokeh.org" target="_blank" class="bk-notebook-logo"></a>
+    <span id="f743887b-abad-40ed-8b69-eb523212f71f">Loading BokehJS ...</span>
+</div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="output_javascript"></div>
+<script type="text/javascript">
+var element = document.currentScript.previousSibling.previousSibling;
+'use strict';
+(function(root) {
+  function now() {
+    return new Date();
+  }
+
+  const force = true;
+
+  if (typeof root._bokeh_onload_callbacks === "undefined" || force === true) {
+    root._bokeh_onload_callbacks = [];
+    root._bokeh_is_loading = undefined;
+  }
+
+const JS_MIME_TYPE = 'application/javascript';
+  const HTML_MIME_TYPE = 'text/html';
+  const EXEC_MIME_TYPE = 'application/vnd.bokehjs_exec.v0+json';
+  const CLASS_NAME = 'output_bokeh rendered_html';
+
+  /**
+   * Render data to the DOM node
+   */
+  function render(props, node) {
+    const script = document.createElement("script");
+    node.appendChild(script);
+  }
+
+  /**
+   * Handle when an output is cleared or removed
+   */
+  function handleClearOutput(event, handle) {
+    function drop(id) {
+      const view = Bokeh.index.get_by_id(id)
+      if (view != null) {
+        view.model.document.clear()
+        Bokeh.index.delete(view)
+      }
+    }
+
+    const cell = handle.cell;
+
+    const id = cell.output_area._bokeh_element_id;
+    const server_id = cell.output_area._bokeh_server_id;
+
+    // Clean up Bokeh references
+    if (id != null) {
+      drop(id)
+    }
+
+    if (server_id !== undefined) {
+      // Clean up Bokeh references
+      const cmd_clean = "from bokeh.io.state import curstate; print(curstate().uuid_to_server['" + server_id + "'].get_sessions()[0].document.roots[0]._id)";
+      cell.notebook.kernel.execute(cmd_clean, {
+        iopub: {
+          output: function(msg) {
+            const id = msg.content.text.trim()
+            drop(id)
+          }
+        }
+      });
+      // Destroy server and session
+      const cmd_destroy = "import bokeh.io.notebook as ion; ion.destroy_server('" + server_id + "')";
+      cell.notebook.kernel.execute(cmd_destroy);
+    }
+  }
+
+  /**
+   * Handle when a new output is added
+   */
+  function handleAddOutput(event, handle) {
+    const output_area = handle.output_area;
+    const output = handle.output;
+
+    // limit handleAddOutput to display_data with EXEC_MIME_TYPE content only
+    if ((output.output_type != "display_data") || (!Object.prototype.hasOwnProperty.call(output.data, EXEC_MIME_TYPE))) {
+      return
+    }
+
+    const toinsert = output_area.element.find("." + CLASS_NAME.split(' ')[0]);
+
+    if (output.metadata[EXEC_MIME_TYPE]["id"] !== undefined) {
+      toinsert[toinsert.length - 1].firstChild.textContent = output.data[JS_MIME_TYPE];
+      // store reference to embed id on output_area
+      output_area._bokeh_element_id = output.metadata[EXEC_MIME_TYPE]["id"];
+    }
+    if (output.metadata[EXEC_MIME_TYPE]["server_id"] !== undefined) {
+      const bk_div = document.createElement("div");
+      bk_div.innerHTML = output.data[HTML_MIME_TYPE];
+      const script_attrs = bk_div.children[0].attributes;
+      for (let i = 0; i < script_attrs.length; i++) {
+        toinsert[toinsert.length - 1].firstChild.setAttribute(script_attrs[i].name, script_attrs[i].value);
+        toinsert[toinsert.length - 1].firstChild.textContent = bk_div.children[0].textContent
+      }
+      // store reference to server id on output_area
+      output_area._bokeh_server_id = output.metadata[EXEC_MIME_TYPE]["server_id"];
+    }
+  }
+
+  function register_renderer(events, OutputArea) {
+
+    function append_mime(data, metadata, element) {
+      // create a DOM node to render to
+      const toinsert = this.create_output_subarea(
+        metadata,
+        CLASS_NAME,
+        EXEC_MIME_TYPE
+      );
+      this.keyboard_manager.register_events(toinsert);
+      // Render to node
+      const props = {data: data, metadata: metadata[EXEC_MIME_TYPE]};
+      render(props, toinsert[toinsert.length - 1]);
+      element.append(toinsert);
+      return toinsert
+    }
+
+    /* Handle when an output is cleared or removed */
+    events.on('clear_output.CodeCell', handleClearOutput);
+    events.on('delete.Cell', handleClearOutput);
+
+    /* Handle when a new output is added */
+    events.on('output_added.OutputArea', handleAddOutput);
+
+    /**
+     * Register the mime type and append_mime function with output_area
+     */
+    OutputArea.prototype.register_mime_type(EXEC_MIME_TYPE, append_mime, {
+      /* Is output safe? */
+      safe: true,
+      /* Index of renderer in `output_area.display_order` */
+      index: 0
+    });
+  }
+
+  // register the mime type if in Jupyter Notebook environment and previously unregistered
+  if (root.Jupyter !== undefined) {
+    const events = require('base/js/events');
+    const OutputArea = require('notebook/js/outputarea').OutputArea;
+
+    if (OutputArea.prototype.mime_types().indexOf(EXEC_MIME_TYPE) == -1) {
+      register_renderer(events, OutputArea);
+    }
+  }
+  if (typeof (root._bokeh_timeout) === "undefined" || force === true) {
+    root._bokeh_timeout = Date.now() + 5000;
+    root._bokeh_failed_load = false;
+  }
+
+  const NB_LOAD_WARNING = {'data': {'text/html':
+     "<div style='background-color: #fdd'>\n"+
+     "<p>\n"+
+     "BokehJS does not appear to have successfully loaded. If loading BokehJS from CDN, this \n"+
+     "may be due to a slow or bad network connection. Possible fixes:\n"+
+     "</p>\n"+
+     "<ul>\n"+
+     "<li>re-rerun `output_notebook()` to attempt to load from CDN again, or</li>\n"+
+     "<li>use INLINE resources instead, as so:</li>\n"+
+     "</ul>\n"+
+     "<code>\n"+
+     "from bokeh.resources import INLINE\n"+
+     "output_notebook(resources=INLINE)\n"+
+     "</code>\n"+
+     "</div>"}};
+
+  function display_loaded(error = null) {
+    const el = document.getElementById("f743887b-abad-40ed-8b69-eb523212f71f");
+    if (el != null) {
+      const html = (() => {
+        if (typeof root.Bokeh === "undefined") {
+          if (error == null) {
+            return "BokehJS is loading ...";
+          } else {
+            return "BokehJS failed to load.";
+          }
+        } else {
+          const prefix = `BokehJS ${root.Bokeh.version}`;
+          if (error == null) {
+            return `${prefix} successfully loaded.`;
+          } else {
+            return `${prefix} <b>encountered errors</b> while loading and may not function as expected.`;
+          }
+        }
+      })();
+      el.innerHTML = html;
+
+      if (error != null) {
+        const wrapper = document.createElement("div");
+        wrapper.style.overflow = "auto";
+        wrapper.style.height = "5em";
+        wrapper.style.resize = "vertical";
+        const content = document.createElement("div");
+        content.style.fontFamily = "monospace";
+        content.style.whiteSpace = "pre-wrap";
+        content.style.backgroundColor = "rgb(255, 221, 221)";
+        content.textContent = error.stack ?? error.toString();
+        wrapper.append(content);
+        el.append(wrapper);
+      }
+    } else if (Date.now() < root._bokeh_timeout) {
+      setTimeout(() => display_loaded(error), 100);
+    }
+  }
+
+  function run_callbacks() {
+    try {
+      root._bokeh_onload_callbacks.forEach(function(callback) {
+        if (callback != null)
+          callback();
+      });
+    } finally {
+      delete root._bokeh_onload_callbacks
+    }
+    console.debug("Bokeh: all callbacks have finished");
+  }
+
+  function load_libs(css_urls, js_urls, callback) {
+    if (css_urls == null) css_urls = [];
+    if (js_urls == null) js_urls = [];
+
+    root._bokeh_onload_callbacks.push(callback);
+    if (root._bokeh_is_loading > 0) {
+      console.debug("Bokeh: BokehJS is being loaded, scheduling callback at", now());
+      return null;
+    }
+    if (js_urls == null || js_urls.length === 0) {
+      run_callbacks();
+      return null;
+    }
+    console.debug("Bokeh: BokehJS not loaded, scheduling load and callback at", now());
+    root._bokeh_is_loading = css_urls.length + js_urls.length;
+
+    function on_load() {
+      root._bokeh_is_loading--;
+      if (root._bokeh_is_loading === 0) {
+        console.debug("Bokeh: all BokehJS libraries/stylesheets loaded");
+        run_callbacks()
+      }
+    }
+
+    function on_error(url) {
+      console.error("failed to load " + url);
+    }
+
+    for (let i = 0; i < css_urls.length; i++) {
+      const url = css_urls[i];
+      const element = document.createElement("link");
+      element.onload = on_load;
+      element.onerror = on_error.bind(null, url);
+      element.rel = "stylesheet";
+      element.type = "text/css";
+      element.href = url;
+      console.debug("Bokeh: injecting link tag for BokehJS stylesheet: ", url);
+      document.body.appendChild(element);
+    }
+
+    for (let i = 0; i < js_urls.length; i++) {
+      const url = js_urls[i];
+      const element = document.createElement('script');
+      element.onload = on_load;
+      element.onerror = on_error.bind(null, url);
+      element.async = false;
+      element.src = url;
+      console.debug("Bokeh: injecting script tag for BokehJS library: ", url);
+      document.head.appendChild(element);
+    }
+  };
+
+  function inject_raw_css(css) {
+    const element = document.createElement("style");
+    element.appendChild(document.createTextNode(css));
+    document.body.appendChild(element);
+  }
+
+  const js_urls = ["https://cdn.bokeh.org/bokeh/release/bokeh-3.7.3.min.js", "https://cdn.bokeh.org/bokeh/release/bokeh-gl-3.7.3.min.js", "https://cdn.bokeh.org/bokeh/release/bokeh-widgets-3.7.3.min.js", "https://cdn.bokeh.org/bokeh/release/bokeh-tables-3.7.3.min.js", "https://cdn.bokeh.org/bokeh/release/bokeh-mathjax-3.7.3.min.js"];
+  const css_urls = [];
+
+  const inline_js = [    function(Bokeh) {
+      Bokeh.set_log_level("info");
+    },
+function(Bokeh) {
+    }
+  ];
+
+  function run_inline_js() {
+    if (root.Bokeh !== undefined || force === true) {
+      try {
+            for (let i = 0; i < inline_js.length; i++) {
+      inline_js[i].call(root, root.Bokeh);
+    }
+
+      } catch (error) {display_loaded(error);throw error;
+      }if (force === true) {
+        display_loaded();
+      }} else if (Date.now() < root._bokeh_timeout) {
+      setTimeout(run_inline_js, 100);
+    } else if (!root._bokeh_failed_load) {
+      console.log("Bokeh: BokehJS failed to load within specified timeout.");
+      root._bokeh_failed_load = true;
+    } else if (force !== true) {
+      const cell = $(document.getElementById("f743887b-abad-40ed-8b69-eb523212f71f")).parents('.cell').data().cell;
+      cell.output_area.append_execute_result(NB_LOAD_WARNING)
+    }
+  }
+
+  if (root._bokeh_is_loading === 0) {
+    console.debug("Bokeh: BokehJS loaded, going straight to plotting");
+    run_inline_js();
+  } else {
+    load_libs(css_urls, js_urls, function() {
+      console.debug("Bokeh: BokehJS plotting callback run at", now());
+      run_inline_js();
+    });
+  }
+}(window));
+</script></div>
+</div>
+</section>
+<section id="1:-Basic-usage">
+<h2>1: Basic usage<a class="headerlink" href="#1:-Basic-usage" title="Link to this heading"></a></h2>
+<p>Example 1 show basic usage of the function.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Point A&quot;</span><span class="p">,</span> <span class="s2">&quot;Point B&quot;</span><span class="p">,</span> <span class="s2">&quot;Point C&quot;</span><span class="p">]</span>
+
+<span class="c1"># Create the plot layout</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">scatter_plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div id="b4b2133f-958d-4b0c-958d-45add5e4be74" data-root-id="p1006" style="display: contents;"></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="output_javascript"></div>
+<script type="text/javascript">
+var element = document.currentScript.previousSibling.previousSibling;
+(function(root) {
+  function embed_document(root) {
+  const docs_json = {"cd543ea3-492e-4936-8fd9-48d3038b4c38":{"version":"3.7.3","title":"Bokeh Application","roots":[{"type":"object","name":"Figure","id":"p1006","attributes":{"height":400,"x_range":{"type":"object","name":"DataRange1d","id":"p1007"},"y_range":{"type":"object","name":"DataRange1d","id":"p1008"},"x_scale":{"type":"object","name":"LinearScale","id":"p1016"},"y_scale":{"type":"object","name":"LinearScale","id":"p1017"},"title":{"type":"object","name":"Title","id":"p1009","attributes":{"text":"Interactive Scatter Plot"}},"renderers":[{"type":"object","name":"GlyphRenderer","id":"p1046","attributes":{"data_source":{"type":"object","name":"ColumnDataSource","id":"p1003","attributes":{"selected":{"type":"object","name":"Selection","id":"p1004","attributes":{"indices":[],"line_indices":[]}},"selection_policy":{"type":"object","name":"UnionRenderers","id":"p1005"},"data":{"type":"map","entries":[["x",[1,2,3]],["y",[6,7,2]],["names",["Point A","Point B","Point C"]]]}}},"view":{"type":"object","name":"CDSView","id":"p1047","attributes":{"filter":{"type":"object","name":"AllIndices","id":"p1048"}}},"glyph":{"type":"object","name":"Scatter","id":"p1043","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"size":{"type":"value","value":10},"line_color":{"type":"value","value":"#1f77b4"},"fill_color":{"type":"value","value":"#1f77b4"}}},"nonselection_glyph":{"type":"object","name":"Scatter","id":"p1044","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"size":{"type":"value","value":10},"line_color":{"type":"value","value":"#1f77b4"},"line_alpha":{"type":"value","value":0.1},"fill_color":{"type":"value","value":"#1f77b4"},"fill_alpha":{"type":"value","value":0.1},"hatch_alpha":{"type":"value","value":0.1}}},"muted_glyph":{"type":"object","name":"Scatter","id":"p1045","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"size":{"type":"value","value":10},"line_color":{"type":"value","value":"#1f77b4"},"line_alpha":{"type":"value","value":0.2},"fill_color":{"type":"value","value":"#1f77b4"},"fill_alpha":{"type":"value","value":0.2},"hatch_alpha":{"type":"value","value":0.2}}}}}],"toolbar":{"type":"object","name":"Toolbar","id":"p1015","attributes":{"tools":[{"type":"object","name":"TapTool","id":"p1028","attributes":{"renderers":"auto"}},{"type":"object","name":"PanTool","id":"p1029"},{"type":"object","name":"WheelZoomTool","id":"p1030","attributes":{"renderers":"auto"}},{"type":"object","name":"BoxZoomTool","id":"p1031","attributes":{"dimensions":"both","overlay":{"type":"object","name":"BoxAnnotation","id":"p1032","attributes":{"syncable":false,"line_color":"black","line_alpha":1.0,"line_width":2,"line_dash":[4,4],"fill_color":"lightgrey","fill_alpha":0.5,"level":"overlay","visible":false,"left":{"type":"number","value":"nan"},"right":{"type":"number","value":"nan"},"top":{"type":"number","value":"nan"},"bottom":{"type":"number","value":"nan"},"left_units":"canvas","right_units":"canvas","top_units":"canvas","bottom_units":"canvas","handles":{"type":"object","name":"BoxInteractionHandles","id":"p1038","attributes":{"all":{"type":"object","name":"AreaVisuals","id":"p1037","attributes":{"fill_color":"white","hover_fill_color":"lightgray"}}}}}}}},{"type":"object","name":"ResetTool","id":"p1039"},{"type":"object","name":"HoverTool","id":"p1049","attributes":{"renderers":[{"id":"p1046"}],"tooltips":[["Name","@names"],["X","@x"],["Y","@y"]]}}]}},"left":[{"type":"object","name":"LinearAxis","id":"p1023","attributes":{"ticker":{"type":"object","name":"BasicTicker","id":"p1024","attributes":{"mantissas":[1,2,5]}},"formatter":{"type":"object","name":"BasicTickFormatter","id":"p1025"},"major_label_policy":{"type":"object","name":"AllLabels","id":"p1026"}}}],"below":[{"type":"object","name":"LinearAxis","id":"p1018","attributes":{"ticker":{"type":"object","name":"BasicTicker","id":"p1019","attributes":{"mantissas":[1,2,5]}},"formatter":{"type":"object","name":"BasicTickFormatter","id":"p1020"},"major_label_policy":{"type":"object","name":"AllLabels","id":"p1021"}}}],"center":[{"type":"object","name":"Grid","id":"p1022","attributes":{"axis":{"id":"p1018"}}},{"type":"object","name":"Grid","id":"p1027","attributes":{"dimension":1,"axis":{"id":"p1023"}}}]}}]}};
+  const render_items = [{"docid":"cd543ea3-492e-4936-8fd9-48d3038b4c38","roots":{"p1006":"b4b2133f-958d-4b0c-958d-45add5e4be74"},"root_ids":["p1006"]}];
+  void root.Bokeh.embed.embed_items_notebook(docs_json, render_items);
+  }
+  if (root.Bokeh !== undefined) {
+    embed_document(root);
+  } else {
+    let attempts = 0;
+    const timer = setInterval(function(root) {
+      if (root.Bokeh !== undefined) {
+        clearInterval(timer);
+        embed_document(root);
+      } else {
+        attempts++;
+        if (attempts > 100) {
+          clearInterval(timer);
+          console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+        }
+      }
+    }, 10, root)
+  }
+})(window);
+</script></div>
+</div>
+</section>
+<section id="2:-Basic-usage-with-images">
+<h2>2: Basic usage with images<a class="headerlink" href="#2:-Basic-usage-with-images" title="Link to this heading"></a></h2>
+<p>Example 2 exapands to include images.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Point A&quot;</span><span class="p">,</span> <span class="s2">&quot;Point B&quot;</span><span class="p">,</span> <span class="s2">&quot;Point C&quot;</span><span class="p">]</span>
+<span class="n">images</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;images/image1.jpg&quot;</span><span class="p">,</span>  <span class="c1"># Example of a valid image URL</span>
+    <span class="kc">None</span><span class="p">,</span>  <span class="c1"># Example of no image (None value)</span>
+    <span class="s2">&quot;images/image3.jpg&quot;</span><span class="p">,</span>  <span class="c1"># Example of another valid image URL</span>
+<span class="p">]</span>
+
+<span class="c1"># Create the plot layout</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">scatter_plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">images</span><span class="o">=</span><span class="n">images</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div id="eb052055-c558-4695-9273-51cc01d247c9" data-root-id="p1107" style="display: contents;"></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="output_javascript"></div>
+<script type="text/javascript">
+var element = document.currentScript.previousSibling.previousSibling;
+(function(root) {
+  function embed_document(root) {
+  const docs_json = {"278bdd31-ff6d-47fa-8009-ee6967b21cd0":{"version":"3.7.3","title":"Bokeh Application","roots":[{"type":"object","name":"Row","id":"p1107","attributes":{"children":[{"type":"object","name":"Figure","id":"p1053","attributes":{"height":400,"x_range":{"type":"object","name":"DataRange1d","id":"p1054"},"y_range":{"type":"object","name":"DataRange1d","id":"p1055"},"x_scale":{"type":"object","name":"LinearScale","id":"p1063"},"y_scale":{"type":"object","name":"LinearScale","id":"p1064"},"title":{"type":"object","name":"Title","id":"p1056","attributes":{"text":"Interactive Scatter Plot"}},"renderers":[{"type":"object","name":"GlyphRenderer","id":"p1093","attributes":{"data_source":{"type":"object","name":"ColumnDataSource","id":"p1050","attributes":{"selected":{"type":"object","name":"Selection","id":"p1051","attributes":{"js_property_callbacks":{"type":"map","entries":[["change:indices",[{"type":"object","name":"CustomJS","id":"p1102","attributes":{"args":{"type":"map","entries":[["source",{"id":"p1050"}],["div",{"type":"object","name":"Div","id":"p1097","attributes":{"width":600,"height":320,"text":"Click on a point to display the image here."}}],["name_select",{"type":"object","name":"Select","id":"p1098","attributes":{"js_property_callbacks":{"type":"map","entries":[["change:value",[{"type":"object","name":"CustomJS","id":"p1101","attributes":{"args":{"type":"map","entries":[["source",{"id":"p1050"}],["div",{"id":"p1097"}],["name_select",{"id":"p1098"}],["maxHeight",280]]},"code":"\n            const name_value = name_select.value;\n            const indices = source.data.names.map((name, i) => (name === name_value) ? i : -1).filter(i => i >= 0);\n\n            if (indices.length > 0) {\n                const selected = indices[0];\n                const img_url = source.data.images[selected];\n                const x_value = source.data.x[selected];\n                const y_value = source.data.y[selected];\n\n                if (img_url) {\n                    div.text = `<a href=\"${img_url}\" target=\"_blank\"><img src=\"${img_url}\" style=\"width:100%;max-height:${maxHeight}px;height:auto;\"></a><div><strong>X:</strong> ${x_value}</div><div><strong>Y:</strong> ${y_value}</div>`;\n                } else {\n                    div.text = `<div>No image available</div><div><strong>X:</strong> ${x_value}</div><div><strong>Y:</strong> ${y_value}</div>`;\n                }\n\n                // Highlight the selected point on the scatter plot\n                source.selected.indices = [selected];\n            } else {\n                div.text = \"No matching point found.\";\n                source.selected.indices = [];  // Clear selection if no match\n            }\n        "}}]]]},"title":"Select Data Point","options":["Select Data","Point A","Point B","Point C"],"value":"Select Data"}}],["maxHeight",280]]},"code":"\n            const selected = source.selected.indices[0];\n            if (selected != null) {\n                const name_value = source.data.names[selected];\n                const img_url = source.data.images[selected];\n                const x_value = source.data.x[selected];\n                const y_value = source.data.y[selected];\n\n                // Update dropdown\n                name_select.value = name_value;\n\n                if (img_url) {\n                    // Display the image\n                    div.text = `<a href=\"${img_url}\" target=\"_blank\"><img src=\"${img_url}\" style=\"width:100%;max-height:${maxHeight}px;height:auto;\"></a><div><strong>X:</strong> ${x_value}</div><div><strong>Y:</strong> ${y_value}</div>`;\n                } else {\n                    // No image available\n                    div.text = `<div>No image available</div><div><strong>X:</strong> ${x_value}</div><div><strong>Y:</strong> ${y_value}</div>`;\n                }\n            }\n        "}}]]]},"indices":[],"line_indices":[]}},"selection_policy":{"type":"object","name":"UnionRenderers","id":"p1052"},"data":{"type":"map","entries":[["x",[1,2,3]],["y",[6,7,2]],["names",["Point A","Point B","Point C"]],["images",["images/image1.jpg",null,"images/image3.jpg"]]]}}},"view":{"type":"object","name":"CDSView","id":"p1094","attributes":{"filter":{"type":"object","name":"AllIndices","id":"p1095"}}},"glyph":{"type":"object","name":"Scatter","id":"p1090","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"size":{"type":"value","value":10},"line_color":{"type":"value","value":"#1f77b4"},"fill_color":{"type":"value","value":"#1f77b4"}}},"nonselection_glyph":{"type":"object","name":"Scatter","id":"p1091","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"size":{"type":"value","value":10},"line_color":{"type":"value","value":"#1f77b4"},"line_alpha":{"type":"value","value":0.1},"fill_color":{"type":"value","value":"#1f77b4"},"fill_alpha":{"type":"value","value":0.1},"hatch_alpha":{"type":"value","value":0.1}}},"muted_glyph":{"type":"object","name":"Scatter","id":"p1092","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"size":{"type":"value","value":10},"line_color":{"type":"value","value":"#1f77b4"},"line_alpha":{"type":"value","value":0.2},"fill_color":{"type":"value","value":"#1f77b4"},"fill_alpha":{"type":"value","value":0.2},"hatch_alpha":{"type":"value","value":0.2}}}}}],"toolbar":{"type":"object","name":"Toolbar","id":"p1062","attributes":{"tools":[{"type":"object","name":"TapTool","id":"p1075","attributes":{"renderers":"auto"}},{"type":"object","name":"PanTool","id":"p1076"},{"type":"object","name":"WheelZoomTool","id":"p1077","attributes":{"renderers":"auto"}},{"type":"object","name":"BoxZoomTool","id":"p1078","attributes":{"dimensions":"both","overlay":{"type":"object","name":"BoxAnnotation","id":"p1079","attributes":{"syncable":false,"line_color":"black","line_alpha":1.0,"line_width":2,"line_dash":[4,4],"fill_color":"lightgrey","fill_alpha":0.5,"level":"overlay","visible":false,"left":{"type":"number","value":"nan"},"right":{"type":"number","value":"nan"},"top":{"type":"number","value":"nan"},"bottom":{"type":"number","value":"nan"},"left_units":"canvas","right_units":"canvas","top_units":"canvas","bottom_units":"canvas","handles":{"type":"object","name":"BoxInteractionHandles","id":"p1085","attributes":{"all":{"type":"object","name":"AreaVisuals","id":"p1084","attributes":{"fill_color":"white","hover_fill_color":"lightgray"}}}}}}}},{"type":"object","name":"ResetTool","id":"p1086"},{"type":"object","name":"HoverTool","id":"p1096","attributes":{"renderers":[{"id":"p1093"}],"tooltips":"\n                <div>\n                    <img src=\"@images\" alt=\"\" style=\"width:100px;height:auto;\"/>\n                    <div><strong>Name:</strong> @names</div>\n                    <div><strong>X:</strong> @x</div>\n                    <div><strong>Y:</strong> @y</div>\n                </div>\n                "}}]}},"left":[{"type":"object","name":"LinearAxis","id":"p1070","attributes":{"ticker":{"type":"object","name":"BasicTicker","id":"p1071","attributes":{"mantissas":[1,2,5]}},"formatter":{"type":"object","name":"BasicTickFormatter","id":"p1072"},"major_label_policy":{"type":"object","name":"AllLabels","id":"p1073"}}}],"below":[{"type":"object","name":"LinearAxis","id":"p1065","attributes":{"ticker":{"type":"object","name":"BasicTicker","id":"p1066","attributes":{"mantissas":[1,2,5]}},"formatter":{"type":"object","name":"BasicTickFormatter","id":"p1067"},"major_label_policy":{"type":"object","name":"AllLabels","id":"p1068"}}}],"center":[{"type":"object","name":"Grid","id":"p1069","attributes":{"axis":{"id":"p1065"}}},{"type":"object","name":"Grid","id":"p1074","attributes":{"dimension":1,"axis":{"id":"p1070"}}}]}},{"type":"object","name":"Column","id":"p1106","attributes":{"children":[{"id":"p1098"},{"id":"p1097"},{"type":"object","name":"Row","id":"p1105","attributes":{"children":[{"type":"object","name":"Button","id":"p1099","attributes":{"js_event_callbacks":{"type":"map","entries":[["button_click",[{"type":"object","name":"CustomJS","id":"p1103","attributes":{"args":{"type":"map","entries":[["source",{"id":"p1050"}],["div",{"id":"p1097"}],["name_select",{"id":"p1098"}],["maxHeight",280]]},"code":"\n            let selected_index = source.selected.indices[0];\n            if (selected_index !== undefined) {\n                // Get the current name's index\n                const current_name = source.data.names[selected_index];\n                const current_index = source.data.names.indexOf(current_name);\n\n                // Get the previous index\n                const prev_index = (current_index - 1 + source.data.names.length) % source.data.names.length;\n                const prev_name = source.data.names[prev_index];\n                const prev_img_url = source.data.images[prev_index];\n                const prev_x = source.data.x[prev_index];\n                const prev_y = source.data.y[prev_index];\n\n                if (prev_img_url) {\n                    // Update image and x, y values\n                    div.text = `<a href=\"${prev_img_url}\" target=\"_blank\"><img src=\"${prev_img_url}\" style=\"width:100%;max-height:${maxHeight}px;height:auto;\"></a><div><strong>X:</strong> ${prev_x}</div><div><strong>Y:</strong> ${prev_y}</div>`;\n                } else {\n                    div.text = `<div>No image available</div><div><strong>X:</strong> ${prev_x}</div><div><strong>Y:</strong> ${prev_y}</div>`;\n                }\n                name_select.value = prev_name;\n\n                // Sync selection with plot\n                source.selected.indices = [prev_index];\n            }\n        "}}]]]},"width":150,"label":"Previous Image"}},{"type":"object","name":"Button","id":"p1100","attributes":{"js_event_callbacks":{"type":"map","entries":[["button_click",[{"type":"object","name":"CustomJS","id":"p1104","attributes":{"args":{"type":"map","entries":[["source",{"id":"p1050"}],["div",{"id":"p1097"}],["name_select",{"id":"p1098"}],["maxHeight",280]]},"code":"\n            let selected_index = source.selected.indices[0];\n            if (selected_index !== undefined) {\n                // Get the current name's index\n                const current_name = source.data.names[selected_index];\n                const current_index = source.data.names.indexOf(current_name);\n\n                // Get the next index\n                const next_index = (current_index + 1) % source.data.names.length;\n                const next_name = source.data.names[next_index];\n                const next_img_url = source.data.images[next_index];\n                const next_x = source.data.x[next_index];\n                const next_y = source.data.y[next_index];\n\n                if (next_img_url) {\n                    // Update image and x, y values\n                    div.text = `<a href=\"${next_img_url}\" target=\"_blank\"><img src=\"${next_img_url}\" style=\"width:100%;max-height:${maxHeight}px;height:auto;\"></a><div><strong>X:</strong> ${next_x}</div><div><strong>Y:</strong> ${next_y}</div>`;\n                } else {\n                    div.text = `<div>No image available</div><div><strong>X:</strong> ${next_x}</div><div><strong>Y:</strong> ${next_y}</div>`;\n                }\n                name_select.value = next_name;\n\n                // Sync selection with plot\n                source.selected.indices = [next_index];\n            }\n        "}}]]]},"width":150,"label":"Next Image"}}]}}]}}]}}]}};
+  const render_items = [{"docid":"278bdd31-ff6d-47fa-8009-ee6967b21cd0","roots":{"p1107":"eb052055-c558-4695-9273-51cc01d247c9"},"root_ids":["p1107"]}];
+  void root.Bokeh.embed.embed_items_notebook(docs_json, render_items);
+  }
+  if (root.Bokeh !== undefined) {
+    embed_document(root);
+  } else {
+    let attempts = 0;
+    const timer = setInterval(function(root) {
+      if (root.Bokeh !== undefined) {
+        clearInterval(timer);
+        embed_document(root);
+      } else {
+        attempts++;
+        if (attempts > 100) {
+          clearInterval(timer);
+          console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+        }
+      }
+    }, 10, root)
+  }
+})(window);
+</script></div>
+</div>
+</section>
+<section id="3:-Practical-usage-example">
+<h2>3: Practical usage example<a class="headerlink" href="#3:-Practical-usage-example" title="Link to this heading"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.26</span><span class="p">,</span> <span class="mf">0.93</span><span class="p">,</span> <span class="mf">0.83</span><span class="p">]</span>  <span class="c1"># RMSE</span>
+<span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.87</span><span class="p">,</span> <span class="mf">0.91</span><span class="p">,</span> <span class="mf">0.93</span><span class="p">]</span>  <span class="c1"># Correlation</span>
+<span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ACCESS-CM2&quot;</span><span class="p">,</span> <span class="s2">&quot;E3SM-1-0&quot;</span><span class="p">,</span> <span class="s2">&quot;GFDL-CM4&quot;</span><span class="p">]</span>
+<span class="n">images</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;images/model_sample1.png&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;images/model_sample2.png&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;images/model_sample3.png&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1"># Create the plot layout</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">scatter_plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">images</span><span class="o">=</span><span class="n">images</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">460</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div id="ef1cf634-26d1-41a0-ab41-801c4d278be4" data-root-id="p1165" style="display: contents;"></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="output_javascript"></div>
+<script type="text/javascript">
+var element = document.currentScript.previousSibling.previousSibling;
+(function(root) {
+  function embed_document(root) {
+  const docs_json = {"bf42f1f8-0bef-41f2-baa4-4e7505f192c7":{"version":"3.7.3","title":"Bokeh Application","roots":[{"type":"object","name":"Row","id":"p1165","attributes":{"children":[{"type":"object","name":"Figure","id":"p1111","attributes":{"width":460,"x_range":{"type":"object","name":"DataRange1d","id":"p1112"},"y_range":{"type":"object","name":"DataRange1d","id":"p1113"},"x_scale":{"type":"object","name":"LinearScale","id":"p1121"},"y_scale":{"type":"object","name":"LinearScale","id":"p1122"},"title":{"type":"object","name":"Title","id":"p1114","attributes":{"text":"Interactive Scatter Plot"}},"renderers":[{"type":"object","name":"GlyphRenderer","id":"p1151","attributes":{"data_source":{"type":"object","name":"ColumnDataSource","id":"p1108","attributes":{"selected":{"type":"object","name":"Selection","id":"p1109","attributes":{"js_property_callbacks":{"type":"map","entries":[["change:indices",[{"type":"object","name":"CustomJS","id":"p1160","attributes":{"args":{"type":"map","entries":[["source",{"id":"p1108"}],["div",{"type":"object","name":"Div","id":"p1155","attributes":{"width":460,"height":480,"text":"Click on a point to display the image here."}}],["name_select",{"type":"object","name":"Select","id":"p1156","attributes":{"js_property_callbacks":{"type":"map","entries":[["change:value",[{"type":"object","name":"CustomJS","id":"p1159","attributes":{"args":{"type":"map","entries":[["source",{"id":"p1108"}],["div",{"id":"p1155"}],["name_select",{"id":"p1156"}],["maxHeight",420]]},"code":"\n            const name_value = name_select.value;\n            const indices = source.data.names.map((name, i) => (name === name_value) ? i : -1).filter(i => i >= 0);\n\n            if (indices.length > 0) {\n                const selected = indices[0];\n                const img_url = source.data.images[selected];\n                const x_value = source.data.x[selected];\n                const y_value = source.data.y[selected];\n\n                if (img_url) {\n                    div.text = `<a href=\"${img_url}\" target=\"_blank\"><img src=\"${img_url}\" style=\"width:100%;max-height:${maxHeight}px;height:auto;\"></a><div><strong>X:</strong> ${x_value}</div><div><strong>Y:</strong> ${y_value}</div>`;\n                } else {\n                    div.text = `<div>No image available</div><div><strong>X:</strong> ${x_value}</div><div><strong>Y:</strong> ${y_value}</div>`;\n                }\n\n                // Highlight the selected point on the scatter plot\n                source.selected.indices = [selected];\n            } else {\n                div.text = \"No matching point found.\";\n                source.selected.indices = [];  // Clear selection if no match\n            }\n        "}}]]]},"title":"Select Data Point","options":["Select Data","ACCESS-CM2","E3SM-1-0","GFDL-CM4"],"value":"Select Data"}}],["maxHeight",420]]},"code":"\n            const selected = source.selected.indices[0];\n            if (selected != null) {\n                const name_value = source.data.names[selected];\n                const img_url = source.data.images[selected];\n                const x_value = source.data.x[selected];\n                const y_value = source.data.y[selected];\n\n                // Update dropdown\n                name_select.value = name_value;\n\n                if (img_url) {\n                    // Display the image\n                    div.text = `<a href=\"${img_url}\" target=\"_blank\"><img src=\"${img_url}\" style=\"width:100%;max-height:${maxHeight}px;height:auto;\"></a><div><strong>X:</strong> ${x_value}</div><div><strong>Y:</strong> ${y_value}</div>`;\n                } else {\n                    // No image available\n                    div.text = `<div>No image available</div><div><strong>X:</strong> ${x_value}</div><div><strong>Y:</strong> ${y_value}</div>`;\n                }\n            }\n        "}}]]]},"indices":[],"line_indices":[]}},"selection_policy":{"type":"object","name":"UnionRenderers","id":"p1110"},"data":{"type":"map","entries":[["x",[1.26,0.93,0.83]],["y",[0.87,0.91,0.93]],["names",["ACCESS-CM2","E3SM-1-0","GFDL-CM4"]],["images",["images/model_sample1.png","images/model_sample2.png","images/model_sample3.png"]]]}}},"view":{"type":"object","name":"CDSView","id":"p1152","attributes":{"filter":{"type":"object","name":"AllIndices","id":"p1153"}}},"glyph":{"type":"object","name":"Scatter","id":"p1148","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"size":{"type":"value","value":10},"line_color":{"type":"value","value":"#1f77b4"},"fill_color":{"type":"value","value":"#1f77b4"}}},"nonselection_glyph":{"type":"object","name":"Scatter","id":"p1149","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"size":{"type":"value","value":10},"line_color":{"type":"value","value":"#1f77b4"},"line_alpha":{"type":"value","value":0.1},"fill_color":{"type":"value","value":"#1f77b4"},"fill_alpha":{"type":"value","value":0.1},"hatch_alpha":{"type":"value","value":0.1}}},"muted_glyph":{"type":"object","name":"Scatter","id":"p1150","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"size":{"type":"value","value":10},"line_color":{"type":"value","value":"#1f77b4"},"line_alpha":{"type":"value","value":0.2},"fill_color":{"type":"value","value":"#1f77b4"},"fill_alpha":{"type":"value","value":0.2},"hatch_alpha":{"type":"value","value":0.2}}}}}],"toolbar":{"type":"object","name":"Toolbar","id":"p1120","attributes":{"tools":[{"type":"object","name":"TapTool","id":"p1133","attributes":{"renderers":"auto"}},{"type":"object","name":"PanTool","id":"p1134"},{"type":"object","name":"WheelZoomTool","id":"p1135","attributes":{"renderers":"auto"}},{"type":"object","name":"BoxZoomTool","id":"p1136","attributes":{"dimensions":"both","overlay":{"type":"object","name":"BoxAnnotation","id":"p1137","attributes":{"syncable":false,"line_color":"black","line_alpha":1.0,"line_width":2,"line_dash":[4,4],"fill_color":"lightgrey","fill_alpha":0.5,"level":"overlay","visible":false,"left":{"type":"number","value":"nan"},"right":{"type":"number","value":"nan"},"top":{"type":"number","value":"nan"},"bottom":{"type":"number","value":"nan"},"left_units":"canvas","right_units":"canvas","top_units":"canvas","bottom_units":"canvas","handles":{"type":"object","name":"BoxInteractionHandles","id":"p1143","attributes":{"all":{"type":"object","name":"AreaVisuals","id":"p1142","attributes":{"fill_color":"white","hover_fill_color":"lightgray"}}}}}}}},{"type":"object","name":"ResetTool","id":"p1144"},{"type":"object","name":"HoverTool","id":"p1154","attributes":{"renderers":[{"id":"p1151"}],"tooltips":"\n                <div>\n                    <img src=\"@images\" alt=\"\" style=\"width:100px;height:auto;\"/>\n                    <div><strong>Name:</strong> @names</div>\n                    <div><strong>X:</strong> @x</div>\n                    <div><strong>Y:</strong> @y</div>\n                </div>\n                "}}]}},"left":[{"type":"object","name":"LinearAxis","id":"p1128","attributes":{"ticker":{"type":"object","name":"BasicTicker","id":"p1129","attributes":{"mantissas":[1,2,5]}},"formatter":{"type":"object","name":"BasicTickFormatter","id":"p1130"},"major_label_policy":{"type":"object","name":"AllLabels","id":"p1131"}}}],"below":[{"type":"object","name":"LinearAxis","id":"p1123","attributes":{"ticker":{"type":"object","name":"BasicTicker","id":"p1124","attributes":{"mantissas":[1,2,5]}},"formatter":{"type":"object","name":"BasicTickFormatter","id":"p1125"},"major_label_policy":{"type":"object","name":"AllLabels","id":"p1126"}}}],"center":[{"type":"object","name":"Grid","id":"p1127","attributes":{"axis":{"id":"p1123"}}},{"type":"object","name":"Grid","id":"p1132","attributes":{"dimension":1,"axis":{"id":"p1128"}}}]}},{"type":"object","name":"Column","id":"p1164","attributes":{"children":[{"id":"p1156"},{"id":"p1155"},{"type":"object","name":"Row","id":"p1163","attributes":{"children":[{"type":"object","name":"Button","id":"p1157","attributes":{"js_event_callbacks":{"type":"map","entries":[["button_click",[{"type":"object","name":"CustomJS","id":"p1161","attributes":{"args":{"type":"map","entries":[["source",{"id":"p1108"}],["div",{"id":"p1155"}],["name_select",{"id":"p1156"}],["maxHeight",420]]},"code":"\n            let selected_index = source.selected.indices[0];\n            if (selected_index !== undefined) {\n                // Get the current name's index\n                const current_name = source.data.names[selected_index];\n                const current_index = source.data.names.indexOf(current_name);\n\n                // Get the previous index\n                const prev_index = (current_index - 1 + source.data.names.length) % source.data.names.length;\n                const prev_name = source.data.names[prev_index];\n                const prev_img_url = source.data.images[prev_index];\n                const prev_x = source.data.x[prev_index];\n                const prev_y = source.data.y[prev_index];\n\n                if (prev_img_url) {\n                    // Update image and x, y values\n                    div.text = `<a href=\"${prev_img_url}\" target=\"_blank\"><img src=\"${prev_img_url}\" style=\"width:100%;max-height:${maxHeight}px;height:auto;\"></a><div><strong>X:</strong> ${prev_x}</div><div><strong>Y:</strong> ${prev_y}</div>`;\n                } else {\n                    div.text = `<div>No image available</div><div><strong>X:</strong> ${prev_x}</div><div><strong>Y:</strong> ${prev_y}</div>`;\n                }\n                name_select.value = prev_name;\n\n                // Sync selection with plot\n                source.selected.indices = [prev_index];\n            }\n        "}}]]]},"width":150,"label":"Previous Image"}},{"type":"object","name":"Button","id":"p1158","attributes":{"js_event_callbacks":{"type":"map","entries":[["button_click",[{"type":"object","name":"CustomJS","id":"p1162","attributes":{"args":{"type":"map","entries":[["source",{"id":"p1108"}],["div",{"id":"p1155"}],["name_select",{"id":"p1156"}],["maxHeight",420]]},"code":"\n            let selected_index = source.selected.indices[0];\n            if (selected_index !== undefined) {\n                // Get the current name's index\n                const current_name = source.data.names[selected_index];\n                const current_index = source.data.names.indexOf(current_name);\n\n                // Get the next index\n                const next_index = (current_index + 1) % source.data.names.length;\n                const next_name = source.data.names[next_index];\n                const next_img_url = source.data.images[next_index];\n                const next_x = source.data.x[next_index];\n                const next_y = source.data.y[next_index];\n\n                if (next_img_url) {\n                    // Update image and x, y values\n                    div.text = `<a href=\"${next_img_url}\" target=\"_blank\"><img src=\"${next_img_url}\" style=\"width:100%;max-height:${maxHeight}px;height:auto;\"></a><div><strong>X:</strong> ${next_x}</div><div><strong>Y:</strong> ${next_y}</div>`;\n                } else {\n                    div.text = `<div>No image available</div><div><strong>X:</strong> ${next_x}</div><div><strong>Y:</strong> ${next_y}</div>`;\n                }\n                name_select.value = next_name;\n\n                // Sync selection with plot\n                source.selected.indices = [next_index];\n            }\n        "}}]]]},"width":150,"label":"Next Image"}}]}}]}}]}}]}};
+  const render_items = [{"docid":"bf42f1f8-0bef-41f2-baa4-4e7505f192c7","roots":{"p1165":"ef1cf634-26d1-41a0-ab41-801c4d278be4"},"root_ids":["p1165"]}];
+  void root.Bokeh.embed.embed_items_notebook(docs_json, render_items);
+  }
+  if (root.Bokeh !== undefined) {
+    embed_document(root);
+  } else {
+    let attempts = 0;
+    const timer = setInterval(function(root) {
+      if (root.Bokeh !== undefined) {
+        clearInterval(timer);
+        embed_document(root);
+      } else {
+        attempts++;
+        if (attempts > 100) {
+          clearInterval(timer);
+          console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+        }
+      }
+    }, 10, root)
+  }
+})(window);
+</script></div>
+</div>
+</section>
+<section id="Save-the-plot">
+<h2>Save the plot<a class="headerlink" href="#Save-the-plot" title="Link to this heading"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set output to static HTML file</span>
+<span class="n">output_file</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;interactive_scatter_plot.html&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Interactive Scatter Plot&quot;</span><span class="p">)</span>
+
+<span class="c1"># save the results to a file</span>
+<span class="n">save</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+<span class="c1"># Result: [`interactive_scatter_plot.html`](interactive_scatter_plot.html)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;/pscratch/sd/l/lee1043/git/ESMBenchmarkViz/docs/examples/interactive_scatter_plot.html&#39;
+</pre></div></div>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="example_portrait_plot.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Interactive Portrait Plot</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="example_taylor_diagram.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Interactive Taylor Diagram</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, Jiwoo Lee
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Interactive Scatter Plot</a><ul>
+<li><a class="reference internal" href="#Import-functions">Import functions</a></li>
+<li><a class="reference internal" href="#1:-Basic-usage">1: Basic usage</a></li>
+<li><a class="reference internal" href="#2:-Basic-usage-with-images">2: Basic usage with images</a></li>
+<li><a class="reference internal" href="#3:-Practical-usage-example">3: Practical usage example</a></li>
+<li><a class="reference internal" href="#Save-the-plot">Save the plot</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=30646c52"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    </body>
+</html>

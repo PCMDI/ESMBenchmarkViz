@@ -1,0 +1,264 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Interactive Scatter Plot\n",
+    "\n",
+    "This notebook shows usage examples of interactive Scatter Plot. Detailed API description can be found [here](../generated/ESMBenchmarkViz.scatter_plot.html).\n",
+    "\n",
+    "## Import functions"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from bokeh.plotting import output_file, save, output_notebook\n",
+    "from ESMBenchmarkViz import scatter_plot"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "    <style>\n",
+       "        .bk-notebook-logo {\n",
+       "            display: block;\n",
+       "            width: 20px;\n",
+       "            height: 20px;\n",
+       "            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAAOkSURBVDiNjZRtaJVlGMd/1/08zzln5zjP1LWcU9N0NkN8m2CYjpgQYQXqSs0I84OLIC0hkEKoPtiH3gmKoiJDU7QpLgoLjLIQCpEsNJ1vqUOdO7ppbuec5+V+rj4ctwzd8IIbbi6u+8f1539dt3A78eXC7QizUF7gyV1fD1Yqg4JWz84yffhm0qkFqBogB9rM8tZdtwVsPUhWhGcFJngGeWrPzHm5oaMmkfEg1usvLFyc8jLRqDOMru7AyC8saQr7GG7f5fvDeH7Ej8CM66nIF+8yngt6HWaKh7k49Soy9nXurCi1o3qUbS3zWfrYeQDTB/Qj6kX6Ybhw4B+bOYoLKCC9H3Nu/leUTZ1JdRWkkn2ldcCamzrcf47KKXdAJllSlxAOkRgyHsGC/zRday5Qld9DyoM4/q/rUoy/CXh3jzOu3bHUVZeU+DEn8FInkPBFlu3+nW3Nw0mk6vCDiWg8CeJaxEwuHS3+z5RgY+YBR6V1Z1nxSOfoaPa4LASWxxdNp+VWTk7+4vzaou8v8PN+xo+KY2xsw6une2frhw05CTYOmQvsEhjhWjn0bmXPjpE1+kplmmkP3suftwTubK9Vq22qKmrBhpY4jvd5afdRA3wGjFAgcnTK2s4hY0/GPNIb0nErGMCRxWOOX64Z8RAC4oCXdklmEvcL8o0BfkNK4lUg9HTl+oPlQxdNo3Mg4Nv175e/1LDGzZen30MEjRUtmXSfiTVu1kK8W4txyV6BMKlbgk3lMwYCiusNy9fVfvvwMxv8Ynl6vxoByANLTWplvuj/nF9m2+PDtt1eiHPBr1oIfhCChQMBw6Aw0UulqTKZdfVvfG7VcfIqLG9bcldL/+pdWTLxLUy8Qq38heUIjh4XlzZxzQm19lLFlr8vdQ97rjZVOLf8nclzckbcD4wxXMidpX30sFd37Fv/GtwwhzhxGVAprjbg0gCAEeIgwCZyTV2Z1REEW8O4py0wsjeloKoMr6iCY6dP92H6Vw/oTyICIthibxjm/DfN9lVz8IqtqKYLUXfoKVMVQVVJOElGjrnnUt9T9wbgp8AyYKaGlqingHZU/uG2NTZSVqwHQTWkx9hxjkpWDaCg6Ckj5qebgBVbT3V3NNXMSiWSDdGV3hrtzla7J+duwPOToIg42ChPQOQjspnSlp1V+Gjdged7+8UN5CRAV7a5EdFNwCjEaBR27b3W890TE7g24NAP/mMDXRWrGoFPQI9ls/MWO2dWFAar/xcOIImbbpA3zgAAAABJRU5ErkJggg==);\n",
+       "        }\n",
+       "    </style>\n",
+       "    <div>\n",
+       "        <a href=\"https://bokeh.org\" target=\"_blank\" class=\"bk-notebook-logo\"></a>\n",
+       "        <span id=\"f743887b-abad-40ed-8b69-eb523212f71f\">Loading BokehJS ...</span>\n",
+       "    </div>\n"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "application/javascript": "'use strict';\n(function(root) {\n  function now() {\n    return new Date();\n  }\n\n  const force = true;\n\n  if (typeof root._bokeh_onload_callbacks === \"undefined\" || force === true) {\n    root._bokeh_onload_callbacks = [];\n    root._bokeh_is_loading = undefined;\n  }\n\nconst JS_MIME_TYPE = 'application/javascript';\n  const HTML_MIME_TYPE = 'text/html';\n  const EXEC_MIME_TYPE = 'application/vnd.bokehjs_exec.v0+json';\n  const CLASS_NAME = 'output_bokeh rendered_html';\n\n  /**\n   * Render data to the DOM node\n   */\n  function render(props, node) {\n    const script = document.createElement(\"script\");\n    node.appendChild(script);\n  }\n\n  /**\n   * Handle when an output is cleared or removed\n   */\n  function handleClearOutput(event, handle) {\n    function drop(id) {\n      const view = Bokeh.index.get_by_id(id)\n      if (view != null) {\n        view.model.document.clear()\n        Bokeh.index.delete(view)\n      }\n    }\n\n    const cell = handle.cell;\n\n    const id = cell.output_area._bokeh_element_id;\n    const server_id = cell.output_area._bokeh_server_id;\n\n    // Clean up Bokeh references\n    if (id != null) {\n      drop(id)\n    }\n\n    if (server_id !== undefined) {\n      // Clean up Bokeh references\n      const cmd_clean = \"from bokeh.io.state import curstate; print(curstate().uuid_to_server['\" + server_id + \"'].get_sessions()[0].document.roots[0]._id)\";\n      cell.notebook.kernel.execute(cmd_clean, {\n        iopub: {\n          output: function(msg) {\n            const id = msg.content.text.trim()\n            drop(id)\n          }\n        }\n      });\n      // Destroy server and session\n      const cmd_destroy = \"import bokeh.io.notebook as ion; ion.destroy_server('\" + server_id + \"')\";\n      cell.notebook.kernel.execute(cmd_destroy);\n    }\n  }\n\n  /**\n   * Handle when a new output is added\n   */\n  function handleAddOutput(event, handle) {\n    const output_area = handle.output_area;\n    const output = handle.output;\n\n    // limit handleAddOutput to display_data with EXEC_MIME_TYPE content only\n    if ((output.output_type != \"display_data\") || (!Object.prototype.hasOwnProperty.call(output.data, EXEC_MIME_TYPE))) {\n      return\n    }\n\n    const toinsert = output_area.element.find(\".\" + CLASS_NAME.split(' ')[0]);\n\n    if (output.metadata[EXEC_MIME_TYPE][\"id\"] !== undefined) {\n      toinsert[toinsert.length - 1].firstChild.textContent = output.data[JS_MIME_TYPE];\n      // store reference to embed id on output_area\n      output_area._bokeh_element_id = output.metadata[EXEC_MIME_TYPE][\"id\"];\n    }\n    if (output.metadata[EXEC_MIME_TYPE][\"server_id\"] !== undefined) {\n      const bk_div = document.createElement(\"div\");\n      bk_div.innerHTML = output.data[HTML_MIME_TYPE];\n      const script_attrs = bk_div.children[0].attributes;\n      for (let i = 0; i < script_attrs.length; i++) {\n        toinsert[toinsert.length - 1].firstChild.setAttribute(script_attrs[i].name, script_attrs[i].value);\n        toinsert[toinsert.length - 1].firstChild.textContent = bk_div.children[0].textContent\n      }\n      // store reference to server id on output_area\n      output_area._bokeh_server_id = output.metadata[EXEC_MIME_TYPE][\"server_id\"];\n    }\n  }\n\n  function register_renderer(events, OutputArea) {\n\n    function append_mime(data, metadata, element) {\n      // create a DOM node to render to\n      const toinsert = this.create_output_subarea(\n        metadata,\n        CLASS_NAME,\n        EXEC_MIME_TYPE\n      );\n      this.keyboard_manager.register_events(toinsert);\n      // Render to node\n      const props = {data: data, metadata: metadata[EXEC_MIME_TYPE]};\n      render(props, toinsert[toinsert.length - 1]);\n      element.append(toinsert);\n      return toinsert\n    }\n\n    /* Handle when an output is cleared or removed */\n    events.on('clear_output.CodeCell', handleClearOutput);\n    events.on('delete.Cell', handleClearOutput);\n\n    /* Handle when a new output is added */\n    events.on('output_added.OutputArea', handleAddOutput);\n\n    /**\n     * Register the mime type and append_mime function with output_area\n     */\n    OutputArea.prototype.register_mime_type(EXEC_MIME_TYPE, append_mime, {\n      /* Is output safe? */\n      safe: true,\n      /* Index of renderer in `output_area.display_order` */\n      index: 0\n    });\n  }\n\n  // register the mime type if in Jupyter Notebook environment and previously unregistered\n  if (root.Jupyter !== undefined) {\n    const events = require('base/js/events');\n    const OutputArea = require('notebook/js/outputarea').OutputArea;\n\n    if (OutputArea.prototype.mime_types().indexOf(EXEC_MIME_TYPE) == -1) {\n      register_renderer(events, OutputArea);\n    }\n  }\n  if (typeof (root._bokeh_timeout) === \"undefined\" || force === true) {\n    root._bokeh_timeout = Date.now() + 5000;\n    root._bokeh_failed_load = false;\n  }\n\n  const NB_LOAD_WARNING = {'data': {'text/html':\n     \"<div style='background-color: #fdd'>\\n\"+\n     \"<p>\\n\"+\n     \"BokehJS does not appear to have successfully loaded. If loading BokehJS from CDN, this \\n\"+\n     \"may be due to a slow or bad network connection. Possible fixes:\\n\"+\n     \"</p>\\n\"+\n     \"<ul>\\n\"+\n     \"<li>re-rerun `output_notebook()` to attempt to load from CDN again, or</li>\\n\"+\n     \"<li>use INLINE resources instead, as so:</li>\\n\"+\n     \"</ul>\\n\"+\n     \"<code>\\n\"+\n     \"from bokeh.resources import INLINE\\n\"+\n     \"output_notebook(resources=INLINE)\\n\"+\n     \"</code>\\n\"+\n     \"</div>\"}};\n\n  function display_loaded(error = null) {\n    const el = document.getElementById(\"f743887b-abad-40ed-8b69-eb523212f71f\");\n    if (el != null) {\n      const html = (() => {\n        if (typeof root.Bokeh === \"undefined\") {\n          if (error == null) {\n            return \"BokehJS is loading ...\";\n          } else {\n            return \"BokehJS failed to load.\";\n          }\n        } else {\n          const prefix = `BokehJS ${root.Bokeh.version}`;\n          if (error == null) {\n            return `${prefix} successfully loaded.`;\n          } else {\n            return `${prefix} <b>encountered errors</b> while loading and may not function as expected.`;\n          }\n        }\n      })();\n      el.innerHTML = html;\n\n      if (error != null) {\n        const wrapper = document.createElement(\"div\");\n        wrapper.style.overflow = \"auto\";\n        wrapper.style.height = \"5em\";\n        wrapper.style.resize = \"vertical\";\n        const content = document.createElement(\"div\");\n        content.style.fontFamily = \"monospace\";\n        content.style.whiteSpace = \"pre-wrap\";\n        content.style.backgroundColor = \"rgb(255, 221, 221)\";\n        content.textContent = error.stack ?? error.toString();\n        wrapper.append(content);\n        el.append(wrapper);\n      }\n    } else if (Date.now() < root._bokeh_timeout) {\n      setTimeout(() => display_loaded(error), 100);\n    }\n  }\n\n  function run_callbacks() {\n    try {\n      root._bokeh_onload_callbacks.forEach(function(callback) {\n        if (callback != null)\n          callback();\n      });\n    } finally {\n      delete root._bokeh_onload_callbacks\n    }\n    console.debug(\"Bokeh: all callbacks have finished\");\n  }\n\n  function load_libs(css_urls, js_urls, callback) {\n    if (css_urls == null) css_urls = [];\n    if (js_urls == null) js_urls = [];\n\n    root._bokeh_onload_callbacks.push(callback);\n    if (root._bokeh_is_loading > 0) {\n      console.debug(\"Bokeh: BokehJS is being loaded, scheduling callback at\", now());\n      return null;\n    }\n    if (js_urls == null || js_urls.length === 0) {\n      run_callbacks();\n      return null;\n    }\n    console.debug(\"Bokeh: BokehJS not loaded, scheduling load and callback at\", now());\n    root._bokeh_is_loading = css_urls.length + js_urls.length;\n\n    function on_load() {\n      root._bokeh_is_loading--;\n      if (root._bokeh_is_loading === 0) {\n        console.debug(\"Bokeh: all BokehJS libraries/stylesheets loaded\");\n        run_callbacks()\n      }\n    }\n\n    function on_error(url) {\n      console.error(\"failed to load \" + url);\n    }\n\n    for (let i = 0; i < css_urls.length; i++) {\n      const url = css_urls[i];\n      const element = document.createElement(\"link\");\n      element.onload = on_load;\n      element.onerror = on_error.bind(null, url);\n      element.rel = \"stylesheet\";\n      element.type = \"text/css\";\n      element.href = url;\n      console.debug(\"Bokeh: injecting link tag for BokehJS stylesheet: \", url);\n      document.body.appendChild(element);\n    }\n\n    for (let i = 0; i < js_urls.length; i++) {\n      const url = js_urls[i];\n      const element = document.createElement('script');\n      element.onload = on_load;\n      element.onerror = on_error.bind(null, url);\n      element.async = false;\n      element.src = url;\n      console.debug(\"Bokeh: injecting script tag for BokehJS library: \", url);\n      document.head.appendChild(element);\n    }\n  };\n\n  function inject_raw_css(css) {\n    const element = document.createElement(\"style\");\n    element.appendChild(document.createTextNode(css));\n    document.body.appendChild(element);\n  }\n\n  const js_urls = [\"https://cdn.bokeh.org/bokeh/release/bokeh-3.7.3.min.js\", \"https://cdn.bokeh.org/bokeh/release/bokeh-gl-3.7.3.min.js\", \"https://cdn.bokeh.org/bokeh/release/bokeh-widgets-3.7.3.min.js\", \"https://cdn.bokeh.org/bokeh/release/bokeh-tables-3.7.3.min.js\", \"https://cdn.bokeh.org/bokeh/release/bokeh-mathjax-3.7.3.min.js\"];\n  const css_urls = [];\n\n  const inline_js = [    function(Bokeh) {\n      Bokeh.set_log_level(\"info\");\n    },\nfunction(Bokeh) {\n    }\n  ];\n\n  function run_inline_js() {\n    if (root.Bokeh !== undefined || force === true) {\n      try {\n            for (let i = 0; i < inline_js.length; i++) {\n      inline_js[i].call(root, root.Bokeh);\n    }\n\n      } catch (error) {display_loaded(error);throw error;\n      }if (force === true) {\n        display_loaded();\n      }} else if (Date.now() < root._bokeh_timeout) {\n      setTimeout(run_inline_js, 100);\n    } else if (!root._bokeh_failed_load) {\n      console.log(\"Bokeh: BokehJS failed to load within specified timeout.\");\n      root._bokeh_failed_load = true;\n    } else if (force !== true) {\n      const cell = $(document.getElementById(\"f743887b-abad-40ed-8b69-eb523212f71f\")).parents('.cell').data().cell;\n      cell.output_area.append_execute_result(NB_LOAD_WARNING)\n    }\n  }\n\n  if (root._bokeh_is_loading === 0) {\n    console.debug(\"Bokeh: BokehJS loaded, going straight to plotting\");\n    run_inline_js();\n  } else {\n    load_libs(css_urls, js_urls, function() {\n      console.debug(\"Bokeh: BokehJS plotting callback run at\", now());\n      run_inline_js();\n    });\n  }\n}(window));",
+      "application/vnd.bokehjs_load.v0+json": ""
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "# Enable Bokeh output in the notebook\n",
+    "output_notebook()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 1: Basic usage\n",
+    "\n",
+    "Example 1 show basic usage of the function."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "\n",
+       "  <div id=\"b4b2133f-958d-4b0c-958d-45add5e4be74\" data-root-id=\"p1006\" style=\"display: contents;\"></div>\n"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "application/javascript": "(function(root) {\n  function embed_document(root) {\n  const docs_json = {\"cd543ea3-492e-4936-8fd9-48d3038b4c38\":{\"version\":\"3.7.3\",\"title\":\"Bokeh Application\",\"roots\":[{\"type\":\"object\",\"name\":\"Figure\",\"id\":\"p1006\",\"attributes\":{\"height\":400,\"x_range\":{\"type\":\"object\",\"name\":\"DataRange1d\",\"id\":\"p1007\"},\"y_range\":{\"type\":\"object\",\"name\":\"DataRange1d\",\"id\":\"p1008\"},\"x_scale\":{\"type\":\"object\",\"name\":\"LinearScale\",\"id\":\"p1016\"},\"y_scale\":{\"type\":\"object\",\"name\":\"LinearScale\",\"id\":\"p1017\"},\"title\":{\"type\":\"object\",\"name\":\"Title\",\"id\":\"p1009\",\"attributes\":{\"text\":\"Interactive Scatter Plot\"}},\"renderers\":[{\"type\":\"object\",\"name\":\"GlyphRenderer\",\"id\":\"p1046\",\"attributes\":{\"data_source\":{\"type\":\"object\",\"name\":\"ColumnDataSource\",\"id\":\"p1003\",\"attributes\":{\"selected\":{\"type\":\"object\",\"name\":\"Selection\",\"id\":\"p1004\",\"attributes\":{\"indices\":[],\"line_indices\":[]}},\"selection_policy\":{\"type\":\"object\",\"name\":\"UnionRenderers\",\"id\":\"p1005\"},\"data\":{\"type\":\"map\",\"entries\":[[\"x\",[1,2,3]],[\"y\",[6,7,2]],[\"names\",[\"Point A\",\"Point B\",\"Point C\"]]]}}},\"view\":{\"type\":\"object\",\"name\":\"CDSView\",\"id\":\"p1047\",\"attributes\":{\"filter\":{\"type\":\"object\",\"name\":\"AllIndices\",\"id\":\"p1048\"}}},\"glyph\":{\"type\":\"object\",\"name\":\"Scatter\",\"id\":\"p1043\",\"attributes\":{\"x\":{\"type\":\"field\",\"field\":\"x\"},\"y\":{\"type\":\"field\",\"field\":\"y\"},\"size\":{\"type\":\"value\",\"value\":10},\"line_color\":{\"type\":\"value\",\"value\":\"#1f77b4\"},\"fill_color\":{\"type\":\"value\",\"value\":\"#1f77b4\"}}},\"nonselection_glyph\":{\"type\":\"object\",\"name\":\"Scatter\",\"id\":\"p1044\",\"attributes\":{\"x\":{\"type\":\"field\",\"field\":\"x\"},\"y\":{\"type\":\"field\",\"field\":\"y\"},\"size\":{\"type\":\"value\",\"value\":10},\"line_color\":{\"type\":\"value\",\"value\":\"#1f77b4\"},\"line_alpha\":{\"type\":\"value\",\"value\":0.1},\"fill_color\":{\"type\":\"value\",\"value\":\"#1f77b4\"},\"fill_alpha\":{\"type\":\"value\",\"value\":0.1},\"hatch_alpha\":{\"type\":\"value\",\"value\":0.1}}},\"muted_glyph\":{\"type\":\"object\",\"name\":\"Scatter\",\"id\":\"p1045\",\"attributes\":{\"x\":{\"type\":\"field\",\"field\":\"x\"},\"y\":{\"type\":\"field\",\"field\":\"y\"},\"size\":{\"type\":\"value\",\"value\":10},\"line_color\":{\"type\":\"value\",\"value\":\"#1f77b4\"},\"line_alpha\":{\"type\":\"value\",\"value\":0.2},\"fill_color\":{\"type\":\"value\",\"value\":\"#1f77b4\"},\"fill_alpha\":{\"type\":\"value\",\"value\":0.2},\"hatch_alpha\":{\"type\":\"value\",\"value\":0.2}}}}}],\"toolbar\":{\"type\":\"object\",\"name\":\"Toolbar\",\"id\":\"p1015\",\"attributes\":{\"tools\":[{\"type\":\"object\",\"name\":\"TapTool\",\"id\":\"p1028\",\"attributes\":{\"renderers\":\"auto\"}},{\"type\":\"object\",\"name\":\"PanTool\",\"id\":\"p1029\"},{\"type\":\"object\",\"name\":\"WheelZoomTool\",\"id\":\"p1030\",\"attributes\":{\"renderers\":\"auto\"}},{\"type\":\"object\",\"name\":\"BoxZoomTool\",\"id\":\"p1031\",\"attributes\":{\"dimensions\":\"both\",\"overlay\":{\"type\":\"object\",\"name\":\"BoxAnnotation\",\"id\":\"p1032\",\"attributes\":{\"syncable\":false,\"line_color\":\"black\",\"line_alpha\":1.0,\"line_width\":2,\"line_dash\":[4,4],\"fill_color\":\"lightgrey\",\"fill_alpha\":0.5,\"level\":\"overlay\",\"visible\":false,\"left\":{\"type\":\"number\",\"value\":\"nan\"},\"right\":{\"type\":\"number\",\"value\":\"nan\"},\"top\":{\"type\":\"number\",\"value\":\"nan\"},\"bottom\":{\"type\":\"number\",\"value\":\"nan\"},\"left_units\":\"canvas\",\"right_units\":\"canvas\",\"top_units\":\"canvas\",\"bottom_units\":\"canvas\",\"handles\":{\"type\":\"object\",\"name\":\"BoxInteractionHandles\",\"id\":\"p1038\",\"attributes\":{\"all\":{\"type\":\"object\",\"name\":\"AreaVisuals\",\"id\":\"p1037\",\"attributes\":{\"fill_color\":\"white\",\"hover_fill_color\":\"lightgray\"}}}}}}}},{\"type\":\"object\",\"name\":\"ResetTool\",\"id\":\"p1039\"},{\"type\":\"object\",\"name\":\"HoverTool\",\"id\":\"p1049\",\"attributes\":{\"renderers\":[{\"id\":\"p1046\"}],\"tooltips\":[[\"Name\",\"@names\"],[\"X\",\"@x\"],[\"Y\",\"@y\"]]}}]}},\"left\":[{\"type\":\"object\",\"name\":\"LinearAxis\",\"id\":\"p1023\",\"attributes\":{\"ticker\":{\"type\":\"object\",\"name\":\"BasicTicker\",\"id\":\"p1024\",\"attributes\":{\"mantissas\":[1,2,5]}},\"formatter\":{\"type\":\"object\",\"name\":\"BasicTickFormatter\",\"id\":\"p1025\"},\"major_label_policy\":{\"type\":\"object\",\"name\":\"AllLabels\",\"id\":\"p1026\"}}}],\"below\":[{\"type\":\"object\",\"name\":\"LinearAxis\",\"id\":\"p1018\",\"attributes\":{\"ticker\":{\"type\":\"object\",\"name\":\"BasicTicker\",\"id\":\"p1019\",\"attributes\":{\"mantissas\":[1,2,5]}},\"formatter\":{\"type\":\"object\",\"name\":\"BasicTickFormatter\",\"id\":\"p1020\"},\"major_label_policy\":{\"type\":\"object\",\"name\":\"AllLabels\",\"id\":\"p1021\"}}}],\"center\":[{\"type\":\"object\",\"name\":\"Grid\",\"id\":\"p1022\",\"attributes\":{\"axis\":{\"id\":\"p1018\"}}},{\"type\":\"object\",\"name\":\"Grid\",\"id\":\"p1027\",\"attributes\":{\"dimension\":1,\"axis\":{\"id\":\"p1023\"}}}]}}]}};\n  const render_items = [{\"docid\":\"cd543ea3-492e-4936-8fd9-48d3038b4c38\",\"roots\":{\"p1006\":\"b4b2133f-958d-4b0c-958d-45add5e4be74\"},\"root_ids\":[\"p1006\"]}];\n  void root.Bokeh.embed.embed_items_notebook(docs_json, render_items);\n  }\n  if (root.Bokeh !== undefined) {\n    embed_document(root);\n  } else {\n    let attempts = 0;\n    const timer = setInterval(function(root) {\n      if (root.Bokeh !== undefined) {\n        clearInterval(timer);\n        embed_document(root);\n      } else {\n        attempts++;\n        if (attempts > 100) {\n          clearInterval(timer);\n          console.log(\"Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing\");\n        }\n      }\n    }, 10, root)\n  }\n})(window);",
+      "application/vnd.bokehjs_exec.v0+json": ""
+     },
+     "metadata": {
+      "application/vnd.bokehjs_exec.v0+json": {
+       "id": "p1006"
+      }
+     },
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "x = [1, 2, 3]\n",
+    "y = [6, 7, 2]\n",
+    "names = [\"Point A\", \"Point B\", \"Point C\"]\n",
+    "\n",
+    "# Create the plot layout\n",
+    "p = scatter_plot(x, y, names)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 2: Basic usage with images\n",
+    "\n",
+    "Example 2 exapands to include images."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "\n",
+       "  <div id=\"eb052055-c558-4695-9273-51cc01d247c9\" data-root-id=\"p1107\" style=\"display: contents;\"></div>\n"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "application/javascript": "(function(root) {\n  function embed_document(root) {\n  const docs_json = {\"278bdd31-ff6d-47fa-8009-ee6967b21cd0\":{\"version\":\"3.7.3\",\"title\":\"Bokeh Application\",\"roots\":[{\"type\":\"object\",\"name\":\"Row\",\"id\":\"p1107\",\"attributes\":{\"children\":[{\"type\":\"object\",\"name\":\"Figure\",\"id\":\"p1053\",\"attributes\":{\"height\":400,\"x_range\":{\"type\":\"object\",\"name\":\"DataRange1d\",\"id\":\"p1054\"},\"y_range\":{\"type\":\"object\",\"name\":\"DataRange1d\",\"id\":\"p1055\"},\"x_scale\":{\"type\":\"object\",\"name\":\"LinearScale\",\"id\":\"p1063\"},\"y_scale\":{\"type\":\"object\",\"name\":\"LinearScale\",\"id\":\"p1064\"},\"title\":{\"type\":\"object\",\"name\":\"Title\",\"id\":\"p1056\",\"attributes\":{\"text\":\"Interactive Scatter Plot\"}},\"renderers\":[{\"type\":\"object\",\"name\":\"GlyphRenderer\",\"id\":\"p1093\",\"attributes\":{\"data_source\":{\"type\":\"object\",\"name\":\"ColumnDataSource\",\"id\":\"p1050\",\"attributes\":{\"selected\":{\"type\":\"object\",\"name\":\"Selection\",\"id\":\"p1051\",\"attributes\":{\"js_property_callbacks\":{\"type\":\"map\",\"entries\":[[\"change:indices\",[{\"type\":\"object\",\"name\":\"CustomJS\",\"id\":\"p1102\",\"attributes\":{\"args\":{\"type\":\"map\",\"entries\":[[\"source\",{\"id\":\"p1050\"}],[\"div\",{\"type\":\"object\",\"name\":\"Div\",\"id\":\"p1097\",\"attributes\":{\"width\":600,\"height\":320,\"text\":\"Click on a point to display the image here.\"}}],[\"name_select\",{\"type\":\"object\",\"name\":\"Select\",\"id\":\"p1098\",\"attributes\":{\"js_property_callbacks\":{\"type\":\"map\",\"entries\":[[\"change:value\",[{\"type\":\"object\",\"name\":\"CustomJS\",\"id\":\"p1101\",\"attributes\":{\"args\":{\"type\":\"map\",\"entries\":[[\"source\",{\"id\":\"p1050\"}],[\"div\",{\"id\":\"p1097\"}],[\"name_select\",{\"id\":\"p1098\"}],[\"maxHeight\",280]]},\"code\":\"\\n            const name_value = name_select.value;\\n            const indices = source.data.names.map((name, i) => (name === name_value) ? i : -1).filter(i => i >= 0);\\n\\n            if (indices.length > 0) {\\n                const selected = indices[0];\\n                const img_url = source.data.images[selected];\\n                const x_value = source.data.x[selected];\\n                const y_value = source.data.y[selected];\\n\\n                if (img_url) {\\n                    div.text = `<a href=\\\"${img_url}\\\" target=\\\"_blank\\\"><img src=\\\"${img_url}\\\" style=\\\"width:100%;max-height:${maxHeight}px;height:auto;\\\"></a><div><strong>X:</strong> ${x_value}</div><div><strong>Y:</strong> ${y_value}</div>`;\\n                } else {\\n                    div.text = `<div>No image available</div><div><strong>X:</strong> ${x_value}</div><div><strong>Y:</strong> ${y_value}</div>`;\\n                }\\n\\n                // Highlight the selected point on the scatter plot\\n                source.selected.indices = [selected];\\n            } else {\\n                div.text = \\\"No matching point found.\\\";\\n                source.selected.indices = [];  // Clear selection if no match\\n            }\\n        \"}}]]]},\"title\":\"Select Data Point\",\"options\":[\"Select Data\",\"Point A\",\"Point B\",\"Point C\"],\"value\":\"Select Data\"}}],[\"maxHeight\",280]]},\"code\":\"\\n            const selected = source.selected.indices[0];\\n            if (selected != null) {\\n                const name_value = source.data.names[selected];\\n                const img_url = source.data.images[selected];\\n                const x_value = source.data.x[selected];\\n                const y_value = source.data.y[selected];\\n\\n                // Update dropdown\\n                name_select.value = name_value;\\n\\n                if (img_url) {\\n                    // Display the image\\n                    div.text = `<a href=\\\"${img_url}\\\" target=\\\"_blank\\\"><img src=\\\"${img_url}\\\" style=\\\"width:100%;max-height:${maxHeight}px;height:auto;\\\"></a><div><strong>X:</strong> ${x_value}</div><div><strong>Y:</strong> ${y_value}</div>`;\\n                } else {\\n                    // No image available\\n                    div.text = `<div>No image available</div><div><strong>X:</strong> ${x_value}</div><div><strong>Y:</strong> ${y_value}</div>`;\\n                }\\n            }\\n        \"}}]]]},\"indices\":[],\"line_indices\":[]}},\"selection_policy\":{\"type\":\"object\",\"name\":\"UnionRenderers\",\"id\":\"p1052\"},\"data\":{\"type\":\"map\",\"entries\":[[\"x\",[1,2,3]],[\"y\",[6,7,2]],[\"names\",[\"Point A\",\"Point B\",\"Point C\"]],[\"images\",[\"images/image1.jpg\",null,\"images/image3.jpg\"]]]}}},\"view\":{\"type\":\"object\",\"name\":\"CDSView\",\"id\":\"p1094\",\"attributes\":{\"filter\":{\"type\":\"object\",\"name\":\"AllIndices\",\"id\":\"p1095\"}}},\"glyph\":{\"type\":\"object\",\"name\":\"Scatter\",\"id\":\"p1090\",\"attributes\":{\"x\":{\"type\":\"field\",\"field\":\"x\"},\"y\":{\"type\":\"field\",\"field\":\"y\"},\"size\":{\"type\":\"value\",\"value\":10},\"line_color\":{\"type\":\"value\",\"value\":\"#1f77b4\"},\"fill_color\":{\"type\":\"value\",\"value\":\"#1f77b4\"}}},\"nonselection_glyph\":{\"type\":\"object\",\"name\":\"Scatter\",\"id\":\"p1091\",\"attributes\":{\"x\":{\"type\":\"field\",\"field\":\"x\"},\"y\":{\"type\":\"field\",\"field\":\"y\"},\"size\":{\"type\":\"value\",\"value\":10},\"line_color\":{\"type\":\"value\",\"value\":\"#1f77b4\"},\"line_alpha\":{\"type\":\"value\",\"value\":0.1},\"fill_color\":{\"type\":\"value\",\"value\":\"#1f77b4\"},\"fill_alpha\":{\"type\":\"value\",\"value\":0.1},\"hatch_alpha\":{\"type\":\"value\",\"value\":0.1}}},\"muted_glyph\":{\"type\":\"object\",\"name\":\"Scatter\",\"id\":\"p1092\",\"attributes\":{\"x\":{\"type\":\"field\",\"field\":\"x\"},\"y\":{\"type\":\"field\",\"field\":\"y\"},\"size\":{\"type\":\"value\",\"value\":10},\"line_color\":{\"type\":\"value\",\"value\":\"#1f77b4\"},\"line_alpha\":{\"type\":\"value\",\"value\":0.2},\"fill_color\":{\"type\":\"value\",\"value\":\"#1f77b4\"},\"fill_alpha\":{\"type\":\"value\",\"value\":0.2},\"hatch_alpha\":{\"type\":\"value\",\"value\":0.2}}}}}],\"toolbar\":{\"type\":\"object\",\"name\":\"Toolbar\",\"id\":\"p1062\",\"attributes\":{\"tools\":[{\"type\":\"object\",\"name\":\"TapTool\",\"id\":\"p1075\",\"attributes\":{\"renderers\":\"auto\"}},{\"type\":\"object\",\"name\":\"PanTool\",\"id\":\"p1076\"},{\"type\":\"object\",\"name\":\"WheelZoomTool\",\"id\":\"p1077\",\"attributes\":{\"renderers\":\"auto\"}},{\"type\":\"object\",\"name\":\"BoxZoomTool\",\"id\":\"p1078\",\"attributes\":{\"dimensions\":\"both\",\"overlay\":{\"type\":\"object\",\"name\":\"BoxAnnotation\",\"id\":\"p1079\",\"attributes\":{\"syncable\":false,\"line_color\":\"black\",\"line_alpha\":1.0,\"line_width\":2,\"line_dash\":[4,4],\"fill_color\":\"lightgrey\",\"fill_alpha\":0.5,\"level\":\"overlay\",\"visible\":false,\"left\":{\"type\":\"number\",\"value\":\"nan\"},\"right\":{\"type\":\"number\",\"value\":\"nan\"},\"top\":{\"type\":\"number\",\"value\":\"nan\"},\"bottom\":{\"type\":\"number\",\"value\":\"nan\"},\"left_units\":\"canvas\",\"right_units\":\"canvas\",\"top_units\":\"canvas\",\"bottom_units\":\"canvas\",\"handles\":{\"type\":\"object\",\"name\":\"BoxInteractionHandles\",\"id\":\"p1085\",\"attributes\":{\"all\":{\"type\":\"object\",\"name\":\"AreaVisuals\",\"id\":\"p1084\",\"attributes\":{\"fill_color\":\"white\",\"hover_fill_color\":\"lightgray\"}}}}}}}},{\"type\":\"object\",\"name\":\"ResetTool\",\"id\":\"p1086\"},{\"type\":\"object\",\"name\":\"HoverTool\",\"id\":\"p1096\",\"attributes\":{\"renderers\":[{\"id\":\"p1093\"}],\"tooltips\":\"\\n                <div>\\n                    <img src=\\\"@images\\\" alt=\\\"\\\" style=\\\"width:100px;height:auto;\\\"/>\\n                    <div><strong>Name:</strong> @names</div>\\n                    <div><strong>X:</strong> @x</div>\\n                    <div><strong>Y:</strong> @y</div>\\n                </div>\\n                \"}}]}},\"left\":[{\"type\":\"object\",\"name\":\"LinearAxis\",\"id\":\"p1070\",\"attributes\":{\"ticker\":{\"type\":\"object\",\"name\":\"BasicTicker\",\"id\":\"p1071\",\"attributes\":{\"mantissas\":[1,2,5]}},\"formatter\":{\"type\":\"object\",\"name\":\"BasicTickFormatter\",\"id\":\"p1072\"},\"major_label_policy\":{\"type\":\"object\",\"name\":\"AllLabels\",\"id\":\"p1073\"}}}],\"below\":[{\"type\":\"object\",\"name\":\"LinearAxis\",\"id\":\"p1065\",\"attributes\":{\"ticker\":{\"type\":\"object\",\"name\":\"BasicTicker\",\"id\":\"p1066\",\"attributes\":{\"mantissas\":[1,2,5]}},\"formatter\":{\"type\":\"object\",\"name\":\"BasicTickFormatter\",\"id\":\"p1067\"},\"major_label_policy\":{\"type\":\"object\",\"name\":\"AllLabels\",\"id\":\"p1068\"}}}],\"center\":[{\"type\":\"object\",\"name\":\"Grid\",\"id\":\"p1069\",\"attributes\":{\"axis\":{\"id\":\"p1065\"}}},{\"type\":\"object\",\"name\":\"Grid\",\"id\":\"p1074\",\"attributes\":{\"dimension\":1,\"axis\":{\"id\":\"p1070\"}}}]}},{\"type\":\"object\",\"name\":\"Column\",\"id\":\"p1106\",\"attributes\":{\"children\":[{\"id\":\"p1098\"},{\"id\":\"p1097\"},{\"type\":\"object\",\"name\":\"Row\",\"id\":\"p1105\",\"attributes\":{\"children\":[{\"type\":\"object\",\"name\":\"Button\",\"id\":\"p1099\",\"attributes\":{\"js_event_callbacks\":{\"type\":\"map\",\"entries\":[[\"button_click\",[{\"type\":\"object\",\"name\":\"CustomJS\",\"id\":\"p1103\",\"attributes\":{\"args\":{\"type\":\"map\",\"entries\":[[\"source\",{\"id\":\"p1050\"}],[\"div\",{\"id\":\"p1097\"}],[\"name_select\",{\"id\":\"p1098\"}],[\"maxHeight\",280]]},\"code\":\"\\n            let selected_index = source.selected.indices[0];\\n            if (selected_index !== undefined) {\\n                // Get the current name's index\\n                const current_name = source.data.names[selected_index];\\n                const current_index = source.data.names.indexOf(current_name);\\n\\n                // Get the previous index\\n                const prev_index = (current_index - 1 + source.data.names.length) % source.data.names.length;\\n                const prev_name = source.data.names[prev_index];\\n                const prev_img_url = source.data.images[prev_index];\\n                const prev_x = source.data.x[prev_index];\\n                const prev_y = source.data.y[prev_index];\\n\\n                if (prev_img_url) {\\n                    // Update image and x, y values\\n                    div.text = `<a href=\\\"${prev_img_url}\\\" target=\\\"_blank\\\"><img src=\\\"${prev_img_url}\\\" style=\\\"width:100%;max-height:${maxHeight}px;height:auto;\\\"></a><div><strong>X:</strong> ${prev_x}</div><div><strong>Y:</strong> ${prev_y}</div>`;\\n                } else {\\n                    div.text = `<div>No image available</div><div><strong>X:</strong> ${prev_x}</div><div><strong>Y:</strong> ${prev_y}</div>`;\\n                }\\n                name_select.value = prev_name;\\n\\n                // Sync selection with plot\\n                source.selected.indices = [prev_index];\\n            }\\n        \"}}]]]},\"width\":150,\"label\":\"Previous Image\"}},{\"type\":\"object\",\"name\":\"Button\",\"id\":\"p1100\",\"attributes\":{\"js_event_callbacks\":{\"type\":\"map\",\"entries\":[[\"button_click\",[{\"type\":\"object\",\"name\":\"CustomJS\",\"id\":\"p1104\",\"attributes\":{\"args\":{\"type\":\"map\",\"entries\":[[\"source\",{\"id\":\"p1050\"}],[\"div\",{\"id\":\"p1097\"}],[\"name_select\",{\"id\":\"p1098\"}],[\"maxHeight\",280]]},\"code\":\"\\n            let selected_index = source.selected.indices[0];\\n            if (selected_index !== undefined) {\\n                // Get the current name's index\\n                const current_name = source.data.names[selected_index];\\n                const current_index = source.data.names.indexOf(current_name);\\n\\n                // Get the next index\\n                const next_index = (current_index + 1) % source.data.names.length;\\n                const next_name = source.data.names[next_index];\\n                const next_img_url = source.data.images[next_index];\\n                const next_x = source.data.x[next_index];\\n                const next_y = source.data.y[next_index];\\n\\n                if (next_img_url) {\\n                    // Update image and x, y values\\n                    div.text = `<a href=\\\"${next_img_url}\\\" target=\\\"_blank\\\"><img src=\\\"${next_img_url}\\\" style=\\\"width:100%;max-height:${maxHeight}px;height:auto;\\\"></a><div><strong>X:</strong> ${next_x}</div><div><strong>Y:</strong> ${next_y}</div>`;\\n                } else {\\n                    div.text = `<div>No image available</div><div><strong>X:</strong> ${next_x}</div><div><strong>Y:</strong> ${next_y}</div>`;\\n                }\\n                name_select.value = next_name;\\n\\n                // Sync selection with plot\\n                source.selected.indices = [next_index];\\n            }\\n        \"}}]]]},\"width\":150,\"label\":\"Next Image\"}}]}}]}}]}}]}};\n  const render_items = [{\"docid\":\"278bdd31-ff6d-47fa-8009-ee6967b21cd0\",\"roots\":{\"p1107\":\"eb052055-c558-4695-9273-51cc01d247c9\"},\"root_ids\":[\"p1107\"]}];\n  void root.Bokeh.embed.embed_items_notebook(docs_json, render_items);\n  }\n  if (root.Bokeh !== undefined) {\n    embed_document(root);\n  } else {\n    let attempts = 0;\n    const timer = setInterval(function(root) {\n      if (root.Bokeh !== undefined) {\n        clearInterval(timer);\n        embed_document(root);\n      } else {\n        attempts++;\n        if (attempts > 100) {\n          clearInterval(timer);\n          console.log(\"Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing\");\n        }\n      }\n    }, 10, root)\n  }\n})(window);",
+      "application/vnd.bokehjs_exec.v0+json": ""
+     },
+     "metadata": {
+      "application/vnd.bokehjs_exec.v0+json": {
+       "id": "p1107"
+      }
+     },
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "x = [1, 2, 3]\n",
+    "y = [6, 7, 2]\n",
+    "names = [\"Point A\", \"Point B\", \"Point C\"]\n",
+    "images = [\n",
+    "    \"images/image1.jpg\",  # Example of a valid image URL\n",
+    "    None,  # Example of no image (None value)\n",
+    "    \"images/image3.jpg\",  # Example of another valid image URL\n",
+    "]\n",
+    "\n",
+    "# Create the plot layout\n",
+    "p = scatter_plot(x, y, names, images=images)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 3: Practical usage example"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "\n",
+       "  <div id=\"ef1cf634-26d1-41a0-ab41-801c4d278be4\" data-root-id=\"p1165\" style=\"display: contents;\"></div>\n"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "application/javascript": "(function(root) {\n  function embed_document(root) {\n  const docs_json = {\"bf42f1f8-0bef-41f2-baa4-4e7505f192c7\":{\"version\":\"3.7.3\",\"title\":\"Bokeh Application\",\"roots\":[{\"type\":\"object\",\"name\":\"Row\",\"id\":\"p1165\",\"attributes\":{\"children\":[{\"type\":\"object\",\"name\":\"Figure\",\"id\":\"p1111\",\"attributes\":{\"width\":460,\"x_range\":{\"type\":\"object\",\"name\":\"DataRange1d\",\"id\":\"p1112\"},\"y_range\":{\"type\":\"object\",\"name\":\"DataRange1d\",\"id\":\"p1113\"},\"x_scale\":{\"type\":\"object\",\"name\":\"LinearScale\",\"id\":\"p1121\"},\"y_scale\":{\"type\":\"object\",\"name\":\"LinearScale\",\"id\":\"p1122\"},\"title\":{\"type\":\"object\",\"name\":\"Title\",\"id\":\"p1114\",\"attributes\":{\"text\":\"Interactive Scatter Plot\"}},\"renderers\":[{\"type\":\"object\",\"name\":\"GlyphRenderer\",\"id\":\"p1151\",\"attributes\":{\"data_source\":{\"type\":\"object\",\"name\":\"ColumnDataSource\",\"id\":\"p1108\",\"attributes\":{\"selected\":{\"type\":\"object\",\"name\":\"Selection\",\"id\":\"p1109\",\"attributes\":{\"js_property_callbacks\":{\"type\":\"map\",\"entries\":[[\"change:indices\",[{\"type\":\"object\",\"name\":\"CustomJS\",\"id\":\"p1160\",\"attributes\":{\"args\":{\"type\":\"map\",\"entries\":[[\"source\",{\"id\":\"p1108\"}],[\"div\",{\"type\":\"object\",\"name\":\"Div\",\"id\":\"p1155\",\"attributes\":{\"width\":460,\"height\":480,\"text\":\"Click on a point to display the image here.\"}}],[\"name_select\",{\"type\":\"object\",\"name\":\"Select\",\"id\":\"p1156\",\"attributes\":{\"js_property_callbacks\":{\"type\":\"map\",\"entries\":[[\"change:value\",[{\"type\":\"object\",\"name\":\"CustomJS\",\"id\":\"p1159\",\"attributes\":{\"args\":{\"type\":\"map\",\"entries\":[[\"source\",{\"id\":\"p1108\"}],[\"div\",{\"id\":\"p1155\"}],[\"name_select\",{\"id\":\"p1156\"}],[\"maxHeight\",420]]},\"code\":\"\\n            const name_value = name_select.value;\\n            const indices = source.data.names.map((name, i) => (name === name_value) ? i : -1).filter(i => i >= 0);\\n\\n            if (indices.length > 0) {\\n                const selected = indices[0];\\n                const img_url = source.data.images[selected];\\n                const x_value = source.data.x[selected];\\n                const y_value = source.data.y[selected];\\n\\n                if (img_url) {\\n                    div.text = `<a href=\\\"${img_url}\\\" target=\\\"_blank\\\"><img src=\\\"${img_url}\\\" style=\\\"width:100%;max-height:${maxHeight}px;height:auto;\\\"></a><div><strong>X:</strong> ${x_value}</div><div><strong>Y:</strong> ${y_value}</div>`;\\n                } else {\\n                    div.text = `<div>No image available</div><div><strong>X:</strong> ${x_value}</div><div><strong>Y:</strong> ${y_value}</div>`;\\n                }\\n\\n                // Highlight the selected point on the scatter plot\\n                source.selected.indices = [selected];\\n            } else {\\n                div.text = \\\"No matching point found.\\\";\\n                source.selected.indices = [];  // Clear selection if no match\\n            }\\n        \"}}]]]},\"title\":\"Select Data Point\",\"options\":[\"Select Data\",\"ACCESS-CM2\",\"E3SM-1-0\",\"GFDL-CM4\"],\"value\":\"Select Data\"}}],[\"maxHeight\",420]]},\"code\":\"\\n            const selected = source.selected.indices[0];\\n            if (selected != null) {\\n                const name_value = source.data.names[selected];\\n                const img_url = source.data.images[selected];\\n                const x_value = source.data.x[selected];\\n                const y_value = source.data.y[selected];\\n\\n                // Update dropdown\\n                name_select.value = name_value;\\n\\n                if (img_url) {\\n                    // Display the image\\n                    div.text = `<a href=\\\"${img_url}\\\" target=\\\"_blank\\\"><img src=\\\"${img_url}\\\" style=\\\"width:100%;max-height:${maxHeight}px;height:auto;\\\"></a><div><strong>X:</strong> ${x_value}</div><div><strong>Y:</strong> ${y_value}</div>`;\\n                } else {\\n                    // No image available\\n                    div.text = `<div>No image available</div><div><strong>X:</strong> ${x_value}</div><div><strong>Y:</strong> ${y_value}</div>`;\\n                }\\n            }\\n        \"}}]]]},\"indices\":[],\"line_indices\":[]}},\"selection_policy\":{\"type\":\"object\",\"name\":\"UnionRenderers\",\"id\":\"p1110\"},\"data\":{\"type\":\"map\",\"entries\":[[\"x\",[1.26,0.93,0.83]],[\"y\",[0.87,0.91,0.93]],[\"names\",[\"ACCESS-CM2\",\"E3SM-1-0\",\"GFDL-CM4\"]],[\"images\",[\"images/model_sample1.png\",\"images/model_sample2.png\",\"images/model_sample3.png\"]]]}}},\"view\":{\"type\":\"object\",\"name\":\"CDSView\",\"id\":\"p1152\",\"attributes\":{\"filter\":{\"type\":\"object\",\"name\":\"AllIndices\",\"id\":\"p1153\"}}},\"glyph\":{\"type\":\"object\",\"name\":\"Scatter\",\"id\":\"p1148\",\"attributes\":{\"x\":{\"type\":\"field\",\"field\":\"x\"},\"y\":{\"type\":\"field\",\"field\":\"y\"},\"size\":{\"type\":\"value\",\"value\":10},\"line_color\":{\"type\":\"value\",\"value\":\"#1f77b4\"},\"fill_color\":{\"type\":\"value\",\"value\":\"#1f77b4\"}}},\"nonselection_glyph\":{\"type\":\"object\",\"name\":\"Scatter\",\"id\":\"p1149\",\"attributes\":{\"x\":{\"type\":\"field\",\"field\":\"x\"},\"y\":{\"type\":\"field\",\"field\":\"y\"},\"size\":{\"type\":\"value\",\"value\":10},\"line_color\":{\"type\":\"value\",\"value\":\"#1f77b4\"},\"line_alpha\":{\"type\":\"value\",\"value\":0.1},\"fill_color\":{\"type\":\"value\",\"value\":\"#1f77b4\"},\"fill_alpha\":{\"type\":\"value\",\"value\":0.1},\"hatch_alpha\":{\"type\":\"value\",\"value\":0.1}}},\"muted_glyph\":{\"type\":\"object\",\"name\":\"Scatter\",\"id\":\"p1150\",\"attributes\":{\"x\":{\"type\":\"field\",\"field\":\"x\"},\"y\":{\"type\":\"field\",\"field\":\"y\"},\"size\":{\"type\":\"value\",\"value\":10},\"line_color\":{\"type\":\"value\",\"value\":\"#1f77b4\"},\"line_alpha\":{\"type\":\"value\",\"value\":0.2},\"fill_color\":{\"type\":\"value\",\"value\":\"#1f77b4\"},\"fill_alpha\":{\"type\":\"value\",\"value\":0.2},\"hatch_alpha\":{\"type\":\"value\",\"value\":0.2}}}}}],\"toolbar\":{\"type\":\"object\",\"name\":\"Toolbar\",\"id\":\"p1120\",\"attributes\":{\"tools\":[{\"type\":\"object\",\"name\":\"TapTool\",\"id\":\"p1133\",\"attributes\":{\"renderers\":\"auto\"}},{\"type\":\"object\",\"name\":\"PanTool\",\"id\":\"p1134\"},{\"type\":\"object\",\"name\":\"WheelZoomTool\",\"id\":\"p1135\",\"attributes\":{\"renderers\":\"auto\"}},{\"type\":\"object\",\"name\":\"BoxZoomTool\",\"id\":\"p1136\",\"attributes\":{\"dimensions\":\"both\",\"overlay\":{\"type\":\"object\",\"name\":\"BoxAnnotation\",\"id\":\"p1137\",\"attributes\":{\"syncable\":false,\"line_color\":\"black\",\"line_alpha\":1.0,\"line_width\":2,\"line_dash\":[4,4],\"fill_color\":\"lightgrey\",\"fill_alpha\":0.5,\"level\":\"overlay\",\"visible\":false,\"left\":{\"type\":\"number\",\"value\":\"nan\"},\"right\":{\"type\":\"number\",\"value\":\"nan\"},\"top\":{\"type\":\"number\",\"value\":\"nan\"},\"bottom\":{\"type\":\"number\",\"value\":\"nan\"},\"left_units\":\"canvas\",\"right_units\":\"canvas\",\"top_units\":\"canvas\",\"bottom_units\":\"canvas\",\"handles\":{\"type\":\"object\",\"name\":\"BoxInteractionHandles\",\"id\":\"p1143\",\"attributes\":{\"all\":{\"type\":\"object\",\"name\":\"AreaVisuals\",\"id\":\"p1142\",\"attributes\":{\"fill_color\":\"white\",\"hover_fill_color\":\"lightgray\"}}}}}}}},{\"type\":\"object\",\"name\":\"ResetTool\",\"id\":\"p1144\"},{\"type\":\"object\",\"name\":\"HoverTool\",\"id\":\"p1154\",\"attributes\":{\"renderers\":[{\"id\":\"p1151\"}],\"tooltips\":\"\\n                <div>\\n                    <img src=\\\"@images\\\" alt=\\\"\\\" style=\\\"width:100px;height:auto;\\\"/>\\n                    <div><strong>Name:</strong> @names</div>\\n                    <div><strong>X:</strong> @x</div>\\n                    <div><strong>Y:</strong> @y</div>\\n                </div>\\n                \"}}]}},\"left\":[{\"type\":\"object\",\"name\":\"LinearAxis\",\"id\":\"p1128\",\"attributes\":{\"ticker\":{\"type\":\"object\",\"name\":\"BasicTicker\",\"id\":\"p1129\",\"attributes\":{\"mantissas\":[1,2,5]}},\"formatter\":{\"type\":\"object\",\"name\":\"BasicTickFormatter\",\"id\":\"p1130\"},\"major_label_policy\":{\"type\":\"object\",\"name\":\"AllLabels\",\"id\":\"p1131\"}}}],\"below\":[{\"type\":\"object\",\"name\":\"LinearAxis\",\"id\":\"p1123\",\"attributes\":{\"ticker\":{\"type\":\"object\",\"name\":\"BasicTicker\",\"id\":\"p1124\",\"attributes\":{\"mantissas\":[1,2,5]}},\"formatter\":{\"type\":\"object\",\"name\":\"BasicTickFormatter\",\"id\":\"p1125\"},\"major_label_policy\":{\"type\":\"object\",\"name\":\"AllLabels\",\"id\":\"p1126\"}}}],\"center\":[{\"type\":\"object\",\"name\":\"Grid\",\"id\":\"p1127\",\"attributes\":{\"axis\":{\"id\":\"p1123\"}}},{\"type\":\"object\",\"name\":\"Grid\",\"id\":\"p1132\",\"attributes\":{\"dimension\":1,\"axis\":{\"id\":\"p1128\"}}}]}},{\"type\":\"object\",\"name\":\"Column\",\"id\":\"p1164\",\"attributes\":{\"children\":[{\"id\":\"p1156\"},{\"id\":\"p1155\"},{\"type\":\"object\",\"name\":\"Row\",\"id\":\"p1163\",\"attributes\":{\"children\":[{\"type\":\"object\",\"name\":\"Button\",\"id\":\"p1157\",\"attributes\":{\"js_event_callbacks\":{\"type\":\"map\",\"entries\":[[\"button_click\",[{\"type\":\"object\",\"name\":\"CustomJS\",\"id\":\"p1161\",\"attributes\":{\"args\":{\"type\":\"map\",\"entries\":[[\"source\",{\"id\":\"p1108\"}],[\"div\",{\"id\":\"p1155\"}],[\"name_select\",{\"id\":\"p1156\"}],[\"maxHeight\",420]]},\"code\":\"\\n            let selected_index = source.selected.indices[0];\\n            if (selected_index !== undefined) {\\n                // Get the current name's index\\n                const current_name = source.data.names[selected_index];\\n                const current_index = source.data.names.indexOf(current_name);\\n\\n                // Get the previous index\\n                const prev_index = (current_index - 1 + source.data.names.length) % source.data.names.length;\\n                const prev_name = source.data.names[prev_index];\\n                const prev_img_url = source.data.images[prev_index];\\n                const prev_x = source.data.x[prev_index];\\n                const prev_y = source.data.y[prev_index];\\n\\n                if (prev_img_url) {\\n                    // Update image and x, y values\\n                    div.text = `<a href=\\\"${prev_img_url}\\\" target=\\\"_blank\\\"><img src=\\\"${prev_img_url}\\\" style=\\\"width:100%;max-height:${maxHeight}px;height:auto;\\\"></a><div><strong>X:</strong> ${prev_x}</div><div><strong>Y:</strong> ${prev_y}</div>`;\\n                } else {\\n                    div.text = `<div>No image available</div><div><strong>X:</strong> ${prev_x}</div><div><strong>Y:</strong> ${prev_y}</div>`;\\n                }\\n                name_select.value = prev_name;\\n\\n                // Sync selection with plot\\n                source.selected.indices = [prev_index];\\n            }\\n        \"}}]]]},\"width\":150,\"label\":\"Previous Image\"}},{\"type\":\"object\",\"name\":\"Button\",\"id\":\"p1158\",\"attributes\":{\"js_event_callbacks\":{\"type\":\"map\",\"entries\":[[\"button_click\",[{\"type\":\"object\",\"name\":\"CustomJS\",\"id\":\"p1162\",\"attributes\":{\"args\":{\"type\":\"map\",\"entries\":[[\"source\",{\"id\":\"p1108\"}],[\"div\",{\"id\":\"p1155\"}],[\"name_select\",{\"id\":\"p1156\"}],[\"maxHeight\",420]]},\"code\":\"\\n            let selected_index = source.selected.indices[0];\\n            if (selected_index !== undefined) {\\n                // Get the current name's index\\n                const current_name = source.data.names[selected_index];\\n                const current_index = source.data.names.indexOf(current_name);\\n\\n                // Get the next index\\n                const next_index = (current_index + 1) % source.data.names.length;\\n                const next_name = source.data.names[next_index];\\n                const next_img_url = source.data.images[next_index];\\n                const next_x = source.data.x[next_index];\\n                const next_y = source.data.y[next_index];\\n\\n                if (next_img_url) {\\n                    // Update image and x, y values\\n                    div.text = `<a href=\\\"${next_img_url}\\\" target=\\\"_blank\\\"><img src=\\\"${next_img_url}\\\" style=\\\"width:100%;max-height:${maxHeight}px;height:auto;\\\"></a><div><strong>X:</strong> ${next_x}</div><div><strong>Y:</strong> ${next_y}</div>`;\\n                } else {\\n                    div.text = `<div>No image available</div><div><strong>X:</strong> ${next_x}</div><div><strong>Y:</strong> ${next_y}</div>`;\\n                }\\n                name_select.value = next_name;\\n\\n                // Sync selection with plot\\n                source.selected.indices = [next_index];\\n            }\\n        \"}}]]]},\"width\":150,\"label\":\"Next Image\"}}]}}]}}]}}]}};\n  const render_items = [{\"docid\":\"bf42f1f8-0bef-41f2-baa4-4e7505f192c7\",\"roots\":{\"p1165\":\"ef1cf634-26d1-41a0-ab41-801c4d278be4\"},\"root_ids\":[\"p1165\"]}];\n  void root.Bokeh.embed.embed_items_notebook(docs_json, render_items);\n  }\n  if (root.Bokeh !== undefined) {\n    embed_document(root);\n  } else {\n    let attempts = 0;\n    const timer = setInterval(function(root) {\n      if (root.Bokeh !== undefined) {\n        clearInterval(timer);\n        embed_document(root);\n      } else {\n        attempts++;\n        if (attempts > 100) {\n          clearInterval(timer);\n          console.log(\"Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing\");\n        }\n      }\n    }, 10, root)\n  }\n})(window);",
+      "application/vnd.bokehjs_exec.v0+json": ""
+     },
+     "metadata": {
+      "application/vnd.bokehjs_exec.v0+json": {
+       "id": "p1165"
+      }
+     },
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "x = [1.26, 0.93, 0.83]  # RMSE\n",
+    "y = [0.87, 0.91, 0.93]  # Correlation\n",
+    "names = [\"ACCESS-CM2\", \"E3SM-1-0\", \"GFDL-CM4\"]\n",
+    "images = [\n",
+    "    \"images/model_sample1.png\",\n",
+    "    \"images/model_sample2.png\",\n",
+    "    \"images/model_sample3.png\",\n",
+    "]\n",
+    "\n",
+    "# Create the plot layout\n",
+    "p = scatter_plot(x, y, names, images=images, width=460, height=600)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Save the plot"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'/pscratch/sd/l/lee1043/git/ESMBenchmarkViz/docs/examples/interactive_scatter_plot.html'"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# set output to static HTML file\n",
+    "output_file(filename=\"interactive_scatter_plot.html\", title=\"Interactive Scatter Plot\")\n",
+    "\n",
+    "# save the results to a file\n",
+    "save(p)\n",
+    "\n",
+    "# Result: [`interactive_scatter_plot.html`](interactive_scatter_plot.html)"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "pmp_devel_20250722",
+   "language": "python",
+   "name": "pmp_devel_20250722"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.10.10"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
