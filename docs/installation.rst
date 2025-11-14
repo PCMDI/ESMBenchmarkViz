@@ -9,14 +9,14 @@ Prerequisites
 -------------
 
 - Python 3.10 or higher
-- `git` installed on your system
+- `git <https://github.com/git-guides/install-git>`_ and `pip <https://pip.pypa.io/en/stable/installation/>`_ installed on your system
 - `numpy <https://numpy.org/>`_, `bokeh <https://docs.bokeh.org/en/latest/>`_, `matplotlib <https://matplotlib.org/>`_ libraries installed (These will be installed automatically if you follow the conda environment setup in Step 2)
-- (Optional) `conda` for environment management
+- (Optional, but recommended) `conda <https://docs.conda.io/en/latest/>`_ for environment management
 
 Step 1: Clone the Repository
 ----------------------------
 
-Clone the repository from GitHub:
+Clone the repository from `GitHub <https://github.com/PCMDI/ESMBenchmarkViz.git>`_ to your local machine:
 
 .. code-block:: bash
 
@@ -26,7 +26,7 @@ Clone the repository from GitHub:
 Step 2: (Optional) Create and Activate a Conda Environment
 ----------------------------------------------------------
 
-It is recommended to use a conda environment to manage dependencies. You can create and activate a new environment as follows:
+It is recommended to use a `conda <https://docs.conda.io/en/latest/>`_ environment to manage dependencies. You can create and activate a new environment as follows:
 
 .. code-block:: bash
 
