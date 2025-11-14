@@ -10,6 +10,7 @@ Prerequisites
 
 - Python 3.10 or higher
 - `git` installed on your system
+- `numpy <https://numpy.org/>`_, `bokeh <https://docs.bokeh.org/en/latest/>`_, `matplotlib <https://matplotlib.org/>`_ libraries installed (These will be installed automatically if you follow the conda environment setup in Step 2)
 - (Optional) `conda` for environment management
 
 Step 1: Clone the Repository
@@ -29,7 +30,7 @@ It is recommended to use a conda environment to manage dependencies. You can cre
 
 .. code-block:: bash
 
-    conda create -n esmbenchmarkviz python=3.10  # or higher
+    conda create -n esmbenchmarkviz -f conda_env/environment.yml
     conda activate esmbenchmarkviz
 
 Step 3: Install the Package
