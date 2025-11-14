@@ -53,6 +53,7 @@ BSD 3-Clause License.
    :caption: For users:
 
    overview
+   installation
    gallery
 
 .. toctree::
