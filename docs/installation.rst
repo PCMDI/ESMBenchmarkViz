@@ -29,7 +29,7 @@ It is recommended to use a conda environment to manage dependencies. You can cre
 
 .. code-block:: bash
 
-    conda create -n esmbenchmarkviz python=3.9
+    conda create -n esmbenchmarkviz python=3.10  # or higher
     conda activate esmbenchmarkviz
 
 Step 3: Install the Package
@@ -55,7 +55,7 @@ If you see the version number printed without errors, the installation was succe
 Troubleshooting
 ---------------
 
-If you encounter any issues during installation, please check that you have the required dependencies and that you are using a compatible Python version. For further assistance, refer to the `README.md` in the repository or open an issue on the `ESMBenchmarkViz` GitHub page.
+If you encounter any issues during installation, please check that you have the required dependencies and that you are using a compatible Python version. For further assistance, refer to the `README.md <https://github.com/PCMDI/ESMBenchmarkViz/blob/main/README.md>`_ in the repository or open an issue on the `ESMBenchmarkViz GitHub page <https://github.com/PCMDI/ESMBenchmarkViz/issues>`_.
 
 ----
 
