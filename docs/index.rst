@@ -5,8 +5,23 @@
 ESMBenchmarkViz
 ***************
 
-The `ESMBenchmarkViz` package provides a set of tools to visualize data from the Earth System Model (ESM) Benchmarking project. 
-The package is built on top of the `bokeh` library.
+The `ESMBenchmarkViz` package provides tools for interactive visualization of results from the Earth System Model (ESM) Benchmarking project.
+
+ESMs integrate key components of the climate system, including the atmosphere, oceans, land surface, and biosphere. They are used to study Earth system processes, feedbacks, and responses to external forcing. As ESMs increase in complexity, clear and reliable evaluation and benchmarking becomes increasingly important.
+
+Model evaluation typically compares ESM output to observational datasets and to other models. These comparisons help quantify performance, identify strengths and weaknesses, guide model development, and improve confidence in scientific conclusions.
+
+`ESMBenchmarkViz` offers reusable, high level plotting functions designed for ESM evaluation, intercomparison, and benchmarking. The package focuses on three core interactive visualizations:
+
+(a) Taylor Diagram  
+(b) Portrait Plot  
+(c) Scatter plot with optional side “dive down” image viewer
+
+For interactive plots, users can hover over points to view detailed tooltips, and, when enabled, click a point to open the associated “dive down” diagnostic image for deeper inspection.
+
+The toolkit is developed in Python 3 and built on top of the `bokeh` library. API reference documentation and interactive demo Jupyter notebooks are provided for each plot type. The simple, function based API supports integration into existing analysis workflows and promotes reproducible climate research. Typical interactions include zooming, filtering, and tooltips, with optional side panel display for additional details.
+
+Development of `ESMBenchmarkViz` originated from the interactive visualization dashboard of the `Program for Climate Model Diagnosis and Intercomparison (PCMDI) Metrics Package <https://pcmdi.github.io/pcmdi_metrics/>`_. This dashboard presents model evaluation metrics along with related diagnostic outputs (`https://pcmdi.llnl.gov/research/metrics/`). We refer to these diagnostics as “dive down information” because they help users investigate individual metrics in greater detail.
 
 
 Getting Started
