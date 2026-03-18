@@ -12,8 +12,8 @@ The package is built on top of the `bokeh` library.
 Getting Started
 ===============
 
-`Installation`_
-`Gallery`_
+* `Installation`_
+* `Gallery`_
 
 .. _Installation: installation
 .. _Gallery: gallery
