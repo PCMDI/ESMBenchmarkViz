@@ -11,12 +11,18 @@ The package is built on top of the `bokeh` library.
 
 Getting Started
 ===============
-Text here
+
+`Installation`_
+`Gallery`_
+
+.. _Installation: installation
+.. _Gallery: gallery
 
 
 References
 ==========
-Reference here
+
+Lee, J., K. Y. Chang, P. Gleckler, P. Ullrich, 2026: ESMBenchmarkViz: A Python Toolkit for Interactive Visualization of Earth System Model Evaluation and Benchmarking. Journal of Open Source Software (under review)
 
 Acknowledgement
 ===============
