@@ -5,21 +5,23 @@
 ESMBenchmarkViz
 ***************
 
-The `ESMBenchmarkViz` package provides a set of tools to visualize data from the Earth System Model (ESM) Benchmarking project. 
+The `ESMBenchmarkViz` package provides tools for interactive visualization of results from the Earth System Model (ESM) Benchmarking project.
 
-ESMs are essential for understanding and predicting the complex interactions within the Earth's climate system. These models integrate components such as the atmosphere, oceans, land surface, and biosphere to address fundamental and applied questions about Earth system processes, feedbacks, and the system’s response to external forcing. As ESMs grow in complexity, the need for effective evaluation and benchmarking methods to ensure their reliability and accuracy becomes increasingly important.
+ESMs integrate key components of the climate system, including the atmosphere, oceans, land surface, and biosphere. They are used to study Earth system processes, feedbacks, and responses to external forcing. As ESMs increase in complexity, clear and reliable evaluation and benchmarking becomes increasingly important.
 
-Evaluating ESMs involves comparing model outputs against observational data and other models to assess performance. This process is vital for identifying model strengths and weaknesses, guiding improvements, and deepening our understanding of climate processes. 
+Model evaluation typically compares ESM output to observational datasets and to other models. These comparisons help quantify performance, identify strengths and weaknesses, guide model development, and improve confidence in scientific conclusions.
 
-`ESMBenchmarkViz` provides reusable functions to generate a suite of interactive plots customized for the evaluation, intercomparison, and benchmarking of ESMs. The toolkit is developed in Python 3 and built on top of the Bokeh library for interactive visualization. API reference documentation and interactive demo Jupyter notebooks are available for each type of plot.
+`ESMBenchmarkViz` offers reusable, high level plotting functions designed for ESM evaluation, intercomparison, and benchmarking. The package focuses on three core interactive visualizations:
 
-With singular functions for each plot, the library integrates seamlessly with existing data analysis workflows and promotes reproducibility in climate research. Users can interact with data by zooming, filtering, and hovering for detailed tooltips or displaying additional details as a sidenote, enhancing the communication of findings.
+(a) Taylor Diagram  
+(b) Portrait Plot  
+(c) Scatter plot with optional side “dive down” image viewer
 
-![Demonstration of the core features: (a) Taylor Diagram, (b) Portrait Plot, and (c) scatter plot with the side dive-down image viewer option activated. Users' mouse cursor hovering over for a specific data point (i.e., a specific ESM model and for its metrics) interactively shows a tooltip that includes detailed information, with the capability of clicking it to open the associated “dive-down” image. 
+For interactive plots, users can hover over points to view detailed tooltips, and, when enabled, click a point to open the associated “dive down” diagnostic image for deeper inspection.
 
-The package is built on top of the `bokeh` library. The development of `ESMBenchmarkViz` originated from the interactive visualization dashboard of the [Program for Climate Model Diagnosis and Intercomparison (PCMDI) Metrics Package](https://pcmdi.github.io/pcmdi_metrics/), showing diverse evaluation metrics for ESMs along with diagnostic information (https://pcmdi.llnl.gov/research/metrics/). We refer to these diagnostics as “dive-down information,” as they enable users to investigate metrics in greater detail.
+The toolkit is developed in Python 3 and built on top of the `bokeh` library. API reference documentation and interactive demo Jupyter notebooks are provided for each plot type. The simple, function based API supports integration into existing analysis workflows and promotes reproducible climate research. Typical interactions include zooming, filtering, and tooltips, with optional side panel display for additional details.
 
-
+Development of `ESMBenchmarkViz` originated from the interactive visualization dashboard of the `Program for Climate Model Diagnosis and Intercomparison (PCMDI) Metrics Package <https://pcmdi.github.io/pcmdi_metrics/>`_. This dashboard presents model evaluation metrics along with related diagnostic outputs (`https://pcmdi.llnl.gov/research/metrics/`). We refer to these diagnostics as “dive down information” because they help users investigate individual metrics in greater detail.
 
 
 Getting Started
