@@ -15,21 +15,21 @@ tags:
 authors:
     - name: Jiwoo Lee
       orcid: 0000-0002-0016-7199
-      affiliation: 1
+      affiliation: "1"
     - name: Kristin Y. Chang
       orcid: 
-      affiliation: 1
+      affiliation: "1"
     - name: Peter Gleckler
       orcid: 
-      affiliation: 1
+      affiliation: "1"
     - name: Paul Ullrich
       orcid: 0000-0003-4118-4590
       affiliation: "1, 2"
 affiliations:
     - name: Lawrence Livermore National Lab, United States
-      index: 1
+      index: "1"
     - name: UC Davis, United States
-      index: 2
+      index: "2"
 date: 1 December 2025
 bibliography: paper.bib
 ---
