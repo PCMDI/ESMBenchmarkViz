@@ -54,7 +54,7 @@ Alternatively, `mamba repoquery` may provide more information:
 Installation from the source code
 =================================
 
-The **ESMBenchmarkViz** package is not yet available on the conda-forge channel. To install it, you will need to clone the repository and install it locally using `pip`. The following steps will guide you through the process.
+To install from the source code, you will need to clone the repository and install it locally using `pip`. The following steps will guide you through the process.
 
 Prerequisites
 -------------
