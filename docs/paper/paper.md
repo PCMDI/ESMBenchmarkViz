@@ -27,8 +27,9 @@ authors:
       affiliation: "1, 2"
 affiliations:
     - name: Lawrence Livermore National Lab, United States
-      index: 2
+      index: 1
     - name: UC Davis, United States
+      index: 2
 date: 1 December 2025
 bibliography: paper.bib
 ---
