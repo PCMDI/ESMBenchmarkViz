@@ -1,0 +1,6 @@
+﻿ESMBenchmarkViz.portrait\_plot
+==============================
+
+.. currentmodule:: ESMBenchmarkViz
+
+.. autofunction:: portrait_plot
