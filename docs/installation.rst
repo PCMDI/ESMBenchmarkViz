@@ -1,7 +1,54 @@
 .. _installation:
 
-Installation
-============
+Installation using conda (recommended)
+======================================
+
+Installing `esmbenchmarkviz` from the `conda-forge` channel can be achieved by adding `conda-forge` to your channels with:
+
+```
+conda config --add channels conda-forge
+conda config --set channel_priority strict
+```
+
+Once the `conda-forge` channel has been enabled, `esmbenchmarkviz` can be installed with `conda`:
+
+```
+conda install esmbenchmarkviz
+```
+
+or with `mamba`:
+
+```
+mamba install esmbenchmarkviz
+```
+
+It is possible to list all of the versions of `esmbenchmarkviz` available on your platform with `conda`:
+
+```
+conda search esmbenchmarkviz --channel conda-forge
+```
+
+or with `mamba`:
+
+```
+mamba search esmbenchmarkviz --channel conda-forge
+```
+
+Alternatively, `mamba repoquery` may provide more information:
+
+```
+# Search all versions available on your platform:
+mamba repoquery search esmbenchmarkviz --channel conda-forge
+
+# List packages depending on `esmbenchmarkviz`:
+mamba repoquery whoneeds esmbenchmarkviz --channel conda-forge
+
+# List dependencies of `esmbenchmarkviz`:
+mamba repoquery depends esmbenchmarkviz --channel conda-forge
+```
+
+Installation from the source code
+=================================
 
 The **ESMBenchmarkViz** package is not yet available on the conda-forge channel. To install it, you will need to clone the repository and install it locally using `pip`. The following steps will guide you through the process.
 
