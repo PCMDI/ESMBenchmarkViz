@@ -108,8 +108,8 @@ def taylor_diagram(
 
     Example use case can be found `here <../examples/example_taylor_diagram.html>`_.
 
-    Notes
-    -----
+    Note
+    ----
     A Taylor diagram is a polar plot used to compare multiple models against a reference. It displays each model’s standard deviation as the radial distance and correlation coefficient as the azimuthal angle, with the reference standard deviation as the baseline. The RMSE is represented by the distance between a model point and the reference point, making it easy to assess how closely each model matches the reference in terms of variability and correlation.
 
     One major advantage of the Taylor diagram is that it summarizes several key statistics in a single view, so differences among models can be compared quickly and clearly. This is especially useful for Earth system model evaluation, intercomparison, and benchmarking, because it helps identify which models best reproduce observed variability, which ones have the strongest agreement with reference data, and how performance changes across different simulations or variables.
