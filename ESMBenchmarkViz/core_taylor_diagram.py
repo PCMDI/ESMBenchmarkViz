@@ -115,7 +115,7 @@ def taylor_diagram(
     One major advantage of the Taylor diagram is that it summarizes several key statistics in a single view, so differences among models can be compared quickly and clearly. This is especially useful for Earth system model evaluation, intercomparison, and benchmarking, because it helps identify which models best reproduce observed variability, which ones have the strongest agreement with reference data, and how performance changes across different simulations or variables.
 
     Reference:
-    Taylor, K. E. (2001), Summarizing multiple aspects of model performance in a single diagram, J. Geophys. Res., 106(D7), 7183–7192, [doi:10.1029/2000JD900719](https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2000jd900719).
+    Taylor, K. E. (2001), Summarizing multiple aspects of model performance in a single diagram, J. Geophys. Res., 106(D7), 7183–7192, https://doi.org/10.1029/2000JD900719
 
     Code History
     ------------
