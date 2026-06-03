@@ -1,0 +1,6 @@
+﻿ESMBenchmarkViz.taylor\_diagram
+===============================
+
+.. currentmodule:: ESMBenchmarkViz
+
+.. autofunction:: taylor_diagram
