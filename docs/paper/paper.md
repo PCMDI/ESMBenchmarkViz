@@ -46,7 +46,7 @@ Evaluating ESMs involves comparing model outputs against observational data and 
 
 # Statement of need
 
-ESM evaluations (particularly comprehensive evaluations) often generate large volumes of data (e.g., [@Lee:2019], [@Lee:2021], [@Lee:2024]; [@Ahn:2022]; [@Planton:2021]), which can be challenging to interpret and communicate effectively. Wrangling this data to produce an effective, polished visualization is a cumbersome process that often requires constructing data and label lists, calculating plot coordinates, and making manual adjustments for final elements like color bar position or label orientation.
+ESM evaluations (particularly comprehensive evaluations) often generate large volumes of data (e.g., @Lee:2019, @Lee:2021, @Lee:2024, @Ahn:2022, @Planton:2021), which can be challenging to interpret and communicate effectively. Wrangling this data to produce an effective, polished visualization is a cumbersome process that often requires constructing data and label lists, calculating plot coordinates, and making manual adjustments for final elements like color bar position or label orientation.
 
 To address these challenges, we have developed `ESMBenchmarkViz`, a modern Python library specifically designed for efficient interactive visualization of statistical performance metrics from ESM evaluation and intercomparison. This library leverages the power of Bokeh [@Bokeh:2018] to provide researchers and practitioners with user-friendly interactive tools for dynamic exploration of complex datasets. By enabling real-time manipulation of visualizations, `ESMBenchmarkViz` facilitates deeper insights into model performance and inter-model comparisons, making it easier to identify outliers and persistent biases.
 
@@ -54,7 +54,7 @@ In this document, we describe the core functionalities of `ESMBenchmarkViz` and 
 
 # Software Design
 
-The development of `ESMBenchmarkViz` originated from the interactive visualization dashboard of the [Program for Climate Model Diagnosis and Intercomparison (PCMDI) Metrics Package](https://pcmdi.github.io/pcmdi_metrics/) [@pcmdi-metrics] [@Lee:2024], showing diverse evaluation metrics for ESMs along with diagnostic information (https://pcmdi.llnl.gov/research/metrics/). We refer to these diagnostics as “dive-down information,” as they enable users to investigate metrics in greater detail.
+The development of `ESMBenchmarkViz` originated from the interactive visualization dashboard of the [Program for Climate Model Diagnosis and Intercomparison (PCMDI) Metrics Package](https://pcmdi.github.io/pcmdi_metrics/) [@pcmdi-metrics, @Lee:2024], showing diverse evaluation metrics for ESMs along with diagnostic information (https://pcmdi.llnl.gov/research/metrics/). We refer to these diagnostics as “dive-down information,” as they enable users to investigate metrics in greater detail.
 
 `ESMBenchmarkViz` is structured as a modular Python library that provides high-level plotting functions tailored to common Earth system model (ESM) evaluation workflows. The core design goal is to minimize boilerplate for end users while retaining flexibility for advanced customization. To achieve this, the package separates three main concerns: (1) data preparation and validation, (2) plot configuration (layout, styling, and interactivity), and (3) rendering via the Bokeh backend. Each supported plot type (Taylor diagram, portrait plot, scatter plot) is implemented as a self-contained module exposing a concise, stable API, while sharing common utilities for color mapping, tooltips, legends, and export.
 
@@ -70,21 +70,21 @@ With singular functions for each plot, the library integrates seamlessly with ex
 
 ![Demonstration of the core features: (a) Taylor Diagram (Taylor, 2001), (b) Portrait Plot ([@Gleckler:2008]), and (c) scatter plot with the side dive-down image viewer option activated. Users' mouse cursor hovering over for a specific data point (i.e., a specific ESM model and for its metrics) interactively shows a tooltip that includes detailed information, with the capability of clicking it to open the associated “dive-down” image. Images can be also included to the tooltips or to the side viewer. \label{fig:figure1}](figures/fig1.png){ height=100% }
 
-The toolkit offers convenient APIs to generate and save the following types of graphs in both static and interactive modes: two specialized plots used in ESM evaluation—Taylor Diagram ([@Taylor:2001]; Fig. 1a) and Portrait Plot ([@Gleckler:2008]; Fig. 1b)—as well as the widely used scatter plot (Fig. 1c). These graph types were selected for their utility in ESM evaluation and benchmarking, and because few tools currently provide such capabilities.
+The toolkit offers convenient APIs to generate and save the following types of graphs in both static and interactive modes: two specialized plots used in ESM evaluation—Taylor Diagram (@Taylor:2001; Fig. 1a) and Portrait Plot (@Gleckler:2008; Fig. 1b)—as well as the widely used scatter plot (Fig. 1c). These graph types were selected for their utility in ESM evaluation and benchmarking, and because few tools currently provide such capabilities.
 
 ## Taylor Diagram
 
-The Taylor Diagram ([@Taylor:2001]; Fig. 1a) provides a concise graphical summary of how well patterns simulated by a model match observations. It simultaneously displays three statistics—spatial pattern correlation, standard deviation, and root-mean-square error—making it especially useful for comparing multiple models or datasets against a reference.
+The Taylor Diagram (@Taylor:2001; Fig. 1a) provides a concise graphical summary of how well patterns simulated by a model match observations. It simultaneously displays three statistics—spatial pattern correlation, standard deviation, and root-mean-square error—making it especially useful for comparing multiple models or datasets against a reference.
 
 ## Portrait Plot
 
-The Portrait Plot ([@Gleckler:2008]; Fig. 1b) presents a matrix-like visualization that summarizes model performance across multiple variables, metrics, or regions. It enables quick identification of patterns, strengths, and weaknesses by displaying performance scores as colored cells, facilitating comprehensive intercomparison among models. This type of plot has been actively used for various climate model evaluation studies (e.g., [@Lee:2019], [@Lee:2021], [@Ahn:2022]). The PCMDI Metrics Package ([@pcmdi-metrics], [@Lee:2024]) Team had developed a precursor version of this package to present evaluation output from hundreds of simulations in an efficient way (https://pcmdi.llnl.gov/metrics/).
+The Portrait Plot (@Gleckler:2008; Fig. 1b) presents a matrix-like visualization that summarizes model performance across multiple variables, metrics, or regions. It enables quick identification of patterns, strengths, and weaknesses by displaying performance scores as colored cells, facilitating comprehensive intercomparison among models. This type of plot has been actively used for various climate model evaluation studies (e.g., @Lee:2019, @Lee:2021, @Ahn:2022). The PCMDI Metrics Package (@pcmdi-metrics, @Lee:2024) Team had developed a precursor version of this package to present evaluation output from hundreds of simulations in an efficient way (https://pcmdi.llnl.gov/metrics/).
 
 ## Scatter Plot
 
 The Scatter Plot (Fig. 1c) displays the relationship between two variables, allowing users to visually assess correlations, trends, and outliers in model evaluation data. It is a flexible and widely used tool for exploring and communicating the distribution and association of key metrics. Although it is a very widely applied type of plot interdisciplinary, we have included it to the package for its synergy with tooltips and images accompanying together, as shown in Fig. 1c.
 
-There are more types of plots planned for the future advancement of the package, for example, Parallel Coordinate Plots in the way it has been used for ESM evaluations ([@Lee:2024]).
+There are more types of plots planned for the future advancement of the package, for example, Parallel Coordinate Plots in the way it has been used for ESM evaluations [@Lee:2024].
 
 # Research Impact statement
 
