@@ -24,6 +24,12 @@ classifiers = [
   "Operating System :: OS Independent",
 ]
 dynamic = ["version"]
+dependencies = [
+  "numpy",
+  "bokeh",
+  "matplotlib",
+  "pandas",
+]
 
 [project.urls]
 Homepage = "https://github.com/PCMDI/ESMBenchmarkViz"
