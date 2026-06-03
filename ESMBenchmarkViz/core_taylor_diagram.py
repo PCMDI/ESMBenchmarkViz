@@ -110,12 +110,15 @@ def taylor_diagram(
 
     Notes
     -----
-    The Taylor diagram is a polar plot where the radial distance represents the standard deviation
-    and the azimuthal angle represents the correlation coefficient. The reference standard deviation
-    is used as a reference point for the radial distance. The correlation coefficient is represented
-    by the angle between the model point and the reference point. The RMSE (Root Mean Square Error)
-    is calculated as the distance between the model point and the reference point.
+    A Taylor diagram is a polar plot used to compare multiple models against a reference. It displays each model’s standard deviation as the radial distance and correlation coefficient as the azimuthal angle, with the reference standard deviation as the baseline. The RMSE is represented by the distance between a model point and the reference point, making it easy to assess how closely each model matches the reference in terms of variability and correlation.
 
+    One major advantage of the Taylor diagram is that it summarizes several key statistics in a single view, so differences among models can be compared quickly and clearly. This is especially useful for Earth system model evaluation, intercomparison, and benchmarking, because it helps identify which models best reproduce observed variability, which ones have the strongest agreement with reference data, and how performance changes across different simulations or variables.
+
+    Reference:
+    Taylor, K. E. (2001), Summarizing multiple aspects of model performance in a single diagram, J. Geophys. Res., 106(D7), 7183–7192, [doi:10.1029/2000JD900719](https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2000jd900719).
+
+    Code History
+    ------------
     2024-10-04: Jiwoo Lee, initial version
     """
 
