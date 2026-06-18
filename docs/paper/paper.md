@@ -100,7 +100,7 @@ The `ESMBenchmarkViz` [documentation](https://pcmdi.github.io/ESMBenchmarkViz/) 
 
 # Distribution
 
-`ESMBenchmarkViz` is available for Linux and MacOS, following the [installation instructions](https://pcmdi.github.io/ESMBenchmarkViz/installation.html). We host all development activity at the [GitHub Repository](https://github.com/PCMDI/ESMBenchmarkViz). We plan to set up a conda-forge channel on Anaconda for an easier installation.
+`ESMBenchmarkViz` is available for Linux and MacOS via the conda-forge channel on Anaconda or pip, following the [installation instructions](https://pcmdi.github.io/ESMBenchmarkViz/installation.html). We host all development activity at the [GitHub Repository](https://github.com/PCMDI/ESMBenchmarkViz).
 
 # Acknowledgements
 
