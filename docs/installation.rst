@@ -51,6 +51,28 @@ Alternatively, `mamba repoquery` may provide more information:
     mamba repoquery depends esmbenchmarkviz --channel conda-forge
 
 
+Installation using pip
+======================
+
+`esmbenchmarkviz` is available on PyPI and can be installed using `pip`:
+
+.. code-block:: bash
+
+    pip install esmbenchmarkviz
+
+To install a specific version:
+
+.. code-block:: bash
+
+    pip install esmbenchmarkviz==<version>
+
+To upgrade to the latest version:
+
+.. code-block:: bash
+
+    pip install --upgrade esmbenchmarkviz
+
+
 Installation from the source code
 =================================
 
