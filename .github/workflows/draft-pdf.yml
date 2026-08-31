@@ -2,8 +2,10 @@ name: Draft PDF
 on:
   push:
     paths:
-      - docs/paper/**
+      - paper/**
       - .github/workflows/draft-pdf.yml
+  pull_request:
+
 jobs:
   paper:
     runs-on: ubuntu-latest
@@ -16,7 +18,7 @@ jobs:
         with:
           journal: joss
           # This should be the path to the paper within your repo.
-          paper-path: paper.md
+          paper-path: docs/paper/paper.md
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
