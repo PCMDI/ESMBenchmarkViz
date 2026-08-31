@@ -17,7 +17,7 @@ authors:
       orcid: 0000-0002-0016-7199
       affiliation: "1"
     - name: Kristin Y. Chang
-      orcid: 
+      orcid: 0009-0003-7608-0203
       affiliation: "1"
     - name: Peter Gleckler
       orcid: 
@@ -26,9 +26,9 @@ authors:
       orcid: 0000-0003-4118-4590
       affiliation: "1, 2"
 affiliations:
-    - name: Lawrence Livermore National Lab, United States
+    - name: Lawrence Livermore National Laboratory, United States
       index: "1"
-    - name: UC Davis, United States
+    - name: University of California, Davis, United States
       index: "2"
 date: 1 December 2025
 bibliography: paper.bib
