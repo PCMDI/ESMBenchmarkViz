@@ -12,6 +12,10 @@
 [![Formatted with black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
 
 
+| Name | Downloads | Version | Platforms |
+| --- | --- | --- | --- |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-esmbenchmarkviz-green.svg)](https://anaconda.org/conda-forge/esmbenchmarkviz) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/esmbenchmarkviz.svg)](https://anaconda.org/conda-forge/esmbenchmarkviz) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/esmbenchmarkviz.svg)](https://anaconda.org/conda-forge/esmbenchmarkviz) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/esmbenchmarkviz.svg)](https://anaconda.org/conda-forge/esmbenchmarkviz) |
+
 ESMBenchmarkViz is a Python-based interactive visualization toolkit built with Bokeh, designed to facilitate the collective evaluation, intercomparison, and benchmarking of Earth System Models (ESMs). The tool provides a user-friendly interface for analyzing model performance, enabling researchers to make informed comparisons and insights into ESM behavior.
 
 ## Developer
@@ -27,12 +31,14 @@ Jiwoo Lee ([@lee1043](https://github.com/PCMDI/ESMBenchmarkViz/commits?author=le
 
 | <div style="width:300%">[Versions]</div> | Update summary   |
 | ------------- | ------------------------------------------- |
+| [v0.2.2]      | New placeholder images, Technical update
 | [v0.2.1]      | Technical update
 | [v0.2.0]      | Scatter plot and Portrait plot added
 | [v0.1.0]      | Taylor Diagram with diagnostic figure pop up capability
 | [v0.0.1]      | Initial release for interactive Taylor Diagram
 
 [Versions]: https://github.com/PCMDI/ESMBenchmarkViz/releases
+[v0.2.2]: https://github.com/PCMDI/ESMBenchmarkViz/releases/tag/v0.2.2
 [v0.2.1]: https://github.com/PCMDI/ESMBenchmarkViz/releases/tag/v0.2.1
 [v0.2.0]: https://github.com/PCMDI/ESMBenchmarkViz/releases/tag/v0.2.0
 [v0.1.0]: https://github.com/PCMDI/ESMBenchmarkViz/releases/tag/v0.1.0
