@@ -74,11 +74,11 @@ The toolkit offers convenient APIs to generate and save the following types of g
 
 ## Taylor Diagram
 
-The Taylor Diagram (@Taylor:2001; Fig. 1a) provides a concise graphical summary of how well patterns simulated by a model match observations. It simultaneously displays three statistics—spatial pattern correlation, standard deviation, and root-mean-square error—making it especially useful for comparing multiple models or datasets against a reference.
+The Taylor Diagram [@Taylor:2001], shown as Fig. 1a, provides a concise graphical summary of how well patterns simulated by a model match observations. It simultaneously displays three statistics—spatial pattern correlation, standard deviation, and root-mean-square error—making it especially useful for comparing multiple models or datasets against a reference.
 
 ## Portrait Plot
 
-The Portrait Plot (@Gleckler:2008; Fig. 1b) presents a matrix-like visualization that summarizes model performance across multiple variables, metrics, or regions. It enables quick identification of patterns, strengths, and weaknesses by displaying performance scores as colored cells, facilitating comprehensive intercomparison among models. This type of plot has been actively used for various climate model evaluation studies (e.g., @Lee:2019, @Lee:2021, @Ahn:2022). The PCMDI Metrics Package (@pcmdi-metrics, @Lee:2024) Team had developed a precursor version of this package to present evaluation output from hundreds of simulations in an efficient way (https://pcmdi.llnl.gov/research/metrics/).
+The Portrait Plot [@Gleckler:2008], shown as Fig. 1b, presents a matrix-like visualization that summarizes model performance across multiple variables, metrics, or regions. It enables quick identification of patterns, strengths, and weaknesses by displaying performance scores as colored cells, facilitating comprehensive intercomparison among models. This type of plot has been actively used for various climate model evaluation studies (e.g., @Lee:2019, @Lee:2021, @Ahn:2022). The PCMDI Metrics Package (@pcmdi-metrics, @Lee:2024) Team had developed a precursor version of this package to present evaluation output from hundreds of simulations in an efficient way (https://pcmdi.llnl.gov/research/metrics/).
 
 ## Scatter Plot
 
