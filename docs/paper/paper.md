@@ -70,7 +70,7 @@ With singular functions for each plot, the library integrates seamlessly with ex
 
 ![Demonstration of the core features: (a) Taylor Diagram [@Taylor:2001], (b) Portrait Plot [@Gleckler:2008], and (c) scatter plot with the side dive-down image viewer option activated. Users' mouse cursor hovering over for a specific data point (i.e., a specific ESM and for its metrics) interactively shows a tooltip that includes detailed information, with the capability of clicking it to open the associated “dive-down” image. Images can be also included to the tooltips or to the side viewer. \label{fig:figure1}](figures/fig1.png){ height=100% }
 
-The toolkit offers convenient APIs to generate and save the following types of graphs in both static and interactive modes: two specialized plots used in ESM evaluation—Taylor Diagram (@Taylor:2001; Fig. 1a) and Portrait Plot (@Gleckler:2008; Fig. 1b)—as well as the widely used scatter plot (Fig. 1c). These graph types were selected for their utility in ESM evaluation and benchmarking, and because few tools currently provide such capabilities.
+The toolkit offers convenient APIs to generate and save the following types of graphs in both static and interactive modes: two specialized plots used in ESM evaluation—Taylor Diagram [@Taylor:2001] (Fig. 1a) and Portrait Plot [@Gleckler:2008] (Fig. 1b)—as well as the widely used scatter plot (Fig. 1c). These graph types were selected for their utility in ESM evaluation and benchmarking, and because few tools currently provide such capabilities.
 
 ## Taylor Diagram
 
