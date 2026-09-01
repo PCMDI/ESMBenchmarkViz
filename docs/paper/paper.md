@@ -64,7 +64,7 @@ In developing `ESMBenchmarkViz`, we considered contributing directly to existing
 
 # Key Features
 
-`ESMBenchmarkViz` provides reusable functions to generate a suite of interactive plots customized for the evaluation, intercomparison, and benchmarking of ESMs. The toolkit is developed in `Python` 3 and built on top of the `Bokeh` library for interactive visualization. API reference documentation and interactive demo Jupyter notebooks are available for each type of plot.
+`ESMBenchmarkViz` provides reusable functions to generate a suite of interactive plots customized for the evaluation, intercomparison, and benchmarking of ESMs. The toolkit is developed in `Python 3` and built on top of the `Bokeh` library for interactive visualization. API reference documentation and interactive demo Jupyter notebooks are available for each type of plot.
 
 With singular functions for each plot, the library integrates seamlessly with existing data analysis workflows and promotes reproducibility in climate research. Users can interact with data by zooming, filtering, and hovering for detailed tooltips or displaying additional details as a sidenote, enhancing the communication of findings.
 
