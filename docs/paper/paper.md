@@ -46,7 +46,7 @@ Evaluating ESMs involves comparing model outputs against observational data and 
 
 # Statement of need
 
-ESM evaluations (particularly comprehensive evaluations) often generate large volumes of data-as examples shown in [@Lee:2019], [@Lee:2021], [@Lee:2024], [@Ahn:2022], and [@Planton:2021]-, which can be challenging to interpret and communicate effectively. Wrangling this data to produce an effective, polished visualization is a cumbersome process that often requires constructing data and label lists, calculating plot coordinates, and making manual adjustments for final elements like color bar position or label orientation.
+ESM evaluations (particularly comprehensive evaluations) often generate large volumes of data, as examples shown in @Lee:2019, @Lee:2021, @Lee:2024, @Ahn:2022, and @Planton:2021, which can be challenging to interpret and communicate effectively. Wrangling this data to produce an effective, polished visualization is a cumbersome process that often requires constructing data and label lists, calculating plot coordinates, and making manual adjustments for final elements like color bar position or label orientation.
 
 To address these challenges, we have developed `ESMBenchmarkViz`, a modern Python library specifically designed for efficient interactive visualization of statistical performance metrics from ESM evaluation and intercomparison. This library leverages the power of `Bokeh` [@Bokeh:2018] to provide researchers and practitioners with user-friendly interactive tools for dynamic exploration of complex datasets. By enabling real-time manipulation of visualizations, `ESMBenchmarkViz` facilitates deeper insights into model performance and inter-model comparisons, making it easier to identify outliers and persistent biases.
 
@@ -78,7 +78,7 @@ The Taylor Diagram [@Taylor:2001], shown as Fig. 1a, provides a concise graphica
 
 ## Portrait Plot
 
-The Portrait Plot [@Gleckler:2008], shown as Fig. 1b, presents a matrix-like visualization that summarizes model performance across multiple variables, metrics, or regions. It enables quick identification of patterns, strengths, and weaknesses by displaying performance scores as colored cells, facilitating comprehensive intercomparison among models. This type of plot has been actively used for various climate model evaluation studies (e.g., @Lee:2019, @Lee:2021, @Ahn:2022). The [`PCMDI Metrics Package`](https://pcmdi.github.io/pcmdi_metrics/) [@Lee:2024] Team had developed a precursor version of this package to present evaluation output from hundreds of simulations in an efficient way (https://pcmdi.llnl.gov/research/metrics/).
+The Portrait Plot [@Gleckler:2008], shown as Fig. 1b, presents a matrix-like visualization that summarizes model performance across multiple variables, metrics, or regions. It enables quick identification of patterns, strengths, and weaknesses by displaying performance scores as colored cells, facilitating comprehensive intercomparison among models. This type of plot has been actively used for various climate model evaluation studies, as examples shown in @Lee:2019, @Lee:2021, and @Ahn:2022. The [`PCMDI Metrics Package`](https://pcmdi.github.io/pcmdi_metrics/) [@Lee:2024] Team had developed a precursor version of this package to present evaluation output from hundreds of simulations in an efficient way (https://pcmdi.llnl.gov/research/metrics/).
 
 ## Scatter Plot
 
