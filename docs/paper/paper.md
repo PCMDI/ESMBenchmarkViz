@@ -54,7 +54,7 @@ In this document, we describe the core functionalities of `ESMBenchmarkViz` and 
 
 # Software Design
 
-The development of `ESMBenchmarkViz` originated from the interactive visualization dashboard of the [`Program for Climate Model Diagnosis and Intercomparison (PCMDI) Metrics Package`](https://pcmdi.github.io/pcmdi_metrics/) [@Lee:2024], showing diverse evaluation metrics for ESMs along with diagnostic information on the [PCMDI website](https://pcmdi.llnl.gov/research/metrics/). We refer to these diagnostics as “dive-down information,” as they enable users to investigate metrics in greater detail.
+`ESMBenchmarkViz` was developed from the interactive visualization dashboard of the [`Program for Climate Model Diagnosis and Intercomparison (PCMDI) Metrics Package`](https://pcmdi.github.io/pcmdi_metrics/) [@Lee:2024], which displays diverse evaluation metrics for ESMs alongside diagnostic information on the [PCMDI website](https://pcmdi.llnl.gov/research/metrics/). We refer to these diagnostics as “dive-down information,” as they enable users to investigate metrics in greater detail.
 
 `ESMBenchmarkViz` is structured as a modular `Python` library that provides high-level plotting functions tailored to common Earth system model (ESM) evaluation workflows. The core design goal is to minimize boilerplate for end users while retaining flexibility for advanced customization. To achieve this, the package separates three main concerns: (1) data preparation and validation, (2) plot configuration (layout, styling, and interactivity), and (3) rendering via the `Bokeh` backend. Each supported plot type (Taylor diagram, portrait plot, scatter plot) is implemented as a self-contained module exposing a concise, stable API, while sharing common utilities for color mapping, tooltips, legends, and export.
 
@@ -78,7 +78,7 @@ The Taylor Diagram [@Taylor:2001], shown as Fig. 1a, provides a concise graphica
 
 ## Portrait Plot
 
-The Portrait Plot [@Gleckler:2008], shown as Fig. 1b, presents a matrix-like visualization that summarizes model performance across multiple variables, metrics, or regions. It enables quick identification of patterns, strengths, and weaknesses by displaying performance scores as colored cells, facilitating comprehensive intercomparison among models. This type of plot has been actively used for various climate model evaluation studies, as examples shown in @Lee:2019, @Lee:2021, and @Ahn:2022. The [`PCMDI Metrics Package`](https://pcmdi.github.io/pcmdi_metrics/) [@Lee:2024] Team had developed a precursor version of this package to present evaluation output from hundreds of simulations in an efficient way as shown in the [PCMDI website](https://pcmdi.llnl.gov/research/metrics/).
+The Portrait Plot [@Gleckler:2008], shown as Fig. 1b, presents a matrix-like visualization that summarizes model performance across multiple variables, metrics, or regions. It enables quick identification of patterns, strengths, and weaknesses by displaying performance scores as colored cells, facilitating comprehensive intercomparison among models. This type of plot has been actively used for various climate model evaluation studies, as examples shown in @Lee:2019, @Lee:2021, and @Ahn:2022. The [`PCMDI Metrics Package`](https://pcmdi.github.io/pcmdi_metrics/) [@Lee:2024] team had developed a precursor to this package to present evaluation results from hundreds of simulations in an efficient way as shown on the [PCMDI website](https://pcmdi.llnl.gov/research/metrics/).
 
 ## Scatter Plot
 
