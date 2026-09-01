@@ -46,7 +46,7 @@ Evaluating ESMs involves comparing model outputs against observational data and 
 
 # Statement of need
 
-ESM evaluations (particularly comprehensive evaluations) often generate large volumes of data (e.g., [@Lee:2019, @Lee:2021, @Lee:2024, @Ahn:2022, @Planton:2021]), which can be challenging to interpret and communicate effectively. Wrangling this data to produce an effective, polished visualization is a cumbersome process that often requires constructing data and label lists, calculating plot coordinates, and making manual adjustments for final elements like color bar position or label orientation.
+ESM evaluations (particularly comprehensive evaluations) often generate large volumes of data-as examples shown in [@Lee:2019], [@Lee:2021], [@Lee:2024], [@Ahn:2022], and [@Planton:2021]-, which can be challenging to interpret and communicate effectively. Wrangling this data to produce an effective, polished visualization is a cumbersome process that often requires constructing data and label lists, calculating plot coordinates, and making manual adjustments for final elements like color bar position or label orientation.
 
 To address these challenges, we have developed `ESMBenchmarkViz`, a modern Python library specifically designed for efficient interactive visualization of statistical performance metrics from ESM evaluation and intercomparison. This library leverages the power of `Bokeh` [@Bokeh:2018] to provide researchers and practitioners with user-friendly interactive tools for dynamic exploration of complex datasets. By enabling real-time manipulation of visualizations, `ESMBenchmarkViz` facilitates deeper insights into model performance and inter-model comparisons, making it easier to identify outliers and persistent biases.
 
