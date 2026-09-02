@@ -3,6 +3,10 @@
 Overview
 ========
 
+.. image:: _static/example_taylor_diagram.gif
+   :alt: Animated demonstration of the Taylor Diagram
+   :align: center
+
 Key Features
 ------------
 * **Interactive Visualization**: ESMBenchmarkViz leverages Bokeh's capabilities to create dynamic and interactive plots that allow users to manipulate data views in real-time. This interactivity enhances the exploration of complex datasets, making it easier to identify trends and anomalies.
@@ -19,3 +23,7 @@ Earth System Models are essential tools for simulating climate dynamics and pred
 * **Supporting Educational Initiatives**: The tool can also serve as an educational resource, helping students and new researchers understand complex climate modeling concepts through interactive learning experiences.
 
 In summary, ESMBenchmarkViz stands out as a powerful tool for visualizing and benchmarking Earth System Models. Its interactive features, combined with its integration capabilities and user-friendly design, make it a valuable asset for researchers aiming to enhance their understanding of climate dynamics through model evaluation.
+
+Reference
+---------
+Lee, J., K. Y. Chang, P. Gleckler, P. Ullrich, 2026: ESMBenchmarkViz: A Python Toolkit for Interactive Visualization of Earth System Model Evaluation and Benchmarking. Journal of Open Source Software (accepted)

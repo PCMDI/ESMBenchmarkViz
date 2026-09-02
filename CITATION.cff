@@ -16,6 +16,15 @@ authors:
   - given-names: Kristin
     family-names: Chang
     affiliation: Lawrence Livermore National Laboratory
+    orcid: 'https://orcid.org/0009-0003-7608-0203'
+  - given-names: Peter
+    family-names: Gleckler
+    affiliation: Lawrence Livermore National Laboratory
+    orcid: 'https://orcid.org/0000-0003-2816-6224'
+  - given-names: Paul
+    family-names: Ullrich
+    affiliation: Lawrence Livermore National Laboratory, UC Davis
+    orcid: 'https://orcid.org/0000-0003-4118-4590'
 identifiers:
   - type: doi
     value: 10.5281/zenodo.14498167
@@ -28,5 +37,5 @@ keywords:
   - climate model evaluation
   - Earth System Model evaluation
 license: BSD-3-Clause
-version: '0.2.1'
-date-released: '2025-10-16'
+version: '0.2.3'
+date-released: '2026-09-01'
