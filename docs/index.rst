@@ -5,6 +5,10 @@
 ESMBenchmarkViz
 ***************
 
+.. image:: _static/example_taylor_diagram.gif
+   :alt: Animated demonstration of the Taylor Diagram
+   :align: center
+
 The `ESMBenchmarkViz` package provides tools for interactive visualization of results from the Earth System Model (ESM) Benchmarking project.
 
 ESMs integrate key components of the climate system, including the atmosphere, oceans, land surface, and biosphere. They are used to study Earth system processes, feedbacks, and responses to external forcing. As ESMs increase in complexity, clear and reliable evaluation and benchmarking becomes increasingly important.
@@ -13,9 +17,9 @@ Model evaluation typically compares ESM output to observational datasets and to 
 
 `ESMBenchmarkViz` offers reusable, high level plotting functions designed for ESM evaluation, intercomparison, and benchmarking. The package focuses on three core interactive visualizations:
 
-(a) Taylor Diagram  
-(b) Portrait Plot  
-(c) Scatter plot with optional side “dive down” image viewer
+(a) `Taylor Diagram <examples/example_taylor_diagram.html>`_
+(b) `Portrait Plot <examples/example_portrait_plot.html>`_
+(c) `Scatter plot with optional side “dive down” image viewer <examples/example_scatter_plot.html>`_
 
 For interactive plots, users can hover over points to view detailed tooltips, and, when enabled, click a point to open the associated “dive down” diagnostic image for deeper inspection.
 
@@ -37,7 +41,7 @@ Getting Started
 References
 ==========
 
-Lee, J., K. Y. Chang, P. Gleckler, P. Ullrich, 2026: ESMBenchmarkViz: A Python Toolkit for Interactive Visualization of Earth System Model Evaluation and Benchmarking. Journal of Open Source Software (under review)
+Lee, J., K. Y. Chang, P. Gleckler, P. Ullrich, 2026: ESMBenchmarkViz: A Python Toolkit for Interactive Visualization of Earth System Model Evaluation and Benchmarking. Journal of Open Source Software (accepted)
 
 Acknowledgement
 ===============
