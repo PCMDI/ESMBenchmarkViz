@@ -38,8 +38,8 @@ Getting Started
 .. _Gallery: gallery
 
 
-References
-==========
+Reference
+=========
 
 Lee, J., K. Y. Chang, P. Gleckler, P. Ullrich, 2026: ESMBenchmarkViz: A Python Toolkit for Interactive Visualization of Earth System Model Evaluation and Benchmarking. Journal of Open Source Software (accepted)
 
