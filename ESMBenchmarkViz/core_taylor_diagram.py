@@ -41,7 +41,7 @@ def taylor_diagram(
     width: int = 600,
     show_plot: bool = True,
     images: List[str] = None,
-    show_image_panel: bool = True,
+    show_image_panel: bool = False,
     static: bool = False,
     static_filename: str = "./taylor_diagram.png",
     bokeh_logo: bool = True,
@@ -92,7 +92,7 @@ def taylor_diagram(
     images: str, optional
         A list of image paths to be displayed on the plot. The images will be placed at the data points of the models.
     show_image_panel : bool, optional
-        If True and images are provided, displays the interactive image panel on the right side. If False, images appear only in tooltips without the panel. Has no effect if images is None. Default is True.
+        If True and images are provided, displays the interactive image panel on the right side. If False, images appear only in tooltips without the panel. Has no effect if images is None. Default is False.
     static : bool, optional
         If True, exports the plot as a static PNG file to the path specified by static_filename. Default is False.
     static_filename : str, optional
