@@ -493,10 +493,6 @@ def portrait_plot(
 
     return_object = plot
 
-    # Show the plot if requested
-    if show_plot:
-        show(return_object)
-
     # if static, export plot as png
     if static:
         try:
@@ -506,6 +502,10 @@ def portrait_plot(
         except Exception as e:
             print(f"Failed to export PNG: {e}")
             print("Tip: Install selenium and a browser driver (e.g., chromedriver) for PNG export")
+
+    # Show the plot if requested
+    if show_plot:
+        show(return_object)
 
     return return_object
 
