@@ -1,6 +1,8 @@
 name: Draft PDF
 on:
   push:
+    branches:
+      - joss-paper
     paths:
       - docs/paper/**
       - .github/workflows/draft-pdf.yml
