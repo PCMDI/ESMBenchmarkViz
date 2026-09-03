@@ -1,6 +1,8 @@
+from copy import deepcopy
 from typing import List, Union
 
 import numpy as np
+from bokeh.io import export_png
 from bokeh.layouts import column, row
 from bokeh.models import ColumnDataSource, CustomJS, HoverTool
 from bokeh.plotting import figure, show
@@ -17,10 +19,15 @@ def scatter_plot(
     y: Union[List[float], np.ndarray],
     names: List[str] = None,
     images: List[str] = None,
+    show_image_panel: bool = False,
     title: str = "Interactive Scatter Plot",
     width: int = 600,
     height: int = 400,
     show_plot: bool = True,
+    static: bool = False,
+    static_filename: str = "./scatter_plot.png",
+    bokeh_logo: bool = True,
+    debug: bool = False,
 ) -> figure:
     """
     Create an interactive scatter plot with tooltips, dropdown, and an image display.
@@ -35,6 +42,9 @@ def scatter_plot(
         List of names corresponding to the data points.
     images : list, optional
         List of image file paths corresponding to the data points, by default None
+    show_image_panel : bool, optional
+        If True and images are provided, displays the interactive image panel on the right side.
+        If False, images appear only in tooltips without the panel. Default is False.
     title : str, optional
         Title of the plot, by default "Interactive Scatter Plot"
     width : int, optional
@@ -43,6 +53,16 @@ def scatter_plot(
         Height of the plot, by default 400
     show_plot : bool, optional
         If True, the plot will be displayed in the workflow (default is True).
+    static : bool, optional
+        If True, exports the plot as a static PNG file to the path specified by static_filename.
+        Default is False.
+    static_filename : str, optional
+        The file path where the static PNG will be saved when static=True.
+        Default is "./scatter_plot.png".
+    bokeh_logo : bool, optional
+        If True, displays the Bokeh logo in the plot. Default is True.
+    debug : bool, optional
+        If True, prints additional debugging information. Default is False.
 
     Returns
     -------
@@ -73,6 +93,12 @@ def scatter_plot(
         if len(x) != len(images):
             raise ValueError("Length of x, y, and images should be the same.")
 
+    # Use deepcopy to prevent modifying user's input lists
+    if names is not None:
+        names = deepcopy(names)
+    if images is not None:
+        images = deepcopy(images)
+
     # Wrap up input as a dictionary
     data = {
         "x": x,
@@ -90,23 +116,44 @@ def scatter_plot(
         width=width,
         height=height,
         title=title,
-        tools="tap, pan, wheel_zoom, box_zoom, reset",
+        tools="tap, pan, wheel_zoom, box_zoom, reset, save",
     )
     points = p.scatter("x", "y", size=10, source=source)
 
-    if not images:
-        hover = HoverTool(
-            renderers=[points],
-            tooltips=[
-                ("Name", "@names"),
-                ("X", "@x"),
-                ("Y", "@y"),
-            ],
-        )
+    # Control Bokeh logo display
+    if bokeh_logo is False:
+        p.toolbar.logo = None
+
+    if not images or not show_image_panel:
+        # Add hover tool (with or without images in tooltips)
+        if images:
+            # Images in tooltips only, no panel
+            hover = HoverTool(
+                renderers=[points],
+                tooltips="""
+                    <div>
+                        <img src="@images" alt="" style="width:100px;height:auto;"/>
+                        <div><strong>Name:</strong> @names</div>
+                        <div><strong>X:</strong> @x</div>
+                        <div><strong>Y:</strong> @y</div>
+                    </div>
+                    """,
+            )
+        else:
+            # Text-only tooltips
+            hover = HoverTool(
+                renderers=[points],
+                tooltips=[
+                    ("Name", "@names"),
+                    ("X", "@x"),
+                    ("Y", "@y"),
+                ],
+            )
         p.add_tools(hover)
         return_object = p
 
     else:
+        # Images with interactive panel
         # Add hover tool with image tooltip
         hover = HoverTool(
             renderers=[points],
@@ -278,6 +325,16 @@ def scatter_plot(
         layout = row(p, controls)
 
         return_object = layout
+
+    # Export static PNG if requested
+    if static:
+        try:
+            export_png(return_object, filename=static_filename)
+            if debug:
+                print(f"Static PNG exported to {static_filename}")
+        except Exception as e:
+            print(f"Failed to export PNG: {e}")
+            print("Tip: Install selenium and a browser driver (e.g., chromedriver) for PNG export")
 
     if show_plot:
         show(return_object)
