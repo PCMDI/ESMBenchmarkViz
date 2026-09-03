@@ -24,9 +24,26 @@ class TestScatterPlot(unittest.TestCase):
         self.assertEqual(plot.title.text, "Interactive Scatter Plot")
 
     def test_scatter_plot_with_images(self):
-        layout = scatter_plot(
+        # Test with images but no panel (default: show_image_panel=False)
+        plot = scatter_plot(
             self.x, self.y, self.names, images=self.images, show_plot=False
         )
+        # Should return a figure, not a layout
+        self.assertIsInstance(plot, figure)
+        self.assertEqual(len(plot.renderers), 1)
+        self.assertEqual(plot.title.text, "Interactive Scatter Plot")
+
+    def test_scatter_plot_with_images_and_panel(self):
+        # Test with images AND panel (show_image_panel=True)
+        layout = scatter_plot(
+            self.x,
+            self.y,
+            self.names,
+            images=self.images,
+            show_image_panel=True,
+            show_plot=False,
+        )
+        # Should return a layout with plot and controls
         self.assertEqual(len(layout.children), 2)
         plot = layout.children[0]
         controls = layout.children[1]

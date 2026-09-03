@@ -3,6 +3,7 @@ from copy import deepcopy
 from typing import List, Union
 
 import numpy as np
+from bokeh.io import export_png
 from bokeh.layouts import column, row
 from bokeh.models import ColumnDataSource, HoverTool, Label, LabelSet
 from bokeh.plotting import figure, show
@@ -40,6 +41,9 @@ def taylor_diagram(
     width: int = 600,
     show_plot: bool = True,
     images: List[str] = None,
+    show_image_panel: bool = False,
+    static: bool = False,
+    static_filename: str = "./taylor_diagram.png",
     bokeh_logo: bool = True,
     debug: bool = False,
 ) -> figure:
@@ -87,6 +91,12 @@ def taylor_diagram(
         If True, the plot will be displayed in the workflow (default is True).
     images: str, optional
         A list of image paths to be displayed on the plot. The images will be placed at the data points of the models.
+    show_image_panel : bool, optional
+        If True and images are provided, displays the interactive image panel on the right side. If False, images appear only in tooltips without the panel. Has no effect if images is None. Default is False.
+    static : bool, optional
+        If True, exports the plot as a static PNG file to the path specified by static_filename. Default is False.
+    static_filename : str, optional
+        The file path where the static PNG will be saved when static=True. Default is "./taylor_diagram.png".
     bokeh_logo : bool, optional
         If True, displays the Bokeh logo in the plot. Default is True.
     debug: bool, optional
@@ -146,6 +156,10 @@ def taylor_diagram(
     std_devs = convert_to_numpy_array(std_devs)
     correlations = convert_to_numpy_array(correlations)
     names = deepcopy(names)
+    if images is not None:
+        images = deepcopy(images)
+    if isinstance(colormap, list):
+        colormap = deepcopy(colormap)
 
     # Standard deviation axis extent
     if normalize:
@@ -185,7 +199,7 @@ def taylor_diagram(
         y_range=(step * -1, max_range),
         aspect_ratio=1,
         title=title,
-        tools="tap, pan, wheel_zoom, box_zoom, reset",
+        tools="tap, pan, wheel_zoom, box_zoom, reset, save",
     )
 
     p.grid.visible = False
@@ -319,8 +333,8 @@ def taylor_diagram(
     if bokeh_logo is False:
         p.toolbar.logo = None
 
-    # Return the plot object if images are not provided, otherwise return the layout
-    if not images:
+    # Return the plot object if images are not provided OR panel is disabled
+    if not images or not show_image_panel:
         return_object = p
     else:
         # Div to display image and x, y values on click
@@ -366,6 +380,17 @@ def taylor_diagram(
         debug_print(debug, "layout added")
 
         return_object = layout
+
+    # Export static PNG if requested
+    if static:
+        try:
+            export_png(return_object, filename=static_filename)
+            debug_print(debug, f"Static PNG exported to {static_filename}")
+        except Exception as e:
+            print(f"Failed to export PNG: {e}")
+            print(
+                "Tip: Install selenium and a browser driver (e.g., chromedriver) for PNG export"
+            )
 
     # Show the plot if requested
     if show_plot:

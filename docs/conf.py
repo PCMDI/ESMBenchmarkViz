@@ -175,7 +175,9 @@ elif html_theme == "sphinx_rtd_theme":
 html_static_path = ['_static']
 
 nbsphinx_thumbnails = {
-    "examples/example_taylor_diagram": "_static/example_taylor_diagram.gif"
+    "examples/example_taylor_diagram": "_static/example_taylor_diagram.gif",
+    "examples/example_scatter_plot": "_static/interactive_scatter_plot.png",
+    "examples/example_portrait_plot": "_static/interactive_portrait_plot.png"
 }
 
 # Below code is to copy the examples/images directory to the _build/html/examples/images directory.
