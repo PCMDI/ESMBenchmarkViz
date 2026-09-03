@@ -36,8 +36,12 @@ class TestScatterPlot(unittest.TestCase):
     def test_scatter_plot_with_images_and_panel(self):
         # Test with images AND panel (show_image_panel=True)
         layout = scatter_plot(
-            self.x, self.y, self.names, images=self.images,
-            show_image_panel=True, show_plot=False
+            self.x,
+            self.y,
+            self.names,
+            images=self.images,
+            show_image_panel=True,
+            show_plot=False,
         )
         # Should return a layout with plot and controls
         self.assertEqual(len(layout.children), 2)
