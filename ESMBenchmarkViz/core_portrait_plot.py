@@ -157,6 +157,14 @@ def portrait_plot(
     """
 
     # ----------------
+    # Use deepcopy to prevent modifying user's input lists
+    if img_url is not None:
+        img_url = deepcopy(img_url)
+    if xaxis_labels is not None:
+        xaxis_labels = deepcopy(xaxis_labels)
+    if yaxis_labels is not None:
+        yaxis_labels = deepcopy(yaxis_labels)
+
     # Prepare plotting
     # ----------------
     data, num_divide = prepare_data(data, xaxis_labels, yaxis_labels, debug)
@@ -491,7 +499,13 @@ def portrait_plot(
 
     # if static, export plot as png
     if static:
-        export_png(plot, filename=static_filename)
+        try:
+            export_png(plot, filename=static_filename)
+            if debug:
+                print(f"Static PNG exported to {static_filename}")
+        except Exception as e:
+            print(f"Failed to export PNG: {e}")
+            print("Tip: Install selenium and a browser driver (e.g., chromedriver) for PNG export")
 
     return return_object
 
