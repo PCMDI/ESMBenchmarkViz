@@ -334,7 +334,9 @@ def scatter_plot(
                 print(f"Static PNG exported to {static_filename}")
         except Exception as e:
             print(f"Failed to export PNG: {e}")
-            print("Tip: Install selenium and a browser driver (e.g., chromedriver) for PNG export")
+            print(
+                "Tip: Install selenium and a browser driver (e.g., chromedriver) for PNG export"
+            )
 
     if show_plot:
         show(return_object)
