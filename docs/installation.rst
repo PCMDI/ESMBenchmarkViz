@@ -1,7 +1,10 @@
 .. _installation:
 
+Installation
+============
+
 Installation using conda (recommended)
-======================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Installing `esmbenchmarkviz` from the `conda-forge` channel can be achieved by adding `conda-forge` to your channels with:
 
@@ -52,7 +55,7 @@ Alternatively, `mamba repoquery` may provide more information:
 
 
 Installation using pip
-======================
+~~~~~~~~~~~~~~~~~~~~~~
 
 `esmbenchmarkviz` is available on PyPI and can be installed using `pip`:
 
@@ -74,7 +77,7 @@ To upgrade to the latest version:
 
 
 Installation from the source code
-=================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To install from the source code, you will need to clone the repository and install it locally using `pip`. The following steps will guide you through the process.
 
