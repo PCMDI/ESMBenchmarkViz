@@ -6,7 +6,8 @@
 
 # ESMBenchmarkViz
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14498167.svg)](https://doi.org/10.5281/zenodo.14498167)
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.10644/status.svg)](https://doi.org/10.21105/joss.10644)
+[![zenodoDOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14498167.svg)](https://doi.org/10.5281/zenodo.14498167)
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 ![platforms](https://img.shields.io/badge/platforms-linux%20|%20osx-lightgrey.svg)
 [![Formatted with black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
