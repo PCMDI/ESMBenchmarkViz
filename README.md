@@ -27,6 +27,10 @@ Jiwoo Lee ([@lee1043](https://github.com/PCMDI/ESMBenchmarkViz/commits?author=le
 ![Taylor Diagram](docs/_static/example_taylor_diagram.gif)
 
 
+## Reference
+
+Lee et al., (2026). ESMBenchmarkViz: A Python Toolkit for Interactive Visualization of Earth System Model Evaluation and Benchmarking. Journal of Open Source Software, 11(125), 10644, https://doi.org/10.21105/joss.10644
+
 ## History
 
 
