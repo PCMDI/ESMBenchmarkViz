@@ -36,6 +36,8 @@ Lee et al., (2026). ESMBenchmarkViz: A Python Toolkit for Interactive Visualizat
 
 | <div style="width:300%">[Versions]</div> | Update summary   |
 | ------------- | ------------------------------------------- |
+| [v0.2.4]      | Technical update
+| [v0.2.3]      | Technical update
 | [v0.2.2]      | New placeholder images, Technical update
 | [v0.2.1]      | Technical update
 | [v0.2.0]      | Scatter plot and Portrait plot added
@@ -43,6 +45,8 @@ Lee et al., (2026). ESMBenchmarkViz: A Python Toolkit for Interactive Visualizat
 | [v0.0.1]      | Initial release for interactive Taylor Diagram
 
 [Versions]: https://github.com/PCMDI/ESMBenchmarkViz/releases
+[v0.2.4]: https://github.com/PCMDI/ESMBenchmarkViz/releases/tag/v0.2.4
+[v0.2.3]: https://github.com/PCMDI/ESMBenchmarkViz/releases/tag/v0.2.3
 [v0.2.2]: https://github.com/PCMDI/ESMBenchmarkViz/releases/tag/v0.2.2
 [v0.2.1]: https://github.com/PCMDI/ESMBenchmarkViz/releases/tag/v0.2.1
 [v0.2.0]: https://github.com/PCMDI/ESMBenchmarkViz/releases/tag/v0.2.0
