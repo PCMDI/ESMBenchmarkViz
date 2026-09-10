@@ -1,0 +1,6 @@
+﻿ESMBenchmarkViz.scatter\_plot
+=============================
+
+.. currentmodule:: ESMBenchmarkViz
+
+.. autofunction:: scatter_plot
